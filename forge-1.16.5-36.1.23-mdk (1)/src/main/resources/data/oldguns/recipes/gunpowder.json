@@ -1,0 +1,18 @@
+{
+  "type": "crafting_shapeless",
+  "ingredients": [
+    {
+		"item": "minecraft:cobblestone"
+	},
+	{
+		"item": "minecraft:flint"
+	},
+	{
+		"item": "minecraft:coal"
+	}
+  ],
+  "result": {
+    "item": "minecraft:gunpowder",
+    "count": 1
+  }
+}

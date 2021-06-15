@@ -1,0 +1,162 @@
+{
+  "hitmarker": {
+    "category": "neutral",
+    "subtitle": "hitmarker",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/hitmarker",
+        "stream": false
+      }
+    ]
+  },
+	"kark_shot": {
+    "category": "neutral",
+    "subtitle": "kark_shot",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/shot/kark_shot",
+        "stream": false
+      }
+    ]
+  },
+  "piratepistol_shot": {
+    "category": "neutral",
+    "subtitle": "piratepistol_shot",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/shot/piratepistol_shot",
+        "stream": false
+      }
+    ]
+  },
+	"piraterifle_shot": {
+    "category": "neutral",
+    "subtitle": "piraterifle_shot",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/shot/piraterifle",
+        "stream": false
+      }
+    ]
+  },
+	"revolver_shot": {
+    "category": "neutral",
+    "subtitle": "revolver_shot",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/shot/revolver_shot",
+        "stream": false
+      }
+    ]
+  },
+	"trabuco_shot": {
+    "category": "neutral",
+    "subtitle": "kark_shot",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/shot/trabuco",
+        "stream": false
+      }
+    ]
+  },
+	"winchester_shot": {
+    "category": "neutral",
+    "subtitle": "winchester_shot",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/shot/winchester_shot",
+        "stream": false
+      }
+    ]
+  },
+  "kark_hammer_back": {
+    "category": "neutral",
+    "subtitle": "kark_hammer_back",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/other/kark_hammer_back",
+        "stream": false
+      }
+    ]
+  },
+	"kark_hammer_front": {
+    "category": "neutral",
+    "subtitle": "kark_hammer_front",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/other/kark_hammer_front",
+        "stream": false
+      }
+    ]
+  },
+  "flintlock_hammer": {
+    "category": "neutral",
+    "subtitle": "flintlock_hammer",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/other/hammer-cocking-back-on-pistol",
+        "stream": false
+      }
+    ]
+  },
+	"kark_hammer_shot": {
+    "category": "neutral",
+    "subtitle": "kark_hammer_shot",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/other/kark_hammer_reload",
+        "stream": false
+      }
+    ]
+  },
+	"loading_bullet": {
+    "category": "neutral",
+    "subtitle": "loading_bullet",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/other/loading-shell-shotgun",
+        "stream": false
+      }
+    ]
+  },
+	"revolver_spin": {
+    "category": "neutral",
+    "subtitle": "revolver_spin",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/other/revolver-spin",
+        "stream": false
+      }
+    ]
+  },
+	"winchester_hammer_reload": {
+    "category": "neutral",
+    "subtitle": "winchester_hammer_reload",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/other/winchester-rifle-cock-reload",
+        "stream": false
+      }
+    ]
+  },
+	"revolver_bullets_inside": {
+    "category": "neutral",
+    "subtitle": "revolver_bullets_inside",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/other/revolver_bullets_inside",
+        "stream": false
+      }
+    ]
+  },
+	"revolver_bullets_out": {
+    "category": "neutral",
+    "subtitle": "revolver_bullets_out",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/other/revolver_bullets_out",
+        "stream": false
+      }
+    ]
+  }
+}

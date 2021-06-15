@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ccc",
+    "c c",
+	"ccc"
+  ],
+  "key": {
+    "c": {
+      "item": "minecraft:clay_ball"
+    }
+  },
+  "result": {
+    "item": "oldguns:mold",
+	"count": 1
+  }
+}

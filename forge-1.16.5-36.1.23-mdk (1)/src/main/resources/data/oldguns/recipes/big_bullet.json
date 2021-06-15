@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " p ",
+    " g ",
+	"#g#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:iron_ingot"
+    },
+	"g": {
+	      "item": "minecraft:gunpowder"
+	},
+	"p": {
+		"item": "minecraft:iron_nugget"
+	}
+  },
+  "result": {
+    "item": "oldguns:big_bullet",
+	"count": 2
+  }
+}

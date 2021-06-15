@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "plp",
+    "s s",
+	"s s"
+  ],
+  "key": {
+    "p": {
+      "tag": "minecraft:planks"
+    },
+	"l": {
+	  "tag": "minecraft:logs"
+	},
+	"s": {
+	  "item": "minecraft:stick"
+	}
+  },
+  "result": {
+    "item": "oldguns:molding_parts_block"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " g ",
+    " g ",
+	"   "
+  ],
+  "key": {
+    "g": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "oldguns:musket_bullet",
+	"count": 8
+  }
+}

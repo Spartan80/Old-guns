@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " s ",
+    "scs",
+	"sss"
+  ],
+  "key": {
+    "s": {
+      "item": "minecraft:cobblestone"
+    },
+	"c": {
+	  "item": "minecraft:coal"
+	}
+  },
+  "result": {
+    "item": "oldguns:smelting_parts_block"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "parent": "jgmod:custom/aiming_glock",
+  "textures": {
+    "0": "jgmod:blocks/guns/glock/canon",
+    "1": "jgmod:blocks/guns/glock/cuerpo",
+    "2": "jgmod:blocks/guns/glock/gatillo",
+	"particle": "jgmod:blocks/guns/glock/cuerpo"
+  }
+}

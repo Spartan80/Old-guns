@@ -1,0 +1,13 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "0": "jgmod:blocks/guns/glock/canon",
+    "1": "jgmod:blocks/guns/glock/cuerpo",
+    "2": "jgmod:blocks/guns/glock/gatillo",
+	"particle": "jgmod:blocks/guns/glock/cuerpo"
+  },
+  "overrides": [
+	{"predicate":{"gunstate":0.50}, "model":"jgmod:item/guns/glock/aim_glock" },
+	{"predicate":{"gunstate":1}, "model":"jgmod:item/guns/glock/glockreal" }
+  ]
+}
