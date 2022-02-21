@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "iii",
+    "sbs",
+	  "s s"
+  ],
+  "key": {
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+	"b": {
+	  "item": "minecraft:iron_block"
+	},
+	"s": {
+	  "item": "minecraft:stick"
+	}
+  },
+  "result": {
+    "item": "oldguns:gun_ammo_block"
+  }
+}
