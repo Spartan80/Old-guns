@@ -14,6 +14,7 @@
 ![Step 2](https://i.imgur.com/BP7YZSL.jpg)
 
 .- 3 Import it as any mod to your IDE
+
 .- 4 Look at the example mod
 
 ## How can i animate the guns?
