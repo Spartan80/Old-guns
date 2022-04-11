@@ -1,0 +1,87 @@
+{
+	"credit": "Made with Blockbench",
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [-83.5, 0, 0],
+			"translation": [-0.25, -0.25, -5]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [-83.5, 0, 0],
+			"translation": [0.25, -0.25, -5]
+		},
+		"firstperson_righthand": {
+			"rotation": [-88.75, 0, 0],
+			"translation": [-1.75, -0.5, -12.25],
+			"scale": [2, 2, 2]
+		},
+		"firstperson_lefthand": {
+			"rotation": [-88.75, 0, 0],
+			"translation": [-1.75, -0.5, -10.75],
+			"scale": [2, 2, 2]
+		},
+		"ground": {
+			"rotation": [-89.25, 0, 6.75],
+			"translation": [-1.25, 1.75, -2.75]
+		},
+		"gui": {
+			"rotation": [-61, -3, -141],
+			"translation": [6.25, -5.75, 0.5],
+			"scale": [2, 2, 2]
+		},
+		"head": {
+			"translation": [0, 13.5, 0]
+		},
+		"fixed": {
+			"rotation": [-90, 31, 88],
+			"translation": [-8.25, 3.25, -0.25],
+			"scale": [2, 2, 2]
+		}
+	},
+	"groups": [
+		{
+			"name": "body",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [
+				{
+					"name": "handle",
+					"origin": [8, 8, 8],
+					"color": 0,
+					"children": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]
+				},
+				{
+					"name": "body_gun",
+					"origin": [8, 8, 8],
+					"color": 0,
+					"children": [27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53,
+						{
+							"name": "hexadecagon",
+							"origin": [8, 8, 8],
+							"color": 0,
+							"children": [54, 55, 56, 57, 58, 59, 60, 61]
+						}
+					]
+				},
+				{
+					"name": "barrel",
+					"origin": [8, 8, 8],
+					"color": 0,
+					"children": [
+						{
+							"name": "hexadecagon",
+							"origin": [8, 8, 8],
+							"color": 0,
+							"children": [62, 63, 64, 65, 66, 67, 68, 69]
+						},
+						{
+							"name": "hexadecagon",
+							"origin": [8, 8, 8],
+							"color": 0,
+							"children": [70, 71, 72, 73, 74, 75, 76, 77]
+						}
+					]
+				}
+			]
+		}
+	]
+}

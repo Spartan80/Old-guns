@@ -1,0 +1,94 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"1": "oldguns:items/sten"
+	},
+	"elements": [
+		{
+			"name": "hexadecagon",
+			"from": [8.46021, 7.52176, 8.7021],
+			"to": [8.60021, 7.82176, 8.8421],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8.52472, 8.57, 8.22276]},
+			"faces": {
+				"north": {"uv": [3.5, 11, 4, 11.5], "texture": "#1"},
+				"east": {"uv": [11, 3.5, 11.5, 4], "texture": "#1"},
+				"south": {"uv": [4, 11, 4.5, 11.5], "texture": "#1"},
+				"west": {"uv": [11, 4, 11.5, 4.5], "texture": "#1"},
+				"up": {"uv": [5, 11.5, 4.5, 11], "texture": "#1"},
+				"down": {"uv": [11.5, 4.5, 11, 5], "texture": "#1"}
+			}
+		},
+		{
+			"name": "hexadecagon",
+			"from": [8.41521, 7.57, 8.7021],
+			"to": [8.50471, 7.77, 8.8021],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8.45401, 8.57, 8.15205]},
+			"faces": {
+				"north": {"uv": [2, 11, 2.5, 11.5], "texture": "#1"},
+				"east": {"uv": [11, 2, 11.5, 2.5], "texture": "#1"},
+				"south": {"uv": [2.5, 11, 3, 11.5], "texture": "#1"},
+				"west": {"uv": [11, 2.5, 11.5, 3], "texture": "#1"},
+				"up": {"uv": [3.5, 11.5, 3, 11], "texture": "#1"},
+				"down": {"uv": [11.5, 3, 11, 3.5], "texture": "#1"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [-89, 0, 0],
+			"translation": [-0.25, 0.5, -1],
+			"scale": [1.2, 1.2, 1.2]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [-89, 0, 0],
+			"translation": [-0.25, 0.5, -1],
+			"scale": [1.2, 1.2, 1.2]
+		},
+		"firstperson_righthand": {
+			"rotation": [-90, 0, 0],
+			"translation": [4.5, 3, 0],
+			"scale": [1.5, 1.5, 1.5]
+		},
+		"firstperson_lefthand": {
+			"rotation": [-90, 0, 0],
+			"translation": [4.5, -8, 0],
+			"scale": [1.5, 1.5, 1.5]
+		},
+		"ground": {
+			"rotation": [-87.5, 0, 0],
+			"translation": [-2.5, 3.25, -1.25],
+			"scale": [1.5, 1.5, 1.5]
+		},
+		"gui": {
+			"rotation": [-61.5, -3, -140],
+			"translation": [1.25, 0.5, 0],
+			"scale": [1.5, 1.5, 1.5]
+		},
+		"head": {
+			"rotation": [-92.75, 0, 0],
+			"translation": [0, -29, 0],
+			"scale": [1.6, 1.6, 1.6]
+		},
+		"fixed": {
+			"rotation": [-90, 31, 88],
+			"translation": [0.5, 2.25, 0.5],
+			"scale": [1.5, 1.5, 1.5]
+		}
+	},
+	"groups": [
+		{
+			"name": "gun",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [
+				{
+					"name": "hammer",
+					"origin": [8, 8, 8],
+					"color": 0,
+					"children": [0, 1]
+				}
+			]
+		}
+	]
+}

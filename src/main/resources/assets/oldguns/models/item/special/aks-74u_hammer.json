@@ -1,0 +1,36 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"1": "oldguns:items/aks74u"
+	},
+	"elements": [
+		{
+			"from": [8.72, 7.38, 9.1],
+			"to": [8.92, 7.48, 9.2],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7.94, 1.9, 9.55]},
+			"faces": {
+				"north": {"uv": [0, 0, 0.2, 0.1], "rotation": 180, "texture": "#1"},
+				"east": {"uv": [0, 0, 0.1, 0.1], "rotation": 90, "texture": "#1"},
+				"south": {"uv": [0, 0, 0.2, 0.1], "texture": "#1"},
+				"west": {"uv": [0, 0, 0.1, 0.1], "rotation": 270, "texture": "#1"},
+				"up": {"uv": [0, 0, 0.2, 0.1], "texture": "#1"},
+				"down": {"uv": [0, 0, 0.2, 0.1], "rotation": 180, "texture": "#1"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "gun",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [
+				{
+					"name": "hammer",
+					"origin": [8, 8, 8],
+					"color": 0,
+					"children": [0]
+				}
+			]
+		}
+	]
+}

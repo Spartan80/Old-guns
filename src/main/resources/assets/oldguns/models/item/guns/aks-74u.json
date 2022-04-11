@@ -1,0 +1,41 @@
+{
+	"credit": "Made with Blockbench",
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [-85, 0, 0],
+			"translation": [0, 0, -2.75],
+			"scale": [1.5, 1.5, 1.5]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [-85, 0, 0],
+			"translation": [0, 0, -2.75],
+			"scale": [1.5, 1.5, 1.5]
+		},
+		"firstperson_righthand": {
+			"rotation": [-88.5, 0, 0],
+			"translation": [0.5, 8.25, 1]
+		},
+		"ground": {
+			"rotation": [-90, 0, 90],
+			"translation": [-2.25, 0, 0.75]
+		},
+		"gui": {
+			"rotation": [-62, 0, -140],
+			"translation": [4.25, -1.25, 0],
+			"scale": [2, 2, 2]
+		},
+		"fixed": {
+			"rotation": [-90, 45, 90],
+			"translation": [-3.25, 3.5, 0.75],
+			"scale": [2, 2, 2]
+		}
+	},
+	"groups": [
+		{
+			"name": "gun",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": []
+		}
+	]
+}

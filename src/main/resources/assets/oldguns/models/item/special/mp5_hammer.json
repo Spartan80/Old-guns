@@ -1,0 +1,39 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "oldguns:items/mp5",
+		"particle": "oldguns:items/mp5"
+	},
+	"elements": [
+		{
+			"name": "hexadecagon",
+			"from": [7.69344, 12.5, 9.10711],
+			"to": [7.89235, 12.7, 9.50711],
+			"rotation": {"angle": -45, "axis": "y", "origin": [7.79289, 14, 9.60711]},
+			"faces": {
+				"north": {"uv": [5.5, 1.5, 5.75, 1.75], "texture": "#0"},
+				"east": {"uv": [5.5, 1.75, 5.75, 2], "texture": "#0"},
+				"south": {"uv": [5.5, 2, 5.75, 2.25], "texture": "#0"},
+				"west": {"uv": [5.5, 2.75, 5.75, 3], "texture": "#0"},
+				"up": {"uv": [3.25, 5.75, 3, 5.5], "texture": "#0"},
+				"down": {"uv": [5.75, 3, 5.5, 3.25], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "gun",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [
+				{
+					"name": "hammer",
+					"origin": [8, 8, 8],
+					"color": 0,
+					"children": [0]
+				}
+			]
+		}
+	]
+}

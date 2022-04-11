@@ -1,0 +1,81 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "oldguns:items/galil",
+		"particle": "oldguns:items/galil"
+	},
+	"elements": [
+		{
+			"from": [7.85, 11.9, 9.9],
+			"to": [8, 12.1, 10.7],
+			"rotation": {"angle": 0, "axis": "y", "origin": [-0.3, 5.22278, -3.12137]},
+			"faces": {
+				"north": {"uv": [8.258, 0.258, 8.492, 0.492], "texture": "#0"},
+				"east": {"uv": [0.508, 8.258, 0.742, 8.492], "texture": "#0"},
+				"south": {"uv": [8.258, 0.508, 8.492, 0.742], "texture": "#0"},
+				"west": {"uv": [0.758, 8.258, 0.992, 8.492], "texture": "#0"},
+				"up": {"uv": [8.492, 0.992, 8.258, 0.758], "texture": "#0"},
+				"down": {"uv": [1.242, 8.258, 1.008, 8.492], "texture": "#0"}
+			}
+		},
+		{
+			"from": [7.825, 11.875, 10.7],
+			"to": [8.025, 12.125, 10.85],
+			"rotation": {"angle": 0, "axis": "y", "origin": [-0.3, 5.22278, -2.32137]},
+			"faces": {
+				"north": {"uv": [8.258, 1.008, 8.492, 1.242], "texture": "#0"},
+				"east": {"uv": [1.258, 8.258, 1.492, 8.492], "texture": "#0"},
+				"south": {"uv": [8.258, 1.258, 8.492, 1.492], "texture": "#0"},
+				"west": {"uv": [1.508, 8.258, 1.742, 8.492], "texture": "#0"},
+				"up": {"uv": [8.492, 1.742, 8.258, 1.508], "texture": "#0"},
+				"down": {"uv": [1.992, 8.258, 1.758, 8.492], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [-84.25, 0, 0],
+			"translation": [0, 0, 2.25]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [-84.25, 0, 0],
+			"translation": [0, 0, 2.25]
+		},
+		"firstperson_righthand": {
+			"rotation": [-90, 0, 0],
+			"translation": [-4.75, 4.5, 6.25]
+		},
+		"firstperson_lefthand": {
+			"rotation": [-90, 0, 0],
+			"translation": [-4.75, 4.5, 6.25]
+		},
+		"ground": {
+			"rotation": [-90, 0, 0],
+			"translation": [0, 1.75, 4]
+		},
+		"gui": {
+			"rotation": [-61.5, -3, -140],
+			"translation": [-2.25, 0.5, 0]
+		},
+		"fixed": {
+			"rotation": [-90, 31, 88],
+			"translation": [2.25, -1.5, -0.5]
+		}
+	},
+	"groups": [
+		{
+			"name": "gun",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [
+				{
+					"name": "hammer",
+					"origin": [8, 8, 8],
+					"color": 0,
+					"children": [0, 1]
+				}
+			]
+		}
+	]
+}
