@@ -62,34 +62,45 @@ public class WinchesterGunModel extends GunModel {
 				.translate(parts[6], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.0f, 0.0f, 0.0f)
 				.end();
-		reload = (RepetitiveAnimation)new RepetitiveAnimation("reloadAnim", "oldguns:winchester")
-				.cycle((anim) -> {
-					anim.startKeyframe(12, "easeOutQuint")
-					.translate(parts[1], -1.1399993f, 0.0f, 0.0f)
-					.translate(parts[6], -0.8599995f, -0.68999964f, 0.0f)
-					.rotate(parts[6], 0.0f, -0.17453294f, 0.5934119f)
-					.startKeyframe(24)
-					.translate(parts[1], -1.1399993f, 0.0f, 0.0f)
-					.translate(parts[6], -0.8599995f, -0.68999964f, 0.0f)
-					.rotate(parts[6], 0.0f, -0.17453294f, 0.5934119f)
-					.startKeyframe(12, "easeInQuint")
-					.translate(parts[1], -0.5599998f, 0.0f, 0.0f)
-					.translate(parts[6], 0.23000002f, 0.14999998f, 0.0f)
-					.rotate(parts[6], 0.0f, -0.17453294f, -0.4886921f)
-					.startKeyframe(24)
-					.translate(parts[1], -0.5599998f, 0.0f, 0.0f)
-					.translate(parts[6], 0.23000002f, 0.14999998f, 0.0f)
-					.rotate(parts[6], 0.0f, -0.17453294f, -0.4886921f)
-					.startKeyframe(12, "easeInOutCirc")
-					.translate(parts[1], 0.0f, 0.0f, 0.0f)
-					.translate(parts[6], 0.0f, 0.0f, 0.0f)
-					.rotate(parts[6], 0.0f, 0.0f, 0.0f);
-				}).endCycle(4).end();
+
+		reload = new RepetitiveAnimation("reloadAnim", "oldguns:winchester")
+				.startKeyframe(12)
+				.translate(parts[2], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], -0.21000002f, -0.11999998f, 0.0f)
+				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[1], -0.80285174f, 0.0f, 0.0f)
+				.rotate(parts[6], 0.0f, 0.0f, -0.3839724f)
+				.startKeyframe(12)
+				.type(1)
+				.translate(parts[2], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], -0.32999998f, 0.06000001f, -0.07999999f)
+				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[1], -0.22689286f, 0.0f, 0.0f)
+				.rotate(parts[6], 0.0f, 0.0f, -0.3839724f)
+				.startKeyframe(12)
+				.translate(parts[2], 0.0f, 0.0f, -0.02f)
+				.translate(parts[1], -0.27000004f, 1.4901161E-8f, -0.44999984f)
+				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[1], -0.22689286f, 0.0f, 0.0f)
+				.rotate(parts[6], 0.0f, 0.0f, -0.3839724f)
+				.startKeyframe(12)
+				.type(2)
+				.translate(parts[2], 0.0f, 0.0f, -0.02f)
+				.translate(parts[1], -0.32999998f, 0.06000001f, -0.07999999f)
+				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[1], -0.22689286f, 0.0f, 0.0f)
+				.rotate(parts[6], 0.0f, 0.0f, -0.3839724f)
+				.startKeyframe(12)
+				.translate(parts[1], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[1], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[6], 0.0f, 0.0f, 0.0f)
+				.end();
 	}
 
 	@Override
-	public void shoot(Player player, ItemStack stack) {
-		super.shoot(player, stack);
+	public void tick(Player player, ItemStack stack) {
+		super.tick(player, stack);
 	}
 	
 	@Override

@@ -1,13 +1,16 @@
 package com.jg.oldguns.client.screens.widgets;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.jg.oldguns.client.animations.Animation;
 import com.jg.oldguns.client.animations.Keyframe;
+import com.jg.oldguns.client.animations.RepetitiveAnimation;
 import com.jg.oldguns.client.animations.parts.GunModel;
 import com.jg.oldguns.client.animations.parts.GunModelPart;
 import com.jg.oldguns.client.screens.AnimationScreen;
 import com.jg.oldguns.client.screens.widgets.JGSelectionList.Key;
+import com.jg.oldguns.utils.Utils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -93,8 +96,11 @@ public class KeyframeLineWidget extends GuiComponent implements Widget {
 		this.deltaX = maxVX-this.minX;
 		if(this.visible) {
 			if(keyframes != null && model.getAnimation() != null) {
+				boolean oneTime = false;
+				boolean cycle = false;
 				for(int i = 0; i < keyframes.size(); i++) {
-					if(keyframes.get(i) == null) {
+					Keyframe kf = keyframes.get(i);
+					if(kf == null) {
 						LogUtils.getLogger().info("null at index: " + i);
 					}
 					int kfx = (int)(this.minX + (Mth.lerp(this.keyframes.get(i)
@@ -102,7 +108,39 @@ public class KeyframeLineWidget extends GuiComponent implements Widget {
 							*this.scale) - 10 - this.offset);
 					if(kfx > minX-20 && kfx < maxVX+10) {
 						RenderSystem.setShader(GameRenderer::getPositionTexShader);
-						RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F); 
+						float[] color = new float[] { 1.0F, 1.0F, 1.0F };
+						if(model.getAnimation() instanceof RepetitiveAnimation) {
+							if(kf.type == 0) {
+								if(cycle) {
+									if(!oneTime) {
+										color = new float[] { 0.2235F, 0.3294F, 0.2156F };
+									} else {
+										color = new float[] { 0.0823F, 0.1176F, 0.0784F };
+									}
+								}
+							} else if(kf.type == 1) {
+								cycle = true;
+								if(!oneTime) {
+									color = new float[] { 0.6745F, 0.8470F, 0.9921F };
+								} else {
+									color = new float[] { 0.0549F, 0.0549F, 0.0549F };
+								}
+							} else if(kf.type == 2) {
+								if(!oneTime) {
+									color = new float[] { 0.4901F, 0.1529F, 0.1568F };
+								} else {
+									color = new float[] { 0.2450F, 0.0764F, 0.0784F };
+								}
+								oneTime = true;
+								if(i+1 < keyframes.size()) {
+									if(keyframes.get(i+1).type == 0) {
+										oneTime = false;
+										cycle = false;
+									}
+								}
+							}
+						}
+						RenderSystem.setShaderColor(color[0], color[1], color[2], 1.0F); 
 						RenderSystem.setShaderTexture(0, AnimationScreen.WIDGETS);
 						blit(matrix, kfx, 92, 
 								(this.selected == i || 
@@ -241,6 +279,7 @@ public class KeyframeLineWidget extends GuiComponent implements Widget {
 			screen.getEditBoxes().get(7).setValue(String.valueOf(
 					this.keyframes.get(i).dur));
 			screen.getEditBoxes().get(9).setValue(this.keyframes.get(i).easing);
+			screen.getIntCycles().get(0).setValue(this.keyframes.get(i).type);
 		} catch(IndexOutOfBoundsException e) {
 			e.printStackTrace();
 		}

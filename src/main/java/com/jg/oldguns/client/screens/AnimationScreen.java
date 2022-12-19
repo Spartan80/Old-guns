@@ -8,6 +8,7 @@ import java.util.function.Function;
 
 import com.jg.oldguns.client.animations.Animation;
 import com.jg.oldguns.client.animations.Keyframe;
+import com.jg.oldguns.client.animations.RepetitiveAnimation;
 import com.jg.oldguns.client.animations.Transform;
 import com.jg.oldguns.client.animations.parts.GunModel;
 import com.jg.oldguns.client.animations.parts.GunModelPart;
@@ -69,6 +70,7 @@ public class AnimationScreen extends Screen {
 	private int scrollMax, scale;
 	private int current;
 	
+	private boolean cycleStarted;
 	private boolean ctrl;
 	private boolean start;
 	private boolean rot;
@@ -179,9 +181,23 @@ public class AnimationScreen extends Screen {
 				return Component.translatable("EC");
 			}
 			return Component.translatable("NON");
-		}, 0, 100, 166, 60, 20, Component.translatable("Type"), (c, v) -> {
-			if(keyframeLine.getSelected() != -1) {
-				
+		}, 0, 100, 188, 60, 20, Component.translatable("Type"), (c, v) -> {
+			if(model.getAnimation() != null) {
+				if(keyframeLine.getSelected() != -1) {
+					LogUtils.getLogger().info("v: " + v);
+					if(v == 1 && !cycleStarted) {
+						getSelectedKeyframe().type = v;
+					} else if(v == 1 && cycleStarted) {
+						LogUtils.getLogger().info("A cycle is already started");
+					} else {
+						getSelectedKeyframe().type = v;
+					}
+					if(v == 1) {
+						cycleStarted = true;
+					} else if(v == 2) {
+						cycleStarted = false;
+					}
+				}
 			}
 		}, 0, 1, 2));
 
@@ -387,7 +403,9 @@ public class AnimationScreen extends Screen {
 				}
 			}
 		});
-
+		edits.add(new EditBox(font, 16, 138, 80, 20, Component.translatable("animationScreen.times")));
+		edits.get(10).setValue("1");
+		
 		// Buttons
 		buttons.add(new Button(342, 24, 30, 20, Component.translatable("Play"), (b) -> {
 			model.setPlayAnimation(true);
@@ -406,7 +424,15 @@ public class AnimationScreen extends Screen {
 			}
 		}));
 		buttons.add(new Button(202, 59, 30, 20, Component.translatable("Update"), (b) -> {
-			model.setShouldUpdateAnimation(true);
+			if(model.getAnimation() instanceof RepetitiveAnimation) {
+				if(!edits.get(10).getValue().isBlank()) {
+					((RepetitiveAnimation)model.getAnimation())
+						.setTimes(Integer.parseInt(edits.get(10).getValue()));
+				} else {
+					((RepetitiveAnimation)model.getAnimation()).setTimes(1);
+				}
+				keyframeLine.update(model.getAnimation());
+			}
 		}));
 		buttons.add(new Button(234, 59, 30, 20, Component.translatable("Add"), (b) -> {
 			if (model.getAnimation() != null) {
@@ -492,7 +518,6 @@ public class AnimationScreen extends Screen {
 		
 		buttons.add(new Button(100, 144, 30, 20, Component.translatable("Save"), (b) -> {
 			if(model.getAnimation() != null) {
-				//FileUtils.writeFile(model.getAnimation().getName(), model.getAnimation());
 				AnimationSerializer.serializeWithCode(model.getAnimation(), model);
 			}
 		}));
@@ -563,36 +588,72 @@ public class AnimationScreen extends Screen {
 			}
 		}));
 		
-		buttons.add(new Button(164, 166, 60, 20, Component.translatable("AddCeroKf"), (b) -> {
+		buttons.add(new Button(164, 166, 60, 20, Component.translatable("AddZeroKf"), (b) -> {
 			Animation anim = model.getAnimation();
 			if(anim != null) {
-				Keyframe cero = new Keyframe(4);
-				if(!anim.getKeyframes().isEmpty()) {
-					Keyframe last = anim.getKeyframes().get(anim.getKeyframes().size()-1);
-					for(Entry<GunModelPart, float[]> e : last.translations.entrySet()) {
-						if(e.getValue()[0] != 0 || e.getValue()[1] != 0 || 
-								e.getValue()[2] != 0) {
-							cero.translations.put(e.getKey(), new float[] { 0, 0, 0 });
+				if(keyframeLine.getSelected() == -1) {
+					if(!anim.getKeyframes().isEmpty()) {
+						Keyframe cero = new Keyframe(12);
+						Keyframe last = anim.getKeyframes().get(anim.getKeyframes().size()-1);
+						List<Integer> posIndexes = posList.getSelectedIndexes();
+						if(!posIndexes.isEmpty()) {
+							for(int i : posIndexes) {
+								cero.translations.put(Utils.getGunPartByName(model, 
+										posList.getKeys().get(i).getKey()), 
+										new float[] { 0, 0, 0 });
+							}
+						} else {
+							for(Entry<GunModelPart, float[]> e : last.translations.entrySet()) {
+								if(e.getValue()[0] != 0 || e.getValue()[1] != 0 || 
+										e.getValue()[2] != 0) {
+									cero.translations.put(e.getKey(), new float[] { 0, 0, 0 });
+								}
+								LogUtils.getLogger().info(Arrays.toString(e.getValue()));
+							}
 						}
-						LogUtils.getLogger().info(Arrays.toString(e.getValue()));
-					}
-					for(Entry<GunModelPart, float[]> e : last.rotations.entrySet()) {
-						if(e.getValue()[0] != 0 || e.getValue()[1] != 0 || 
-								e.getValue()[2] != 0) {
-							cero.rotations.put(e.getKey(), new float[] { 0, 0, 0 });
+						List<Integer> rotIndexes = rotList.getSelectedIndexes();
+						if(!rotIndexes.isEmpty()) {
+							for(int i : rotIndexes) {
+								cero.rotations.put(Utils.getGunPartByName(model, 
+										rotList.getKeys().get(i).getKey()), 
+										new float[] { 0, 0, 0 });
+							}
+						} else {
+							for(Entry<GunModelPart, float[]> e : last.rotations.entrySet()) {
+								if(e.getValue()[0] != 0 || e.getValue()[1] != 0 || 
+										e.getValue()[2] != 0) {
+									cero.rotations.put(e.getKey(), new float[] { 0, 0, 0 });
+								}
+							}
 						}
+						anim.getKeyframes().add(cero);
+						Utils.updateKeyframesFromAnimation(model.getAnimation());
+						keyframeLine.update(model.getAnimation());
+					} else {
+						Keyframe cero = new Keyframe(12);
+						for(GunModelPart part : model.getGunParts()) {
+							cero.translations.put(part, new float[] { 0, 0, 0 });
+							cero.rotations.put(part, new float[] { 0, 0, 0 });
+						}
+						anim.getKeyframes().add(cero);
+						Utils.updateKeyframesFromAnimation(model.getAnimation());
+						keyframeLine.update(model.getAnimation());
 					}
-					anim.getKeyframes().add(cero);
-					Utils.updateKeyframesFromAnimation(model.getAnimation());
-					keyframeLine.update(model.getAnimation());
 				} else {
-					for(GunModelPart part : model.getGunParts()) {
-						cero.translations.put(part, new float[] { 0, 0, 0 });
-						cero.rotations.put(part, new float[] { 0, 0, 0 });
+					Keyframe kf = getSelectedKeyframe();
+					List<Integer> parts = gunPartList.getSelectedIndexes();
+					if(!parts.isEmpty()) {
+						for(int index : parts) {
+							GunModelPart part = model.getGunParts().get(index);
+							if (!booleanCycles.get(0).getValue()) {
+								kf.translations.put(part, new float[] { 0, 0, 0 });
+								posList.addKey(new Key(font, part.getName()));
+							} else {
+								kf.rotations.put(part, new float[] { 0, 0, 0 });
+								rotList.addKey(new Key(font, part.getName()));
+							}
+						}
 					}
-					anim.getKeyframes().add(cero);
-					Utils.updateKeyframesFromAnimation(model.getAnimation());
-					keyframeLine.update(model.getAnimation());
 				}
 			}
 		}));
@@ -642,7 +703,7 @@ public class AnimationScreen extends Screen {
 				16777215, true);
 		this.font.drawShadow(matrix, "d: ", (float) 10 + (-AnimationScreen.this.font.width("d: ") / 2), (float) (124),
 				16777215, true);
-		this.font.drawShadow(matrix, "st: ", (float) 10 + (-AnimationScreen.this.font.width("st: ") / 2), (float) (144),
+		this.font.drawShadow(matrix, "tms: ", (float) 10 + (-AnimationScreen.this.font.width("st: ") / 2), (float) (144),
 				16777215, true);
 		this.font.drawShadow(matrix, "s: ", (float) 10 + (-AnimationScreen.this.font.width("st: ") / 2), (float) (164),
 				16777215, true);
@@ -650,7 +711,7 @@ public class AnimationScreen extends Screen {
 				16777215, true);
 		if(model.getAnimation() != null) {
 			this.font.drawShadow(matrix, "Animation Name: " + model.getAnimation().getName(),
-					(float) 200
+					(float) 226
 							+ (-AnimationScreen.this.font.width("Animation Name: " + model.getAnimation().getName()) / 2),
 					(float) (192), 16777215, true);
 		}

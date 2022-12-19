@@ -20,6 +20,7 @@ import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -292,8 +293,13 @@ public class ClientEventHandler {
 			if (screen == null || screen instanceof AnimationScreen || screen instanceof GunPartsScreen) {
 				boolean animEditFocused = false;
 				if (screen instanceof AnimationScreen) {
-					animEditFocused = ((AnimationScreen) screen).getEditBoxes().get(6).isFocused()
-							|| ((AnimationScreen) screen).getEditBoxes().get(9).isFocused();
+					AnimationScreen animScreen = (AnimationScreen)screen;
+					for(EditBox edit : animScreen.getEditBoxes()) {
+						if(edit.isFocused()) {
+							animEditFocused = true;
+							break;
+						}
+					}
 				}
 				if (animEditFocused)
 					return;

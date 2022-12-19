@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 
 import com.jg.oldguns.client.animations.Animation;
 import com.jg.oldguns.client.animations.Keyframe;
+import com.jg.oldguns.client.animations.RepetitiveAnimation;
 import com.jg.oldguns.client.animations.parts.GunModel;
 import com.jg.oldguns.client.animations.parts.GunModelPart;
 
@@ -88,24 +89,113 @@ public class AnimationSerializer {
 	
 	public static String serializeWithCode(Animation animation, GunModel model) {
 		String anim = "";
-		anim += " = new Animation(\"" + animation.getName() + "\", \"" 
+		anim += animation instanceof RepetitiveAnimation ? " = new RepetitiveAnimation(\"" 
+				: " = new Animation(\"";
+		anim += animation.getName() + "\", \"" 
 				+ animation.getGunModel() + "\")\n";
-		for(Keyframe kf : animation.getKeyframes()) {
-			anim += ".startKeyframe(" + kf.dur;
-			if(!kf.easing.equals("empty") && !kf.easing.isEmpty()) {
-				anim += ", \"" + kf.easing + "\"";
+		boolean oneTime = false;
+		boolean add = true;
+		for(int i = 0; i < animation.getKeyframes().size()-1; i++) {
+			Keyframe kf = animation.getKeyframes().get(i);
+			if(kf.type == 0 && add) {
+				anim += ".startKeyframe(" + kf.dur;
+				if(!kf.easing.equals("empty") && !kf.easing.isEmpty()) {
+					anim += ", \"" + kf.easing + "\"";
+				}
+				anim += ")\n";
+				for(Entry<GunModelPart, float[]> e : kf.translations.entrySet()) {
+					anim += ".translate(parts[" + getIndexForPart(e.getKey(), model)
+						+ "], " + e.getValue()[0] + "f, " + e.getValue()[1] + "f, " + 
+						e.getValue()[2] + "f)\n";
+				}
+				for(Entry<GunModelPart, float[]> e : kf.rotations.entrySet()) {
+					anim += ".rotate(parts[" + getIndexForPart(e.getKey(), model)
+						+ "], " + e.getValue()[0] + "f, " + e.getValue()[1] + "f, " + 
+						e.getValue()[2] + "f)\n";
+				}
+			} else if(kf.type == 1 && !oneTime) {
+				anim += ".startKeyframe(" + kf.dur;
+				if(!kf.easing.equals("empty") && !kf.easing.isEmpty()) {
+					anim += ", \"" + kf.easing + "\"";
+				}
+				anim += ")\n";
+				anim += ".type(1)\n";
+				oneTime = true;
+				for(Entry<GunModelPart, float[]> e : kf.translations.entrySet()) {
+					anim += ".translate(parts[" + getIndexForPart(e.getKey(), model)
+						+ "], " + e.getValue()[0] + "f, " + e.getValue()[1] + "f, " + 
+						e.getValue()[2] + "f)\n";
+				}
+				for(Entry<GunModelPart, float[]> e : kf.rotations.entrySet()) {
+					anim += ".rotate(parts[" + getIndexForPart(e.getKey(), model)
+						+ "], " + e.getValue()[0] + "f, " + e.getValue()[1] + "f, " + 
+						e.getValue()[2] + "f)\n";
+				}
+			} else if(kf.type == 2) {
+				if(oneTime) {
+					add = false;
+				}
+				if(animation.getKeyframes().get(i+1).type == 0) {
+					add = true;
+					anim += ".startKeyframe(" + kf.dur;
+					if(!kf.easing.equals("empty") && !kf.easing.isEmpty()) {
+						anim += ", \"" + kf.easing + "\"";
+					}
+					anim += ")\n";
+					oneTime = false;
+					anim += ".type(2)\n";
+					System.out.println("type(2)");
+					for(Entry<GunModelPart, float[]> e : kf.translations.entrySet()) {
+						anim += ".translate(parts[" + getIndexForPart(e.getKey(), model)
+							+ "], " + e.getValue()[0] + "f, " + e.getValue()[1] + "f, " + 
+							e.getValue()[2] + "f)\n";
+					}
+					for(Entry<GunModelPart, float[]> e : kf.rotations.entrySet()) {
+						anim += ".rotate(parts[" + getIndexForPart(e.getKey(), model)
+							+ "], " + e.getValue()[0] + "f, " + e.getValue()[1] + "f, " + 
+							e.getValue()[2] + "f)\n";
+					}
+				}
+			}
+		}
+		// Last keyframe
+		Keyframe lkf = animation.getKeyframes().get(animation.getKeyframes().size()-1);
+		switch(lkf.type) {
+		case 0:
+			anim += ".startKeyframe(" + lkf.dur;
+			if(!lkf.easing.equals("empty") && !lkf.easing.isEmpty()) {
+				anim += ", \"" + lkf.easing + "\"";
 			}
 			anim += ")\n";
-			for(Entry<GunModelPart, float[]> e : kf.translations.entrySet()) {
+			for(Entry<GunModelPart, float[]> e : lkf.translations.entrySet()) {
 				anim += ".translate(parts[" + getIndexForPart(e.getKey(), model)
 					+ "], " + e.getValue()[0] + "f, " + e.getValue()[1] + "f, " + 
 					e.getValue()[2] + "f)\n";
 			}
-			for(Entry<GunModelPart, float[]> e : kf.rotations.entrySet()) {
+			for(Entry<GunModelPart, float[]> e : lkf.rotations.entrySet()) {
 				anim += ".rotate(parts[" + getIndexForPart(e.getKey(), model)
 					+ "], " + e.getValue()[0] + "f, " + e.getValue()[1] + "f, " + 
 					e.getValue()[2] + "f)\n";
 			}
+			break;
+		case 2:
+			anim += ".startKeyframe(" + lkf.dur;
+			if(!lkf.easing.equals("empty") && !lkf.easing.isEmpty()) {
+				anim += ", \"" + lkf.easing + "\"";
+			}
+			anim += ")\n";
+			anim += ".type(2)\n";
+			for(Entry<GunModelPart, float[]> e : lkf.translations.entrySet()) {
+				anim += ".translate(parts[" + getIndexForPart(e.getKey(), model)
+					+ "], " + e.getValue()[0] + "f, " + e.getValue()[1] + "f, " + 
+					e.getValue()[2] + "f)\n";
+			}
+			for(Entry<GunModelPart, float[]> e : lkf.rotations.entrySet()) {
+				anim += ".rotate(parts[" + getIndexForPart(e.getKey(), model)
+					+ "], " + e.getValue()[0] + "f, " + e.getValue()[1] + "f, " + 
+					e.getValue()[2] + "f)\n";
+			}
+			break;
 		}
 		anim += ".end();";
 		System.out.println(anim);

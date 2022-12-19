@@ -41,6 +41,7 @@ public class Keyframe {
 		kf.startVisualTick = startVisualTick;
 		kf.translations = copyMap(translations);
 		kf.rotations = copyMap(rotations);
+		kf.type = type;
 		return kf;
 	}
 

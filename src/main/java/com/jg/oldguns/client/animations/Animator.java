@@ -103,12 +103,12 @@ public class Animator {
 	            this.prog = easings.getOrDefault(key, (x) -> x).get(this.prog);
 	            LogUtils.getLogger().info("Easing: " + easings.containsKey(key));*/
 	            doEasing();
-	        	LogUtils.getLogger().info("Prog: " + prog);
+	        	/*LogUtils.getLogger().info("Prog: " + prog);
 	        	for(Entry<String, Easing> e : easings.entrySet()) {
 	        		if(e.getValue() == easing) {
 	        			LogUtils.getLogger().info("Easing: " + e.getKey());
 	        		}
-	        	}
+	        	}*/
 	            for(GunModelPart part : currentTranslations.keySet()) {
 	            	if(!prevTranslations.containsKey(part)) {
 	            		prevTranslations.put(part, new float[] { 0, 0, 0 });
@@ -158,7 +158,7 @@ public class Animator {
 	                    return;
 	                }
 	                this.easing = easings.getOrDefault(kf.easing, (x) -> x);
-	                LogUtils.getLogger().info("Keyframe easing: " + kf.easing);
+	                //LogUtils.getLogger().info("Keyframe easing: " + kf.easing);
 	                this.updateCurrentMaps();
 			}
         }
