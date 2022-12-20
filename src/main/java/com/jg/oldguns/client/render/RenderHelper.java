@@ -1,5 +1,7 @@
 package com.jg.oldguns.client.render;
 
+import com.jg.oldguns.OldGuns;
+import com.jg.oldguns.client.render.types.RenderTypes;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -8,6 +10,7 @@ import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
@@ -16,6 +19,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -28,6 +32,64 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 
 public class RenderHelper {
+	
+	public static final ResourceLocation HITMARKER = new ResourceLocation(OldGuns.MODID,
+			"textures/effects/hitmarker.png");
+
+	public static final ResourceLocation MUZZLE = new ResourceLocation(OldGuns.MODID,
+			"textures/effects/muzzle_flash.png");
+	
+	// Render images
+
+		public static void renderMuzzleFlash(PoseStack stack, BufferSource impl, float partialTicks, float xo, float yo,
+				float zo) {
+			stack.pushPose();
+			stack.translate(xo, yo, zo);
+
+			stack.scale(0.03F, 0.03F, 0.0F);
+
+			// float scale = 0.5F + 0.5F * (1.0F - partialTicks);
+			// stack.scale(scale, scale, 1.0F);
+			float r = (float) (360f * Math.random());
+			// System.out.println(r);
+			stack.mulPose(Vector3f.ZP.rotationDegrees(r));
+			stack.translate(-8 / 2, -8 / 2, 0);
+
+			float minU = 0.0f;
+			float maxU = 0.5f;
+			Matrix4f matrix = stack.last().pose();
+			VertexConsumer builder = impl.getBuffer(RenderTypes.MUZZLE_FLASH);
+			builder.vertex(matrix, 0, 0, 0).color(1.0F, 1.0F, 1.0F, 1.0F).uv(maxU, 1.0F).uv2(15728880).endVertex();
+			builder.vertex(matrix, 8, 0, 0).color(1.0F, 1.0F, 1.0F, 1.0F).uv(minU, 1.0F).uv2(15728880).endVertex();
+			builder.vertex(matrix, 8, 8, 0).color(1.0F, 1.0F, 1.0F, 1.0F).uv(minU, 0).uv2(15728880).endVertex();
+			builder.vertex(matrix, 0, 8, 0).color(1.0F, 1.0F, 1.0F, 1.0F).uv(maxU, 0).uv2(15728880).endVertex();
+
+			stack.popPose();
+		}
+
+		public static void drawHitmarker(PoseStack stack, ResourceLocation image, int size) {
+
+			RenderSystem.enableBlend();
+
+			BufferBuilder buffer = Tesselator.getInstance().getBuilder();
+			int window_width = Minecraft.getInstance().getWindow().getGuiScaledWidth();
+			int window_height = Minecraft.getInstance().getWindow().getGuiScaledHeight();
+
+			stack.pushPose();
+			RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+			RenderSystem.setShaderTexture(0, HITMARKER);
+			Matrix4f matrix = stack.last().pose();
+			stack.translate((window_width - size) / 2F, (window_height - size) / 2F, 0);
+			buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+			buffer.vertex(matrix, 0, size, 0).uv(0, 1).color(1.0F, 1.0F, 1.0F, 1.0f).endVertex();
+			buffer.vertex(matrix, size, size, 0).uv(1, 1).color(1.0F, 1.0F, 1.0F, 1.0f).endVertex();
+			buffer.vertex(matrix, size, 0, 0).uv(1, 0).color(1.0F, 1.0F, 1.0F, 1.0f).endVertex();
+			buffer.vertex(matrix, 0, 0, 0).uv(0, 0).color(1.0F, 1.0F, 1.0F, 1.0f).endVertex();
+			BufferUploader.drawWithShader(buffer.end());
+			stack.popPose();
+		}
+	
 	public static void renderPlayerArm(PoseStack matrix, MultiBufferSource buffer, int light, float p_109350_,
 			float p_109351_, HumanoidArm p_109352_) {
 		boolean flag = p_109352_ != HumanoidArm.LEFT;

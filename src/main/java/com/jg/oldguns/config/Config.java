@@ -26,12 +26,15 @@ public class Config {
 	public static class Client {
 		
 		public final ForgeConfigSpec.BooleanValue doDebugStuff;
+		public final ForgeConfigSpec.IntValue hitmarkerTime;
 		
 		public Client(ForgeConfigSpec.Builder builder) {
 			builder.push("Debug config");
 			{
-				doDebugStuff = builder.comment("if you want to make transforms to de gun parts or hands active this")
+				doDebugStuff = builder.comment("if you want to make transforms to the gun parts or hands active this")
 						.define("do debug stuff", false);
+				hitmarkerTime = builder.comment("Hitmarker duration")
+						.defineInRange("Hitmarker Duration", 4, 0, 50);
 			}
 		}
 	}

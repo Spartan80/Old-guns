@@ -17,6 +17,7 @@ import com.jg.oldguns.guns.GunStuff;
 import com.jg.oldguns.network.ShootMessage;
 import com.jg.oldguns.utils.MathUtils;
 import com.jg.oldguns.utils.NBTUtils;
+import com.jg.oldguns.utils.Utils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
 import com.mojang.math.Quaternion;
@@ -49,6 +50,8 @@ public abstract class GunModel {
 
 	protected Animator animator;
 
+	protected Animation shootAnim;
+	
 	protected GunModelStuff stuff;
 
 	protected boolean shouldUpdateAnimation;
@@ -65,6 +68,8 @@ public abstract class GunModel {
 		this.stuff = new GunModelStuff(this.gun.getStuff());
 		this.hasChanges = true;
 		this.playAnimation = true;
+		this.shootAnim = new Animation("shootAnim", Utils.getR(gun).toString())
+				.startKeyframe(4).end();
 	}
 
 	// Transform
@@ -90,10 +95,12 @@ public abstract class GunModel {
 	// Gun Methods
 
 	public void shoot(Player player, ItemStack stack) {
+		setAnimation(shootAnim);
 		OldGuns.channel.sendToServer(
 				new ShootMessage(player.getYRot(), player.getXRot(), 
 						gun.getShootSound().getLocation().toString()));
 		markChanges();
+		LogUtils.getLogger().info(shootAnim.getGunModel());
 	}
 
 	public boolean canShoot(Player player, ItemStack stack) {
@@ -275,11 +282,18 @@ public abstract class GunModel {
 		LogUtils.getLogger().info("Mark changes");
 	}
 
-	public GunModelPart[] getParts() {
-		return parts;
+	public boolean isRepTick(int start, float target, float tick, int cycleDur, int times) {
+		float t = tick - start;
+		int current = (int)Math.floor(t/cycleDur);
+		target = target - start;
+		return tick > start && current < times && t - (current*cycleDur) == target;
 	}
 
 	// Getters and setters
+	
+	public GunModelPart[] getParts() {
+		return parts;
+	}
 
 	public void setAnimation(Animation anim) {
 		this.animator.setAnimation(anim);
@@ -343,6 +357,8 @@ public abstract class GunModel {
 	public abstract void reload(Player player, ItemStack stack);
 
 	public abstract Animation getLookAnimation();
+	
+	public abstract Animation getKickbackAnimation();
 
 	public abstract WrapperModel getModifiedModel(BakedModel origin);
 

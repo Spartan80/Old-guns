@@ -22,27 +22,34 @@ public class ClientHandler {
 	public int mode; // 0 : translate | 1 : rotate | 2 : scale
 	public boolean init;
 	public boolean display;
+	public boolean renderHitmarker;
+	public boolean debugAim;
+	public boolean loop;
 	
 	private SprintHandler sprint;
 	private AimHandler aim;
 	private RecoilHandler recoil;
+	private HitmarkerHandler hitmarker;
 	
 	public ClientHandler() {
 		sprint = new SprintHandler();
 		aim = new AimHandler();
 		recoil = new RecoilHandler();
+		hitmarker = new HitmarkerHandler();
 	}
 	
 	// Methods
 	
 	public void tick() {
 		recoil.tick();
+		hitmarker.tick();
 	}
 	
 	public void shoot(Player player) {
 		if(current.canShoot(player, player.getMainHandItem())) {
 			Utils.spawnParticlesOnPlayerView(player, 50, 0, 0, 0);
 			current.shoot(player, player.getMainHandItem());
+			LogUtils.getLogger().info("shoot2");
 			recoil.setShoot();
 			player.setXRot(player.getXRot()-(float)(Math.random() * current.getKnockback()));
 			player.setYRot(player.getYRot()+(float)(Math.random() * current.getKnockback()));
@@ -248,4 +255,9 @@ public class ClientHandler {
 	public RecoilHandler getRecoilHandler(){
 		return recoil;
 	}
+	
+	public HitmarkerHandler getHitmarker() {
+		return hitmarker;
+	}
+	
 }

@@ -7,13 +7,16 @@ import org.lwjgl.glfw.GLFW;
 import com.jg.oldguns.OldGuns;
 import com.jg.oldguns.client.animations.parts.GunModel;
 import com.jg.oldguns.client.models.gunmodels.WinchesterGunModel;
+import com.jg.oldguns.client.render.RenderHelper;
 import com.jg.oldguns.client.screens.AnimationScreen;
 import com.jg.oldguns.client.screens.GunPartsScreen;
 import com.jg.oldguns.events.RegisterEasingsEvent;
 import com.jg.oldguns.events.RegisterGunModelEvent;
 import com.jg.oldguns.guns.GunItem;
+import com.jg.oldguns.guns.ItemMag;
 import com.jg.oldguns.registries.EntityRegistries;
 import com.jg.oldguns.registries.ItemRegistries;
+import com.jg.oldguns.utils.NBTUtils;
 import com.jg.oldguns.utils.Paths;
 import com.jg.oldguns.utils.Utils;
 import com.mojang.logging.LogUtils;
@@ -46,19 +49,23 @@ public class ClientEventHandler {
 	private static Minecraft mc = Minecraft.getInstance();
 	private static ClientHandler client = new ClientHandler();
 	
-	public static final KeyMapping SWITCH = new KeyMapping("key.jgpg.switch", GLFW.GLFW_KEY_C, OldGuns.MODID);
-	public static final KeyMapping DISPLAY = new KeyMapping("key.jgpg.display", GLFW.GLFW_KEY_KP_ADD, OldGuns.MODID);
-	public static final KeyMapping RELOAD = new KeyMapping("key.jgpg.reload", GLFW.GLFW_KEY_R, OldGuns.MODID);
-	public static final KeyMapping LOOKANIM = new KeyMapping("key.jgpg.look", GLFW.GLFW_KEY_LEFT_ALT, OldGuns.MODID);
-	public static final KeyMapping LEFT = new KeyMapping("key.jgpg.left", GLFW.GLFW_KEY_LEFT, OldGuns.MODID);
-	public static final KeyMapping UP = new KeyMapping("key.jgpg.up", GLFW.GLFW_KEY_UP, OldGuns.MODID);
-	public static final KeyMapping DOWN = new KeyMapping("key.jgpg.down", GLFW.GLFW_KEY_DOWN, OldGuns.MODID);
-	public static final KeyMapping RIGHT = new KeyMapping("key.jgpg.right", GLFW.GLFW_KEY_RIGHT, OldGuns.MODID);
-	public static final KeyMapping N = new KeyMapping("key.jgpg.n", GLFW.GLFW_KEY_N, OldGuns.MODID);
-	public static final KeyMapping M = new KeyMapping("key.jgpg.m", GLFW.GLFW_KEY_M, OldGuns.MODID);
-	public static final KeyMapping H = new KeyMapping("key.jgpg.z", GLFW.GLFW_KEY_H, OldGuns.MODID);
-	public static final KeyMapping J = new KeyMapping("key.jgpg.x", GLFW.GLFW_KEY_J, OldGuns.MODID);
-	public static final KeyMapping MINUS = new KeyMapping("key.jgpg.-", GLFW.GLFW_KEY_MINUS, OldGuns.MODID);
+	public static final KeyMapping SWITCH = new KeyMapping("key.oldguns.switch", GLFW.GLFW_KEY_C, OldGuns.MODID);
+	public static final KeyMapping DISPLAY = new KeyMapping("key.oldguns.display", GLFW.GLFW_KEY_KP_ADD, OldGuns.MODID);
+	public static final KeyMapping RELOAD = new KeyMapping("key.oldguns.reload", GLFW.GLFW_KEY_R, OldGuns.MODID);
+	public static final KeyMapping LOOKANIM = new KeyMapping("key.oldguns.look", GLFW.GLFW_KEY_LEFT_ALT, OldGuns.MODID);
+	public static final KeyMapping KICKBACK = new KeyMapping("key.oldguns.kickback", GLFW.GLFW_KEY_B, OldGuns.MODID);
+	
+	public static final KeyMapping LEFT = new KeyMapping("key.oldguns.left", GLFW.GLFW_KEY_LEFT, OldGuns.MODID);
+	public static final KeyMapping UP = new KeyMapping("key.oldguns.up", GLFW.GLFW_KEY_UP, OldGuns.MODID);
+	public static final KeyMapping DOWN = new KeyMapping("key.oldguns.down", GLFW.GLFW_KEY_DOWN, OldGuns.MODID);
+	public static final KeyMapping RIGHT = new KeyMapping("key.oldguns.right", GLFW.GLFW_KEY_RIGHT, OldGuns.MODID);
+	public static final KeyMapping N = new KeyMapping("key.oldguns.n", GLFW.GLFW_KEY_N, OldGuns.MODID);
+	public static final KeyMapping M = new KeyMapping("key.oldguns.m", GLFW.GLFW_KEY_M, OldGuns.MODID);
+	public static final KeyMapping H = new KeyMapping("key.oldguns.z", GLFW.GLFW_KEY_H, OldGuns.MODID);
+	public static final KeyMapping J = new KeyMapping("key.oldguns.x", GLFW.GLFW_KEY_J, OldGuns.MODID);
+	public static final KeyMapping MINUS = new KeyMapping("key.oldguns.-", GLFW.GLFW_KEY_MINUS, OldGuns.MODID);
+	
+	private static boolean clicked = false;
 	
 	public static void setup() {
 		ClientsHandler.register(mc.getUser(), client);
@@ -146,6 +153,10 @@ public class ClientEventHandler {
 						e.setCanceled(true);
 					}
 				}
+				if (client.renderHitmarker || client.debugAim || 
+						client.getHitmarker().hitmarkerTime > 0) {
+					RenderHelper.drawHitmarker(e.getPoseStack(), RenderHelper.HITMARKER, 8);
+				}
 			}
 		}
 
@@ -153,14 +164,30 @@ public class ClientEventHandler {
 			Player player = mc.player;
 			if (player == null)
 				return;
-			if (player.getMainHandItem().getItem() instanceof GunItem) {
+			/*if (player.getMainHandItem().getItem() instanceof GunItem) {
 				if(((GunItem)player.getMainHandItem().getItem()).hasScope()) {
 					if (e.getOverlay()== VanillaGuiOverlay.HOTBAR.type()) {
 						if(client.getAimHandler().getProgress() > 0.5f) {
 							/*RenderHelper.renderScopeOverlay(
 									client.getAimHandler().getProgress());*/
-						}
+						/*}
 					}
+				}
+			}*/
+			ItemStack stack = player.getMainHandItem();
+			if (e.getOverlay() == VanillaGuiOverlay.HOTBAR.type()) {
+				if (stack.getItem() instanceof GunItem) {
+					GunItem gun = ((GunItem) stack.getItem());
+					Minecraft.getInstance().font.draw(e.getPoseStack(),
+							NBTUtils.getAmmo(stack) + "/" + NBTUtils.getMaxAmmo(stack),
+							Minecraft.getInstance().getWindow().getGuiScaledWidth() / 7,
+							Minecraft.getInstance().getWindow().getGuiScaledHeight() / 1.5f, 0xFFFFFF);
+				} else if (stack.getItem() instanceof ItemMag) {
+					ItemMag mag = ((ItemMag) stack.getItem());
+					Minecraft.getInstance().font.draw(e.getPoseStack(), 
+							NBTUtils.getAmmo(stack) + "/" + mag.getMaxAmmo(),
+							Minecraft.getInstance().getWindow().getGuiScaledWidth() / 7,
+							Minecraft.getInstance().getWindow().getGuiScaledHeight() / 1.5f, 0xFFFFFF);
 				}
 			}
 		}
@@ -318,6 +345,9 @@ public class ClientEventHandler {
 							} else if (LOOKANIM.getKey().getValue() == e.getKey()) {
 								client.getGunModel().setAnimation(client.getGunModel().getLookAnimation());
 								LogUtils.getLogger().info("Setting look animation");
+							} else if(KICKBACK.getKey().getValue() == e.getKey()) {
+								client.getGunModel().setAnimation(
+										client.getGunModel().getKickbackAnimation());
 							} else if(e.getKey() == 93) {
 								MinecraftForge.EVENT_BUS.start();
 								MinecraftForge.EVENT_BUS.post(new RegisterGunModelEvent());
@@ -366,7 +396,8 @@ public class ClientEventHandler {
 				Player player = mc.player;
 				if (player != null) {
 					if (player.getMainHandItem().getItem() instanceof GunItem) {
-						if (e.getAction() == GLFW.GLFW_PRESS) {
+						if (e.getAction() == GLFW.GLFW_PRESS && !clicked) {
+							clicked = true;
 							if (e.getButton() == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
 								if (client.getGunModel() != null) {
 									if (client.getRecoilHandler().getProgress() == 0) {
@@ -374,6 +405,8 @@ public class ClientEventHandler {
 									}
 								}
 							}
+						} else if(e.getAction() == GLFW.GLFW_RELEASE){
+							clicked = false;
 						}
 					}
 				}

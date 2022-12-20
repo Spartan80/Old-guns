@@ -140,12 +140,18 @@ public class KeyframeLineWidget extends GuiComponent implements Widget {
 								}
 							}
 						}
+						boolean animSelected = screen.getGunModel().getAnimator()
+								.getCurrent()-1 == i;
+						if((screen.getCurrent() == i || animSelected) && this.selected == i) {
+							color = new float[] { 0.6F, 0.6F, 0.6F };
+						} else if(animSelected) {
+							color = new float[] { 1.0F, 1.0F, 1.0F };
+						}
 						RenderSystem.setShaderColor(color[0], color[1], color[2], 1.0F); 
 						RenderSystem.setShaderTexture(0, AnimationScreen.WIDGETS);
 						blit(matrix, kfx, 92, 
 								(this.selected == i || 
-									(screen.getGunModel().getAnimator()
-											.getCurrent()-1) == i || 
+									animSelected || 
 											screen.getCurrent() == i) ? 208 : 
 									224, 0, 15, 15);
 					}

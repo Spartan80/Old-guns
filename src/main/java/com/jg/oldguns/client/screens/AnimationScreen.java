@@ -13,6 +13,7 @@ import com.jg.oldguns.client.animations.Transform;
 import com.jg.oldguns.client.animations.parts.GunModel;
 import com.jg.oldguns.client.animations.parts.GunModelPart;
 import com.jg.oldguns.client.animations.serializers.AnimationSerializer;
+import com.jg.oldguns.client.handlers.ClientsHandler;
 import com.jg.oldguns.client.screens.widgets.GunPartKey;
 import com.jg.oldguns.client.screens.widgets.JGSelectionList;
 import com.jg.oldguns.client.screens.widgets.JGSelectionList.Key;
@@ -171,6 +172,18 @@ public class AnimationScreen extends Screen {
 		}, false, 100, 166, 60, 20, Component.translatable("Keyframe"), (c, v) -> {
 			keyframe = v;
 		}));
+		
+		booleanCycles.add(buildBooleanCycle((s) -> {
+			if (s) {
+				return Component.translatable("T");
+			} else {
+				return Component.translatable("F");
+			}
+		}, false, 100, 210, 60, 20, Component.translatable("Loop"), (c, v) -> {
+			ClientsHandler.getClient(Minecraft.getInstance().getUser()).loop = v;
+		}));
+		booleanCycles.get(2).setValue(ClientsHandler.getClient(Minecraft.getInstance()
+				.getUser()).loop);
 		
 		integerCycles.add(buildIntCycle((s) -> {
 			if (s == 0) {
@@ -443,7 +456,6 @@ public class AnimationScreen extends Screen {
 					kf.startVisualTick = kf.startTick + 4;
 					Utils.insertInto(keyframeLine.getSelected(), 
 							model.getAnimation().getKeyframes(), kf);
-					LogUtils.getLogger().info("sd");
 				} else {
 					Keyframe kf = new Keyframe(4);
 					kf.startTick = 0;

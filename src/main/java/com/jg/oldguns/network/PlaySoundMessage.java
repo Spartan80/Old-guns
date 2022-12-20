@@ -2,6 +2,8 @@ package com.jg.oldguns.network;
 
 import java.util.function.Supplier;
 
+import com.mojang.logging.LogUtils;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -21,7 +23,7 @@ public class PlaySoundMessage {
 	}
 
 	public PlaySoundMessage(SoundEvent sound, double x, double y, double z, float volume, float pitch) {
-		this(sound.toString(), x, y, z, volume, pitch);
+		this(sound.getLocation().toString(), x, y, z, volume, pitch);
 	}
 
 	public PlaySoundMessage(String sound, double x, double y, double z, float volume, float pitch) {
@@ -48,14 +50,12 @@ public class PlaySoundMessage {
 
 		context.enqueueWork(() -> {
 			ServerPlayer player = context.getSender();
-
+			
 			SoundEvent sound = ForgeRegistries.SOUND_EVENTS.getValue(
 					new ResourceLocation(msg.sound));
-
-			System.out.println(sound != null);
 			
 			if (player != null && sound != null) {
-				System.out.println(sound.toString());
+				System.out.println(msg.sound);
 				player.level.playSound((Player) null, msg.x, msg.y, msg.z, sound, SoundSource.NEUTRAL, msg.volume, msg.pitch);
 			}
 		});

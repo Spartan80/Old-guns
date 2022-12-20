@@ -28,6 +28,7 @@ public class GunPart extends Item {
 		protected float power;
 		protected float innacuracy;
 		protected float dmgRed;
+		protected float weight;
 		protected int bulletsPerShoot;
 		protected int range;
 		protected SoundEvent sound;
@@ -56,12 +57,17 @@ public class GunPart extends Item {
 			return this;
 		}
 		
+		public GunPartProperties weight(float weight) {
+			this.weight = weight;
+			return this;
+		}
+		
 		public GunPartProperties bulletsPerShoot(int bullets) {
 			this.bulletsPerShoot = bullets;
 			return this;
 		}
 		
-		public GunPartProperties dmgRed(int range) {
+		public GunPartProperties range(int range) {
 			this.range = range;
 			return this;
 		}

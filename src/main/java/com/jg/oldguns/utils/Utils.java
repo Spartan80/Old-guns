@@ -10,6 +10,7 @@ import com.jg.oldguns.client.animations.parts.GunModel;
 import com.jg.oldguns.client.animations.parts.GunModelPart;
 import com.mojang.logging.LogUtils;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Holder;
@@ -28,6 +29,14 @@ public class Utils {
 
 	public static final List<BakedQuad> EMPTY = new ArrayList<>();
 
+	public static ItemStack getStack() {
+		return Minecraft.getInstance().player.getMainHandItem();
+	}
+	
+	public static Player getPlayer() {
+		return Minecraft.getInstance().player;
+	}
+	
 	public static void spawnParticlesOnPlayerView(Player player, int amount, float ox, float oy, float oz) {
 		Vec3 view = player.getViewVector(1.0f);
 		if (amount <= 0) {
@@ -152,6 +161,10 @@ public class Utils {
 	
 	public static ResourceLocation getR(Item item) {
 		return ForgeRegistries.ITEMS.getKey(item);
+	}
+	
+	public static ResourceLocation getR(ItemStack stack) {
+		return ForgeRegistries.ITEMS.getKey(stack.getItem());
 	}
 
 	public static ModelResourceLocation getMR(Item item) {

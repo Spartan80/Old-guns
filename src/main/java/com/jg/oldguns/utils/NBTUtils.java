@@ -7,8 +7,12 @@ import net.minecraft.world.item.ItemStack;
 
 public class NBTUtils {
 
+	public static final String EMPTY = "";
 	public static final String AMMO = "ammo";
 	public static final String MAG = "mag";
+	public static final String MAXAMMO = "maxammo";
+	public static final String HASMAG = "hasmag";
+	public static final String BULLETS = "bullets";
 	public static final String SAFE = "safe";
 	public static final String MODE = "mode";
 	public static final String ID = "id";
@@ -31,6 +35,14 @@ public class NBTUtils {
 	
 	public static int getAmmo(ItemStack stack) {
 		return get(stack).getInt(AMMO);
+	}
+	
+	public static void setMaxAmmo(ItemStack stack, int maxAmmo) {
+		get(stack).putInt(MAXAMMO, maxAmmo);
+	}
+	
+	public static int getMaxAmmo(ItemStack stack) {
+		return get(stack).getInt(MAXAMMO);
 	}
 	
 	// Boolean

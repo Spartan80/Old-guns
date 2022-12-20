@@ -5,10 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.jg.oldguns.client.handlers.ClientEventHandler;
 import com.jg.oldguns.config.Config;
-import com.jg.oldguns.network.AddItemMessage;
-import com.jg.oldguns.network.ConsumeItemMessage;
-import com.jg.oldguns.network.PlaySoundMessage;
-import com.jg.oldguns.network.ShootMessage;
+import com.jg.oldguns.network.*;
 import com.jg.oldguns.proxy.ClientProxy;
 import com.jg.oldguns.proxy.IProxy;
 import com.jg.oldguns.proxy.ServerProxy;
@@ -93,6 +90,28 @@ public class OldGuns {
 		channel.registerMessage(packetsRegistered++, AddItemMessage.class, 
 				AddItemMessage::encode, AddItemMessage::decode, 
 				AddItemMessage::handle);
+		channel.registerMessage(packetsRegistered++, BodyHitMessage.class, 
+				BodyHitMessage::encode, BodyHitMessage::decode, 
+				BodyHitMessage::handle);
+		
+		channel.registerMessage(packetsRegistered++, MagBulletPathMessage.class, 
+				MagBulletPathMessage::encode, MagBulletPathMessage::decode, 
+				MagBulletPathMessage::handle);
+		channel.registerMessage(packetsRegistered++, MakeMagMessage.class, 
+				MakeMagMessage::encode, MakeMagMessage::decode, 
+				MakeMagMessage::handle);
+		channel.registerMessage(packetsRegistered++, RestoreMagMessage.class, 
+				RestoreMagMessage::encode, RestoreMagMessage::decode, 
+				RestoreMagMessage::handle);
+		channel.registerMessage(packetsRegistered++, SetBulletsMessage.class, 
+				SetBulletsMessage::encode, SetBulletsMessage::decode, 
+				SetBulletsMessage::handle);
+		channel.registerMessage(packetsRegistered++, SetHammerMessage.class, 
+				SetHammerMessage::encode, SetHammerMessage::decode, 
+				SetHammerMessage::handle);
+		channel.registerMessage(packetsRegistered++, StartHitmarkerMessage.class, 
+				StartHitmarkerMessage::encode, StartHitmarkerMessage::decode, 
+				StartHitmarkerMessage::handle);
 	}
 	
 	private void doClientStuff(final FMLClientSetupEvent event) {

@@ -7,9 +7,11 @@ import java.util.Map.Entry;
 import com.jg.oldguns.client.animations.parts.GunModel;
 import com.jg.oldguns.client.animations.parts.GunModelPart;
 import com.jg.oldguns.client.handlers.ClientHandler;
+import com.jg.oldguns.client.handlers.ClientsHandler;
 import com.jg.oldguns.utils.MathUtils;
 import com.mojang.logging.LogUtils;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 
 public class Animator {
@@ -177,7 +179,11 @@ public class Animator {
     	this.prevTick = 0;
     	this.prevStartTick = 0;
     	this.prevDur = 0;
-    	this.animation = null;
+    	if(ClientsHandler.getClient(Minecraft.getInstance().getUser()).loop) {
+    		setAnimation(animation);
+    	} else {
+        	this.animation = null;
+    	}
 	}
 	
 	public void updateCurrentMaps() {

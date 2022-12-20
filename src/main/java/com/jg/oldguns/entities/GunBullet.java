@@ -1,15 +1,22 @@
 package com.jg.oldguns.entities;
 
+import com.jg.oldguns.OldGuns;
+import com.jg.oldguns.guns.GunItem;
+import com.jg.oldguns.network.StartHitmarkerMessage;
 import com.jg.oldguns.registries.EntityRegistries;
+import com.jg.oldguns.registries.SoundRegistries;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.ItemStack;
@@ -18,6 +25,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.HitResult.Type;
+import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkHooks;
 
 public class GunBullet extends ThrowableProjectile implements ItemSupplier {
@@ -107,8 +115,19 @@ public class GunBullet extends ThrowableProjectile implements ItemSupplier {
 				if (hit.getEntity() instanceof LivingEntity && this.shooter != null) {
 					LivingEntity entity = (LivingEntity) hit.getEntity();
 					entity.invulnerableTime = 0;
+					OldGuns.channel.sendTo(new StartHitmarkerMessage(), 
+							((ServerPlayer) shooter).connection.connection,
+							NetworkDirection.PLAY_TO_CLIENT);
 					DamageSource src = DamageSource.mobAttack(this.shooter);
 					entity.hurt(src, entityData.get(GunBullet.DAMAGE).floatValue());
+					if (shooter != null) {
+						ItemStack stack = ((Player) shooter).getMainHandItem();
+						if(stack.getItem() instanceof GunItem) {
+							//((GunItem)stack.getItem()).onHit(stack, entity);
+							shooter.level.playSound((Player) null, shooter.getX(), shooter.getY(), shooter.getZ(),
+									SoundRegistries.HITMARKER.get(), SoundSource.NEUTRAL, 0.2f, 1);
+						}
+					}
 					LogUtils.getLogger().info("Dmg: " + entityData.get(GunBullet.DAMAGE).floatValue());
 				}
 			}
