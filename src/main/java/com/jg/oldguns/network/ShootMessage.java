@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import com.jg.oldguns.entities.GunBullet;
 import com.jg.oldguns.guns.GunItem;
+import com.jg.oldguns.guns.GunPart;
 import com.jg.oldguns.utils.NBTUtils;
 import com.mojang.logging.LogUtils;
 
@@ -14,6 +15,8 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent.Context;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -45,6 +48,7 @@ public class ShootMessage {
 
 		context.enqueueWork(() -> {
 			ServerPlayer player = context.getSender();
+			ItemStack stack = player.getMainHandItem();
 			LogUtils.getLogger().info("Bulletsxd: ");
 			if (player != null) {
 				player.setXRot(msg.pitch);
@@ -60,6 +64,15 @@ public class ShootMessage {
 				float f1 = -Mth.sin((msg.pitch) * ((float) Math.PI / 180F));
 				float f2 = Mth.cos(msg.yaw * ((float) Math.PI / 180F)) * Mth.cos(msg.pitch * ((float) Math.PI / 180F));
 				LogUtils.getLogger().info("Bullets: " + gun.getBulletsPerShoot());
+				
+				/*String barrel = NBTUtils.getBarrel(stack);
+				Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(barrel));
+				int bullets = 0;
+				if(item != null) {
+					bullets = ((GunPart)item).getGunPartProperties().getBulletsPerShoot();
+					LogUtils.getLogger().info("bullets: " + bullets);
+				}*/
+				
 				for (int i = 0; i < gun.getBulletsPerShoot(); i++) {
 					GunBullet bullet = new GunBullet(player, player.level);
 					bullet.setPos(player.position().add(0, player.getEyeHeight(), 0));

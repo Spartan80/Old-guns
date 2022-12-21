@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.jg.oldguns.client.handlers.ReloadHandler;
-import com.jg.oldguns.guns.ItemMag;
+import com.jg.oldguns.guns.MagItem;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -262,11 +262,11 @@ public class ServerUtils {
 		return -1;
 	}
 
-	public static ItemMag getMagForGun(Inventory pi, String gunid, String gunAcceptedType) {
+	public static MagItem getMagForGun(Inventory pi, String gunid, String gunAcceptedType) {
 		for (int index = 0; index < pi.getContainerSize(); ++index) {
 			ItemStack stack = pi.getItem(index);
-			if (stack.getItem() instanceof ItemMag) {
-				ItemMag mag = (ItemMag) stack.getItem();
+			if (stack.getItem() instanceof MagItem) {
+				MagItem mag = (MagItem) stack.getItem();
 				if (mag.getGunId().equals(gunid) && mag.getAcceptedSize().equals(gunAcceptedType)) {
 					return mag;
 				}
@@ -278,8 +278,8 @@ public class ServerUtils {
 	public static int getIndexForCorrectMag(Inventory pi, String gunid, String gunAcceptedType) {
 		for (int index = 0; index < pi.getContainerSize(); ++index) {
 			ItemStack stack = pi.getItem(index);
-			if (stack.getItem() instanceof ItemMag) {
-				ItemMag mag = (ItemMag) stack.getItem();
+			if (stack.getItem() instanceof MagItem) {
+				MagItem mag = (MagItem) stack.getItem();
 				if (mag.getGunId().equals(gunid) && mag.getAcceptedSize().equals(gunAcceptedType)) {
 					return index;
 				}

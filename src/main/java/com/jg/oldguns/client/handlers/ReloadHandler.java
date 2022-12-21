@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.jg.oldguns.OldGuns;
 import com.jg.oldguns.client.animations.parts.GunModel;
 import com.jg.oldguns.guns.BulletItem;
-import com.jg.oldguns.guns.ItemMag;
+import com.jg.oldguns.guns.MagItem;
 import com.jg.oldguns.network.AddItemMessage;
 import com.jg.oldguns.network.ConsumeItemMessage;
 import com.jg.oldguns.network.MagBulletPathMessage;
@@ -44,7 +44,7 @@ public class ReloadHandler {
 		OldGuns.channel.sendToServer(new SetBulletsMessage(bullets));
 	}
 
-	public static void setMag(GunModel model, int maxAmmo, boolean mag, String bpath, ItemMag magItem) {
+	public static void setMag(GunModel model, int maxAmmo, boolean mag, String bpath, MagItem magItem) {
 		ItemStack stack = Utils.getStack();
 		if (mag) {
 			OldGuns.channel.sendToServer(new MakeMagMessage(maxAmmo, mag, bpath, 
@@ -117,7 +117,7 @@ public class ReloadHandler {
 	}
 
 	public static int findCorrectBullet(Inventory pi, ItemStack stack) {
-		ItemMag mag = (ItemMag) stack.getItem();
+		MagItem mag = (MagItem) stack.getItem();
 
 		int index = -1;
 		ArrayList<Integer> indexs = new ArrayList<Integer>();

@@ -14,6 +14,7 @@ import com.jg.oldguns.client.render.RenderHelper;
 import com.jg.oldguns.client.screens.AnimationScreen;
 import com.jg.oldguns.guns.GunItem;
 import com.jg.oldguns.guns.GunStuff;
+import com.jg.oldguns.guns.MagItem;
 import com.jg.oldguns.network.ShootMessage;
 import com.jg.oldguns.utils.MathUtils;
 import com.jg.oldguns.utils.NBTUtils;
@@ -117,10 +118,10 @@ public abstract class GunModel {
 			lerpTransform(matrix, client.getAimHandler().getProgress(), parts[aim].getDTransform());
 		}
 		if (sprint != -1) {
-			lerpTransform(matrix, client.getAimHandler().getProgress(), parts[sprint].getDTransform());
+			lerpTransform(matrix, client.getSprintHandler().getProgress(), parts[sprint].getDTransform());
 		}
 		if (recoil != -1) {
-			lerpTransform(matrix, client.getAimHandler().getProgress(), parts[recoil].getDTransform());
+			lerpTransform(matrix, client.getRecoilHandler().getProgress(), parts[recoil].getDTransform());
 		}
 		if (all != -1) {
 			translateAndRotateAndScaleAndScale(parts[all].getCombined(), matrix);
@@ -168,10 +169,12 @@ public abstract class GunModel {
 		parts[1].getDTransform().setScale(1.3f, 2.5f, 1.3f);
 		translateAndRotateAndScale(parts[7].getCombined(), matrix);
 		renderArm(player, buffer, matrix, light, HumanoidArm.LEFT, parts[1].getCombined());
-		matrix.pushPose();
-		translateAndRotateAndScale(parts[6].getCombined(), matrix);
-		renderItem(player, stuff.mag, buffer, matrix, light, parts[4].getCombined());
-		matrix.popPose();
+		if(!NBTUtils.getMag(stack).equals("")) {
+			matrix.pushPose();
+			translateAndRotateAndScale(parts[6].getCombined(), matrix);
+			renderItem(player, stuff.mag, buffer, matrix, light, parts[4].getCombined());
+			matrix.popPose();
+		}
 		matrix.popPose();
 		matrix.pushPose();
 		translateAndRotateAndScale(parts[6].getCombined(), matrix);
@@ -256,6 +259,23 @@ public abstract class GunModel {
 
 	// Misc
 
+	public MagItem getMagItem() {
+		return (MagItem) Minecraft.getInstance().player.getInventory().getItem(ammoindex)
+				.getItem();
+	}
+
+	public ItemStack getMagStack() {
+		return Minecraft.getInstance().player.getInventory().getItem(ammoindex);
+	}
+	
+	public String getMBPath() {
+		return getMagStack().getOrCreateTag().getString(NBTUtils.MAGBULLET);
+	}
+
+	public String getMPath() {
+		return Utils.getR(NBTUtils.getMag(getMagStack()));
+	}
+	
 	public void updateGunParts(Player player) {
 		ItemStack stack = player.getMainHandItem();
 		this.stuff.setBarrel(

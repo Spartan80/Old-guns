@@ -9,6 +9,8 @@ import com.jg.oldguns.network.*;
 import com.jg.oldguns.proxy.ClientProxy;
 import com.jg.oldguns.proxy.IProxy;
 import com.jg.oldguns.proxy.ServerProxy;
+import com.jg.oldguns.registries.BlockRegistries;
+import com.jg.oldguns.registries.ContainerRegistries;
 import com.jg.oldguns.registries.EntityRegistries;
 import com.jg.oldguns.registries.ItemRegistries;
 import com.jg.oldguns.registries.SoundRegistries;
@@ -65,8 +67,8 @@ public class OldGuns {
         SoundRegistries.SOUNDS.register(bus);
         ItemRegistries.ITEMS.register(bus);
         EntityRegistries.ENTITIES.register(bus);
-        //ContainerRegistries.CONTAINERS.register(bus);
-        //BlockRegistries.BLOCKS.register(bus);
+        ContainerRegistries.CONTAINERS.register(bus);
+        BlockRegistries.BLOCKS.register(bus);
         
         bus = MinecraftForge.EVENT_BUS;
         OldGuns.proxy.registerForgeEventListeners(bus);
@@ -112,6 +114,13 @@ public class OldGuns {
 		channel.registerMessage(packetsRegistered++, StartHitmarkerMessage.class, 
 				StartHitmarkerMessage::encode, StartHitmarkerMessage::decode, 
 				StartHitmarkerMessage::handle);
+		
+		channel.registerMessage(packetsRegistered++, OpenGunGuiMessage.class, 
+				OpenGunGuiMessage::encode, OpenGunGuiMessage::decode, 
+				OpenGunGuiMessage::handle);
+		channel.registerMessage(packetsRegistered++, InitGunMessage.class, 
+				InitGunMessage::encode, InitGunMessage::decode, 
+				InitGunMessage::handle);
 	}
 	
 	private void doClientStuff(final FMLClientSetupEvent event) {

@@ -3,7 +3,6 @@ package com.jg.oldguns.client.models.wrapper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import org.apache.logging.log4j.Level;
 
 import com.jg.oldguns.OldGuns;
@@ -11,6 +10,7 @@ import com.jg.oldguns.client.handlers.ModelHandler;
 import com.jg.oldguns.guns.GunItem;
 import com.jg.oldguns.utils.NBTUtils;
 import com.jg.oldguns.utils.Utils;
+import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -112,18 +112,23 @@ public abstract class WrapperModel extends BaseModel {
 						if (!ModelHandler.INSTANCE.getModels().containsKey(id)) {
 							ModelHandler.INSTANCE.getModels().put(id,
 									new DynamicGunModel(origin, gunitem, stack));
+							LogUtils.getLogger().info("Set new model");
 						}
 					}
 					if (ModelHandler.INSTANCE.getModels().containsKey(id)) {
 						if (reconstruct) {
 							reconstruct(stack);
+							LogUtils.getLogger().info("Reconstructing");
 							reconstruct = false;
 						}
+						//LogUtils.getLogger().info("Already registered");
 						return ModelHandler.INSTANCE.getModel(id);
 					} else {
+						//LogUtils.getLogger().info("Id not registered -> Origin");
 						return origin;
 					}
 				} else {
+					//LogUtils.getLogger().info("Origin");
 					return origin;
 				}
 			}

@@ -1,29 +1,43 @@
 package com.jg.oldguns.client.handlers;
 
 import java.util.Map;
+import java.util.UUID;
 
 import org.lwjgl.glfw.GLFW;
 
 import com.jg.oldguns.OldGuns;
 import com.jg.oldguns.client.animations.parts.GunModel;
+import com.jg.oldguns.client.models.gunmodels.Mp40GunModel;
 import com.jg.oldguns.client.models.gunmodels.WinchesterGunModel;
 import com.jg.oldguns.client.render.RenderHelper;
 import com.jg.oldguns.client.screens.AnimationScreen;
+import com.jg.oldguns.client.screens.GunAmmoGui;
+import com.jg.oldguns.client.screens.GunCraftingGui;
+import com.jg.oldguns.client.screens.GunGui;
+import com.jg.oldguns.client.screens.GunPartsGui;
 import com.jg.oldguns.client.screens.GunPartsScreen;
+import com.jg.oldguns.client.screens.MagGui;
 import com.jg.oldguns.events.RegisterEasingsEvent;
 import com.jg.oldguns.events.RegisterGunModelEvent;
+import com.jg.oldguns.guns.BulletItem;
+import com.jg.oldguns.guns.FireMode;
 import com.jg.oldguns.guns.GunItem;
-import com.jg.oldguns.guns.ItemMag;
+import com.jg.oldguns.guns.MagItem;
+import com.jg.oldguns.network.InitGunMessage;
+import com.jg.oldguns.network.OpenGunGuiMessage;
+import com.jg.oldguns.registries.ContainerRegistries;
 import com.jg.oldguns.registries.EntityRegistries;
 import com.jg.oldguns.registries.ItemRegistries;
 import com.jg.oldguns.utils.NBTUtils;
 import com.jg.oldguns.utils.Paths;
+import com.jg.oldguns.utils.ServerUtils;
 import com.jg.oldguns.utils.Utils;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -54,6 +68,8 @@ public class ClientEventHandler {
 	public static final KeyMapping RELOAD = new KeyMapping("key.oldguns.reload", GLFW.GLFW_KEY_R, OldGuns.MODID);
 	public static final KeyMapping LOOKANIM = new KeyMapping("key.oldguns.look", GLFW.GLFW_KEY_LEFT_ALT, OldGuns.MODID);
 	public static final KeyMapping KICKBACK = new KeyMapping("key.oldguns.kickback", GLFW.GLFW_KEY_B, OldGuns.MODID);
+	public static final KeyMapping ATTACHMENTS = new KeyMapping("key.oldguns.attachments", GLFW.GLFW_KEY_V,
+			OldGuns.MODID);
 	
 	public static final KeyMapping LEFT = new KeyMapping("key.oldguns.left", GLFW.GLFW_KEY_LEFT, OldGuns.MODID);
 	public static final KeyMapping UP = new KeyMapping("key.oldguns.up", GLFW.GLFW_KEY_UP, OldGuns.MODID);
@@ -69,6 +85,12 @@ public class ClientEventHandler {
 	
 	public static void setup() {
 		ClientsHandler.register(mc.getUser(), client);
+		
+		MenuScreens.register(ContainerRegistries.GUN_AMMO_CONTAINER.get(), GunAmmoGui::new);
+		MenuScreens.register(ContainerRegistries.GUN_CONTAINER.get(), GunGui::new);
+		MenuScreens.register(ContainerRegistries.GUN_CRAFTING_CONTAINER.get(), GunCraftingGui::new);
+		MenuScreens.register(ContainerRegistries.GUN_PARTS_CONTAINER.get(), GunPartsGui::new);
+		MenuScreens.register(ContainerRegistries.MAG_CONTAINER.get(), MagGui::new);
 		
 		EntityRenderers.register(EntityRegistries.BULLET.get(), ThrownItemRenderer::new);
 	}
@@ -92,6 +114,7 @@ public class ClientEventHandler {
 	
 	private static void registerSpecialModels(ModelEvent.RegisterAdditional e) {
 		e.register(new ModelResourceLocation(Paths.WINCHESTERBULLETLOADER, "inventory"));
+		e.register(new ModelResourceLocation(Paths.MP40HAMMER, "inventory"));
 	}
 	
 	private static void bakeModels(ModelEvent.BakingCompleted e) {
@@ -122,6 +145,7 @@ public class ClientEventHandler {
 	private static void registerGunModels(RegisterGunModelEvent e) {
 		LogUtils.getLogger().info("Registering models");
 		e.register(ItemRegistries.WINCHESTER.get(), new WinchesterGunModel(client));
+		e.register(ItemRegistries.MP40.get(), new Mp40GunModel(client));
 	}
 	
 	// Rendering
@@ -153,6 +177,7 @@ public class ClientEventHandler {
 						e.setCanceled(true);
 					}
 				}
+				client.renderHitmarker = false;
 				if (client.renderHitmarker || client.debugAim || 
 						client.getHitmarker().hitmarkerTime > 0) {
 					RenderHelper.drawHitmarker(e.getPoseStack(), RenderHelper.HITMARKER, 8);
@@ -182,8 +207,8 @@ public class ClientEventHandler {
 							NBTUtils.getAmmo(stack) + "/" + NBTUtils.getMaxAmmo(stack),
 							Minecraft.getInstance().getWindow().getGuiScaledWidth() / 7,
 							Minecraft.getInstance().getWindow().getGuiScaledHeight() / 1.5f, 0xFFFFFF);
-				} else if (stack.getItem() instanceof ItemMag) {
-					ItemMag mag = ((ItemMag) stack.getItem());
+				} else if (stack.getItem() instanceof MagItem) {
+					MagItem mag = ((MagItem) stack.getItem());
 					Minecraft.getInstance().font.draw(e.getPoseStack(), 
 							NBTUtils.getAmmo(stack) + "/" + mag.getMaxAmmo(),
 							Minecraft.getInstance().getWindow().getGuiScaledWidth() / 7,
@@ -283,6 +308,12 @@ public class ClientEventHandler {
 			if (player != null) {
 				ItemStack stack = player.getMainHandItem();
 				if (stack.getItem() instanceof GunItem) {
+					
+					if (stack.getOrCreateTag().getString(NBTUtils.ID) == "") {
+						OldGuns.channel.sendToServer(new InitGunMessage(UUID.randomUUID()));
+						System.out.println("Id set to: " + stack.getOrCreateTag().getString(NBTUtils.ID));
+					}
+					
 					client.tick();
 					client.selectGunModel();
 					if (client.getGunModel() != null) {
@@ -295,6 +326,18 @@ public class ClientEventHandler {
 							client.getAimHandler().tick(true);
 						} else {
 							client.getAimHandler().tick(false);
+						}
+						// Shoot handler
+						if (GLFW.glfwGetMouseButton(Minecraft.getInstance().getWindow().getWindow(),
+								GLFW.GLFW_MOUSE_BUTTON_LEFT) == GLFW.GLFW_PRESS) {
+							//client.shoot(player);
+							if (!player.isSprinting() && Minecraft.getInstance().screen == null &&
+								((GunItem)stack.getItem()).getFireMode() == FireMode.AUTO) {
+								if (
+										client.getGunModel().getAnimation() == null) {
+									client.shoot(player);
+								}
+							}
 						}
 					}
 				}
@@ -352,6 +395,8 @@ public class ClientEventHandler {
 								MinecraftForge.EVENT_BUS.start();
 								MinecraftForge.EVENT_BUS.post(new RegisterGunModelEvent());
 								MinecraftForge.EVENT_BUS.post(new RegisterEasingsEvent());
+							} else if(ATTACHMENTS.getKey().getValue() == e.getKey()) {
+								OldGuns.channel.sendToServer(new OpenGunGuiMessage());
 							}
 							if(true){//Config.CLIENT.doDebugStuff.get()) {
 								if (H.getKey().getValue() == e.getKey()) {
@@ -396,6 +441,8 @@ public class ClientEventHandler {
 				Player player = mc.player;
 				if (player != null) {
 					if (player.getMainHandItem().getItem() instanceof GunItem) {
+						if(((GunItem)player.getMainHandItem().getItem()).getFireMode() 
+								!= FireMode.SEMI) return;
 						if (e.getAction() == GLFW.GLFW_PRESS && !clicked) {
 							clicked = true;
 							if (e.getButton() == GLFW.GLFW_MOUSE_BUTTON_LEFT) {

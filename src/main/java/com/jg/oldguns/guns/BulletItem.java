@@ -7,7 +7,6 @@ public class BulletItem extends Item {
 	public static final String BIG = "BigBullet";
 	public static final String MEDIUM = "MediumBullet";
 	public static final String SMALL = "SmallBullet";
-	public static final String MUSKET = "MusketBullet";
 	public static final String SHOTGUN = "ShotgunBullet";
 
 	boolean requiresIngots;

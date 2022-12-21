@@ -1,0 +1,157 @@
+package com.jg.oldguns.client.models.gunmodels;
+
+import java.util.List;
+
+import com.jg.oldguns.client.animations.Animation;
+import com.jg.oldguns.client.animations.parts.GunModel;
+import com.jg.oldguns.client.animations.parts.GunModelPart;
+import com.jg.oldguns.client.handlers.ClientHandler;
+import com.jg.oldguns.client.models.modmodels.Mp40ModModel;
+import com.jg.oldguns.client.models.wrapper.WrapperModel;
+import com.jg.oldguns.guns.BulletItem;
+import com.jg.oldguns.guns.GunItem;
+import com.jg.oldguns.registries.ItemRegistries;
+import com.jg.oldguns.utils.ServerUtils;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.logging.LogUtils;
+
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+
+public class Mp40GunModel extends GunModel {
+
+	public static Animation look;
+	public static Animation kickback;
+	
+	public Mp40GunModel(ClientHandler client) {
+		super(new GunModelPart[] { 
+				new GunModelPart("rightarm", -0.11f, -0.18f, -0.31f, -0.6f, 0, 0.6f), 
+				new GunModelPart("leftarm", -0.11f, 0.36f, -0.61f, 0.005235f, -1.117001f, 0), 
+				new GunModelPart("gun", 0.667001f, -0.726f, -1.21f, 0.021459f, -0.034906f, 0),
+				new GunModelPart("hammer", 0.667001f, -0.726f, -1.21f, 0.021459f, -0.034906f, 0),
+				new GunModelPart("mag", 0.667001f, -0.726f, -1.21f, 0.021459f, -0.034906f, 0),
+				new GunModelPart("all"),
+				new GunModelPart("alllessleft"),
+				new GunModelPart("leftarmmag"),
+				new GunModelPart("aim", -0.67f, 0.392f, 0.691f, -0.013962f, 0.036651f, 0), 
+				new GunModelPart("sprint", 1.32f, -0.89f, -0.221f, 0.548036f, 1.326451f, -0.191986f),
+				new GunModelPart("recoil", 0, 0, 0.02f, 0, 0, 0) }, 
+				ItemRegistries.MP40.get(), client);
+		
+		shootAnim = new Animation("shootAnim", "oldguns:mp40")
+				.startKeyframe(6)
+				.translate(parts[3], 0.0f, -0.010000001f, 0.33000004f)
+				.startKeyframe(6)
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
+				.end();
+		look = new Animation("lookAnim", "oldguns:mp40")
+				.startKeyframe(12, "easeOutQuint")
+				.translate(parts[1], -1.1399993f, 0.0f, 0.0f)
+				.translate(parts[6], -0.8599995f, -0.68999964f, 0.0f)
+				.rotate(parts[6], 0.0f, -0.17453294f, 0.5934119f)
+				.startKeyframe(24)
+				.translate(parts[1], -1.1399993f, 0.0f, 0.0f)
+				.translate(parts[6], -0.8599995f, -0.68999964f, 0.0f)
+				.rotate(parts[6], 0.0f, -0.17453294f, 0.5934119f)
+				.startKeyframe(12, "easeInQuint")
+				.translate(parts[1], -0.5599998f, 0.0f, 0.0f)
+				.translate(parts[6], 0.23000002f, 0.14999998f, 0.0f)
+				.rotate(parts[6], 0.0f, -0.17453294f, -0.4886921f)
+				.startKeyframe(24)
+				.translate(parts[1], -0.5599998f, 0.0f, 0.0f)
+				.translate(parts[6], 0.23000002f, 0.14999998f, 0.0f)
+				.rotate(parts[6], 0.0f, -0.17453294f, -0.4886921f)
+				.startKeyframe(12, "easeInOutCirc")
+				.translate(parts[1], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[6], 0.0f, 0.0f, 0.0f)
+				.end();
+		kickback = new Animation("kickbackAnim", "oldguns:mp40")
+				.startKeyframe(12, "easeInBack")
+				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], 0.0f, 0.0f, 0.0f)
+				.translate(parts[2], 0.0f, 0.0f, 0.0f)
+				.translate(parts[0], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[5], 0.0f, -0.13962634f, 0.0f)
+				.rotate(parts[6], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[2], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[0], 0.0f, 0.0f, 0.0f)
+				.startKeyframe(8)
+				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], -2.0099986f, 0.11999998f, 0.9399994f)
+				.translate(parts[2], 0.0f, 0.0f, 0.0f)
+				.translate(parts[0], 0.33999994f, 0.16f, 0.0f)
+				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[6], 0.0f, 0.66322523f, 0.0f)
+				.rotate(parts[2], 0.0f, 1.2042779f, 0.0f)
+				.rotate(parts[0], 0.0f, 0.45378554f, 0.0f)
+				.startKeyframe(12)
+				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], -2.0099986f, 0.11999998f, 0.9399994f)
+				.translate(parts[2], 0.0f, 0.0f, 0.0f)
+				.translate(parts[0], 0.33999994f, 0.16f, 0.0f)
+				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[6], 0.0f, 0.66322523f, 0.0f)
+				.rotate(parts[2], 0.0f, 1.2042779f, 0.0f)
+				.rotate(parts[0], 0.0f, 0.45378554f, 0.0f)
+				.startKeyframe(12, "easeInCubic")
+				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], 0.0f, 0.0f, 0.0f)
+				.translate(parts[2], 0.0f, 0.0f, 0.0f)
+				.translate(parts[0], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[6], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[2], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[0], 0.0f, 0.0f, 0.0f)
+				.end();
+	}
+
+	@Override
+	public float getKnockback() {
+		return 0;
+	}
+
+	@Override
+	public void render(LocalPlayer player, ItemStack stack, MultiBufferSource buffer, PoseStack matrix, int light) {
+		renderAll(player, stack, buffer, matrix, light);
+	}
+
+	@Override
+	public void reload(Player player, ItemStack stack) {
+		/*GunItem gun = (GunItem)stack.getItem();
+		int index = ServerUtils
+				.getIndexForCorrectMag(player.getInventory(), 
+						gun.getGunId(),
+				BulletItem.SMALL);
+		LogUtils.getLogger().info("index: " + index);*/
+	}
+
+	@Override
+	public Animation getLookAnimation() {
+		return look;
+	}
+
+	@Override
+	public Animation getKickbackAnimation() {
+		return kickback;
+	}
+
+	@Override
+	public WrapperModel getModifiedModel(BakedModel origin) {
+		return new Mp40ModModel(origin);
+	}
+
+	@Override
+	public List<GunModelPart> getGunParts() {
+		return List.of(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], parts[6], parts[7]);
+	}
+
+	@Override
+	public GunModelPart getGunModelPart() {
+		return parts[2];
+	}
+
+}

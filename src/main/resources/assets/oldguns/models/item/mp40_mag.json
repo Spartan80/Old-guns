@@ -1,0 +1,113 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "oldguns:items/mp40",
+		"particle": "oldguns:items/mp40"
+	},
+	"elements": [
+		{
+			"from": [8.1, 11.35, 7.1],
+			"to": [8.2, 12.25, 7.3],
+			"rotation": {"angle": 0, "axis": "y", "origin": [16, 19, 18]},
+			"faces": {
+				"north": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"east": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"south": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"west": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"up": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"down": {"uv": [1, 5, 2, 7], "texture": "#0"}
+			}
+		},
+		{
+			"from": [8.8, 11.35, 7.1],
+			"to": [8.9, 12.25, 7.3],
+			"rotation": {"angle": 0, "axis": "y", "origin": [16.7, 19, 18]},
+			"faces": {
+				"north": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"east": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"south": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"west": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"up": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"down": {"uv": [1, 5, 2, 7], "texture": "#0"}
+			}
+		},
+		{
+			"from": [8.1, 11.35, 4.1],
+			"to": [8.9, 12.25, 7.1],
+			"rotation": {"angle": 0, "axis": "y", "origin": [16, 19, 15]},
+			"faces": {
+				"north": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"east": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"south": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"west": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"up": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"down": {"uv": [1, 5, 2, 7], "texture": "#0"}
+			}
+		},
+		{
+			"from": [8, 11.3, 4],
+			"to": [9, 12.3, 4.1],
+			"rotation": {"angle": 0, "axis": "y", "origin": [16, 19, 15]},
+			"faces": {
+				"north": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"east": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"south": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"west": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"up": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"down": {"uv": [1, 5, 2, 7], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [-89, 0, 0],
+			"translation": [-0.5, 3.75, 5]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [-89, 0, 0],
+			"translation": [-0.5, 3.75, 5]
+		},
+		"firstperson_righthand": {
+			"rotation": [-90, 0, 0],
+			"translation": [-3.25, 7.5, 9.75]
+		},
+		"firstperson_lefthand": {
+			"rotation": [-90, 0, 0],
+			"translation": [-3.25, 7.5, 9.75]
+		},
+		"ground": {
+			"rotation": [-90, 0, 0],
+			"translation": [-1, 1.75, 3.5]
+		},
+		"gui": {
+			"rotation": [-61.5, -3, -140],
+			"translation": [-5, 7, 0],
+			"scale": [2, 2, 2]
+		},
+		"head": {
+			"rotation": [-92.75, 0, 0],
+			"translation": [0, -29, 0],
+			"scale": [1.6, 1.6, 1.6]
+		},
+		"fixed": {
+			"rotation": [-90, 31, 88],
+			"translation": [9, 1, 1.5],
+			"scale": [2, 2, 2]
+		}
+	},
+	"groups": [
+		{
+			"name": "gun",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [
+				{
+					"name": "mag",
+					"origin": [8, 8, 8],
+					"color": 0,
+					"children": [0, 1, 2, 3]
+				}
+			]
+		}
+	]
+}

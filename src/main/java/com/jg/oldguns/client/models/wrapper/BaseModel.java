@@ -5,6 +5,7 @@ import java.util.Random;
 
 import com.jg.oldguns.client.handlers.ModelHandler;
 import com.jg.oldguns.guns.GunItem;
+import com.jg.oldguns.utils.Utils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -12,10 +13,12 @@ import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class BaseModel implements BakedModel {
 
@@ -68,7 +71,7 @@ public abstract class BaseModel implements BakedModel {
 	}
 
 	protected void addNonSpecialModel(List<BakedQuad> quads, Item item, BlockState p_200117_1_, RandomSource p_200117_3_) {
-		BakedModel model = ModelHandler.INSTANCE.getModel(item.getDescriptionId());
+		BakedModel model = Utils.getModel(item);//ModelHandler.INSTANCE.getModel(item.getDescriptionId());
 		if (model != null && item != Items.AIR) {
 			for (BakedQuad quad : model.getQuads(p_200117_1_, null, p_200117_3_)) {
 				quads.add(copyQuad(quad));
@@ -78,7 +81,8 @@ public abstract class BaseModel implements BakedModel {
 
 	protected void addNonSpecialModel(List<BakedQuad> quads, String itempath, BlockState p_200117_1_,
 			RandomSource p_200117_3_) {
-		BakedModel model = ModelHandler.INSTANCE.getModel(itempath);
+		BakedModel model = Utils.getModel(ForgeRegistries.ITEMS
+				.getValue(new ResourceLocation(itempath)));// ModelHandler.INSTANCE.getModel(itempath);
 		if (model != null) {
 			for (BakedQuad quad : model.getQuads(p_200117_1_, null, p_200117_3_)) {
 				quads.add(copyQuad(quad));

@@ -9,6 +9,9 @@ public class GunStuff {
 	protected Item body;
 	protected Item barrel;
 	protected Item mag;
+	protected boolean canModStock;
+	protected boolean canModBody;
+	protected boolean canModBarrel;
 	protected String[] hammers;
 	
 	public GunStuff() {
@@ -16,11 +19,15 @@ public class GunStuff {
 	}
 	
 	public GunStuff(RegistryObject<Item> stock, RegistryObject<Item> body
-			, RegistryObject<Item> barrel, RegistryObject<Item> mag, String[] hammers) {
+			, RegistryObject<Item> barrel, RegistryObject<Item> mag, String[] hammers, 
+			boolean modStock, boolean modBody, boolean modBarrel) {
 		this.stock = stock == null ? null : stock.get();
 		this.body = body == null ? null : body.get();
 		this.barrel = barrel == null ? null : barrel.get();
 		this.mag = mag == null ? null : mag.get();
+		this.canModStock = modStock;
+		this.canModBody = modBody;
+		this.canModBarrel = modBarrel;
 		this.hammers = hammers;
 	}
 	
@@ -50,6 +57,18 @@ public class GunStuff {
 
 	public String[] getHammers() {
 		return hammers;
+	}
+
+	public boolean canModifyStock() {
+		return canModStock;
+	}
+
+	public boolean canModifyBody() {
+		return canModBody;
+	}
+
+	public boolean canModifyBarrel() {
+		return canModBarrel;
 	}
 
 	public void setStock(Item stock) {

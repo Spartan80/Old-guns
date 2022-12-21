@@ -6,6 +6,7 @@ import java.util.List;
 import com.jg.oldguns.guns.GunItem;
 import com.jg.oldguns.utils.NBTUtils;
 import com.jg.oldguns.utils.Utils;
+import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -40,6 +41,7 @@ public class DynamicGunModel extends BaseModel {
 			quads.clear();
 
 			String barrel = NBTUtils.getBarrel(stack);
+			LogUtils.getLogger().info("Barrel: " + barrel);
 			if (barrel.equals("")) {
 				addNonSpecialModel(quads, gunitem.getStuff().getBarrel(), state, random);
 			} else {
@@ -60,7 +62,8 @@ public class DynamicGunModel extends BaseModel {
 			}
 
 			if (!NBTUtils.getMag(stack).equals("") && (firstTime ? true
-					: NBTUtils.getId(stack) == NBTUtils.getId(Minecraft.getInstance().player.getMainHandItem()))/* && !gunitem.isPistol() */) {
+					: NBTUtils.getId(stack).equals(NBTUtils
+							.getId(Minecraft.getInstance().player.getMainHandItem())))/* && !gunitem.isPistol() */) {
 				String magpath = NBTUtils.getMag(stack);
 				if (!magpath.equals("")) {
 					addNonSpecialModel(quads, magpath, state, random);

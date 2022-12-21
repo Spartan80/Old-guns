@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ibi",
+    "s s",
+	"s s"
+  ],
+  "key": {
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+	"b": {
+	  "item": "minecraft:iron_block"
+	},
+	"s": {
+	  "item": "minecraft:stick"
+	}
+  },
+  "result": {
+    "item": "oldguns:gun_parts_block"
+  }
+}

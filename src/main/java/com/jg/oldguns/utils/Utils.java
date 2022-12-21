@@ -4,14 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import com.jg.oldguns.OldGuns;
 import com.jg.oldguns.client.animations.Animation;
 import com.jg.oldguns.client.animations.Keyframe;
 import com.jg.oldguns.client.animations.parts.GunModel;
 import com.jg.oldguns.client.animations.parts.GunModelPart;
+import com.jg.oldguns.guns.GunPart;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -35,6 +38,23 @@ public class Utils {
 	
 	public static Player getPlayer() {
 		return Minecraft.getInstance().player;
+	}
+	
+	public static BakedModel getModel(Item item) {
+		return Minecraft.getInstance().getItemRenderer().getItemModelShaper().getItemModel(item);
+	}
+	
+	public static boolean canEquip(ItemStack carried, int index) {
+		boolean temp = false;
+		System.out.println("Part: " + getR(carried).toString());
+		if (carried.getItem() instanceof GunPart) {
+			System.out.println("Inside");
+			System.out.println("part gun slot: " + ((GunPart) carried.getItem()).getGunSlot() + " index: " + index);
+			if (((GunPart) carried.getItem()).getGunSlot() == index) {
+				temp = true;
+			}
+		}
+		return temp;
 	}
 	
 	public static void spawnParticlesOnPlayerView(Player player, int amount, float ox, float oy, float oz) {
@@ -157,6 +177,10 @@ public class Utils {
 			keyframes.add(kf.copy());
 		}
 		return frames;
+	}
+	
+	public static ResourceLocation loc(String path) {
+		return new ResourceLocation(OldGuns.MODID, path);
 	}
 	
 	public static ResourceLocation getR(Item item) {

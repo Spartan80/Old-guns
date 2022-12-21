@@ -13,7 +13,7 @@ public class RecoilHandler extends BasicHandler {
 		prev = prog;
 		prevD = progD;
 		MAX = 1f;
-		MAXD = 6f;
+		MAXD = 1f;
 		if(shoot) {
 			if (prog < MAX) {
 				prog += ClientHandler.partialTicks;

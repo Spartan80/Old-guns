@@ -7,21 +7,49 @@ public class GunPart extends Item {
 
 	protected int type;
 	protected GunPartProperties prop;
+	protected String gunId;
+	protected int wood;
+	protected int metal;
+	protected boolean steel;
 	
-	public GunPart(Properties p_41383_, GunPartProperties prop, int type) {
+	public GunPart(String gunId, Properties p_41383_, GunPartProperties prop, int type, int wood, int metal, boolean steel) {
 		super(p_41383_);
+		this.gunId = gunId;
 		this.prop = prop;
 		this.type = type;
+		this.wood = wood;
+		this.metal = metal;
+		this.steel = steel;
 	}
 
 	public GunPartProperties getGunPartProperties() {
 		return prop;
 	}
 	
-	public int getType() {
+	public int getGunSlot() {
 		return type;
 	}
 	
+	public void setGunId(String gunId) {
+		this.gunId = gunId;
+	}
+	
+	public String getGunId() {
+		return gunId;
+	}
+	
+	public int getWood() {
+		return wood;
+	}
+
+	public int getMetal() {
+		return metal;
+	}
+
+	public boolean isSteel() {
+		return steel;
+	}
+
 	public static class GunPartProperties {
 		
 		protected float damage;

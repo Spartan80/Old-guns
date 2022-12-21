@@ -1,5 +1,6 @@
 package com.jg.oldguns.guns.items;
 
+import com.jg.oldguns.guns.FireMode;
 import com.jg.oldguns.guns.GunItem;
 import com.jg.oldguns.guns.GunStuff;
 import com.jg.oldguns.registries.ItemRegistries;
@@ -7,14 +8,16 @@ import com.jg.oldguns.registries.SoundRegistries;
 import com.jg.oldguns.utils.Paths;
 
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.item.Item;
 
 public class Winchester extends GunItem {
-
+	
 	public Winchester(Properties prop) {
-		super(prop, new GunStuff(ItemRegistries.WINCHESTERBA, ItemRegistries.WINCHESTERBO, 
-				ItemRegistries.WINCHESTERST, null, new String[] { Paths.WINCHESTERBULLETLOADER }));
+		super("winchester", prop, new GunStuff(ItemRegistries.WINCHESTERST, ItemRegistries.WINCHESTERBO, 
+				ItemRegistries.WINCHESTERBA, null, new String[] { Paths.WINCHESTERBULLETLOADER },
+				true, true, true));
 	}
-
+	
 	@Override
 	public float getDamage() {
 		return 4;
@@ -50,6 +53,11 @@ public class Winchester extends GunItem {
 		return false;
 	}
 
+	@Override
+	public FireMode getFireMode() {
+		return FireMode.SEMI;
+	}
+	
 	@Override
 	public SoundEvent getShootSound() {
 		return SoundRegistries.WINCHESTERSHOOT.get();
