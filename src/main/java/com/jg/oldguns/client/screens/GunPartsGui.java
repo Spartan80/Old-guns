@@ -7,7 +7,6 @@ import java.util.function.Supplier;
 
 import com.jg.oldguns.OldGuns;
 import com.jg.oldguns.client.handlers.ItemsReg;
-import com.jg.oldguns.client.handlers.ModelHandler;
 import com.jg.oldguns.client.handlers.SoundHandler;
 import com.jg.oldguns.client.render.RenderHelper;
 import com.jg.oldguns.client.screens.widgets.Button;
@@ -32,7 +31,6 @@ import net.minecraft.core.HolderSet.Named;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;

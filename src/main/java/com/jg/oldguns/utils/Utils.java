@@ -9,6 +9,7 @@ import com.jg.oldguns.client.animations.Animation;
 import com.jg.oldguns.client.animations.Keyframe;
 import com.jg.oldguns.client.animations.parts.GunModel;
 import com.jg.oldguns.client.animations.parts.GunModelPart;
+import com.jg.oldguns.guns.GunItem;
 import com.jg.oldguns.guns.GunPart;
 import com.mojang.logging.LogUtils;
 
@@ -25,6 +26,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -42,6 +44,33 @@ public class Utils {
 	
 	public static BakedModel getModel(Item item) {
 		return Minecraft.getInstance().getItemRenderer().getItemModelShaper().getItemModel(item);
+	}
+	
+	public static GunPart getBarrel(ItemStack stack, GunItem gun) {
+		Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(NBTUtils.getBarrel(stack)));
+		if(item != Items.AIR) {
+			return (GunPart)item;
+		} else {
+			return (GunPart)gun.getBarrel();
+		}
+	}
+	
+	public static GunPart getBody(ItemStack stack, GunItem gun) {
+		Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(NBTUtils.getBody(stack)));
+		if(item != Items.AIR) {
+			return (GunPart)item;
+		} else {
+			return (GunPart)gun.getBody();
+		}
+	}
+	
+	public static GunPart getStock(ItemStack stack, GunItem gun) {
+		Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(NBTUtils.getStock(stack)));
+		if(item != Items.AIR) {
+			return (GunPart)item;
+		} else {
+			return (GunPart)gun.getStock();
+		}
 	}
 	
 	public static boolean canEquip(ItemStack carried, int index) {

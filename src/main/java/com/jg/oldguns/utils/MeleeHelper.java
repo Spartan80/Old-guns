@@ -1,7 +1,6 @@
 package com.jg.oldguns.utils;
 
 import com.jg.oldguns.OldGuns;
-import com.jg.oldguns.client.handlers.ClientEventHandler;
 import com.jg.oldguns.client.handlers.ClientsHandler;
 import com.jg.oldguns.network.BodyHitMessage;
 

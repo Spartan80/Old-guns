@@ -63,6 +63,14 @@ public class NBTUtils {
 		return get(stack).getBoolean(MODIFIED);
 	}
 	
+	public static void setHasMag(ItemStack stack, boolean hasMag) {
+		get(stack).putBoolean(HASMAG, hasMag);
+	}
+	
+	public static boolean hasMag(ItemStack stack) {
+		return get(stack).getBoolean(HASMAG);
+	}
+	
 	// String
 	
 	public static void setHammers(ItemStack stack, String[] hammers) {

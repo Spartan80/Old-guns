@@ -1,19 +1,17 @@
 package com.jg.oldguns.client.animations.parts;
 
 import java.util.List;
-import java.util.Map;
 
 import com.jg.oldguns.OldGuns;
 import com.jg.oldguns.client.animations.Animation;
 import com.jg.oldguns.client.animations.Animator;
 import com.jg.oldguns.client.animations.Transform;
-import com.jg.oldguns.client.animations.serializers.AnimationSerializer;
 import com.jg.oldguns.client.handlers.ClientHandler;
 import com.jg.oldguns.client.models.wrapper.WrapperModel;
 import com.jg.oldguns.client.render.RenderHelper;
 import com.jg.oldguns.client.screens.AnimationScreen;
+import com.jg.oldguns.guns.FireMode;
 import com.jg.oldguns.guns.GunItem;
-import com.jg.oldguns.guns.GunStuff;
 import com.jg.oldguns.guns.MagItem;
 import com.jg.oldguns.network.ShootMessage;
 import com.jg.oldguns.utils.MathUtils;
@@ -25,7 +23,6 @@ import com.mojang.math.Quaternion;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -96,6 +93,9 @@ public abstract class GunModel {
 	// Gun Methods
 
 	public void shoot(Player player, ItemStack stack) {
+		if(gun.getFireMode() == FireMode.SEMI) {
+			Utils.spawnParticlesOnPlayerView(player, 50, 0, 0, 0);
+		}
 		setAnimation(shootAnim);
 		OldGuns.channel.sendToServer(
 				new ShootMessage(player.getYRot(), player.getXRot(), 
@@ -169,10 +169,13 @@ public abstract class GunModel {
 		parts[1].getDTransform().setScale(1.3f, 2.5f, 1.3f);
 		translateAndRotateAndScale(parts[7].getCombined(), matrix);
 		renderArm(player, buffer, matrix, light, HumanoidArm.LEFT, parts[1].getCombined());
-		if(!NBTUtils.getMag(stack).equals("")) {
+		if(NBTUtils.hasMag(stack) && renderMag()) {
+			//LogUtils.getLogger().info("HasMag: " + NBTUtils.getMag(stack));
 			matrix.pushPose();
 			translateAndRotateAndScale(parts[6].getCombined(), matrix);
-			renderItem(player, stuff.mag, buffer, matrix, light, parts[4].getCombined());
+			renderItem(player, new ItemStack(ForgeRegistries.ITEMS
+					.getValue(new ResourceLocation(NBTUtils.getMag(stack)))), buffer, matrix, light, 
+					parts[4].getCombined());
 			matrix.popPose();
 		}
 		matrix.popPose();
@@ -181,11 +184,12 @@ public abstract class GunModel {
 		renderArm(player, buffer, matrix, light, HumanoidArm.RIGHT, parts[0].getCombined());
 		renderGunPart(player, stack, buffer, matrix, light);
 		matrix.pushPose();
-		translateAndRotateAndScale(parts[3].getCombined(), matrix);
+		//translateAndRotateAndScale(parts[3].getCombined(), matrix);
 		//LogUtils.getLogger().info(parts[3].getCombined().toString());
 		for (String hammerP : stuff.hammers) {
 			renderModel(player, stack, buffer, matrix, light, Minecraft.getInstance().getItemRenderer()
-					.getItemModelShaper().getModelManager().getModel(new ModelResourceLocation(hammerP, "inventory")));
+					.getItemModelShaper().getModelManager()
+					.getModel(new ModelResourceLocation(hammerP, "inventory")));
 		}
 		matrix.popPose();
 		matrix.popPose();
@@ -194,18 +198,30 @@ public abstract class GunModel {
 
 	protected void renderGunPart(LocalPlayer player, ItemStack stack, MultiBufferSource buffer, PoseStack matrix,
 			int light) {
-		matrix.pushPose();
+		//matrix.pushPose();
 		translateAndRotateAndScale(parts[2].getCombined(), matrix);
-		Minecraft.getInstance().gameRenderer.itemInHandRenderer.renderItem(player, 
+		/*Minecraft.getInstance().gameRenderer.itemInHandRenderer.renderItem(player, 
 				stack,
-				TransformType.FIRST_PERSON_RIGHT_HAND, false, matrix, buffer, light);
-		/*Minecraft.getInstance().gameRenderer.itemInHandRenderer.renderItem(player, stuff.getBarrel(),
+				TransformType.FIRST_PERSON_RIGHT_HAND, false, matrix, buffer, light);*/
+		/*renderModel(player, stack, buffer, matrix, light, Minecraft.getInstance()
+				.getItemRenderer()
+				.getItemModelShaper().getModelManager()
+				.getModel(Utils.getMR(stuff.getBarrel().getItem())));
+		renderModel(player, stack, buffer, matrix, light, Minecraft.getInstance()
+				.getItemRenderer()
+				.getItemModelShaper().getModelManager()
+				.getModel(Utils.getMR(stuff.getBody().getItem())));
+		renderModel(player, stack, buffer, matrix, light, Minecraft.getInstance()
+				.getItemRenderer()
+				.getItemModelShaper().getModelManager()
+				.getModel(Utils.getMR(stuff.getStock().getItem())));*/
+		Minecraft.getInstance().gameRenderer.itemInHandRenderer.renderItem(player, stuff.getBarrel(),
 				TransformType.FIRST_PERSON_RIGHT_HAND, false, matrix, buffer, light);
 		Minecraft.getInstance().gameRenderer.itemInHandRenderer.renderItem(player, stuff.getBody(),
 				TransformType.FIRST_PERSON_RIGHT_HAND, false, matrix, buffer, light);
 		Minecraft.getInstance().gameRenderer.itemInHandRenderer.renderItem(player, stuff.getStock(),
-				TransformType.FIRST_PERSON_RIGHT_HAND, false, matrix, buffer, light);*/
-		matrix.popPose();
+				TransformType.FIRST_PERSON_RIGHT_HAND, false, matrix, buffer, light);
+		//matrix.popPose();
 	}
 
 	protected void renderItem(LocalPlayer player, ItemStack stack, MultiBufferSource buffer, PoseStack matrix,
@@ -228,6 +244,10 @@ public abstract class GunModel {
 	protected void renderModel(LocalPlayer player, ItemStack stack, MultiBufferSource buffer, PoseStack matrix,
 			int light, BakedModel model) {
 		matrix.pushPose();
+		/*VertexConsumer builder = ItemRenderer.getFoilBuffer(buffer, Sheets.translucentItemSheet(), true,
+				stack.hasFoil());
+		Minecraft.getInstance().getItemRenderer()
+			.renderModelLists(model, stack, light, OverlayTexture.NO_OVERLAY, matrix, builder);*/
 		Minecraft.getInstance().getItemRenderer().render(stack, TransformType.FIRST_PERSON_RIGHT_HAND, false, matrix,
 				buffer, light, OverlayTexture.NO_OVERLAY, model);
 		matrix.popPose();
@@ -237,6 +257,10 @@ public abstract class GunModel {
 			int light, BakedModel model, Transform transform) {
 		matrix.pushPose();
 		translateAndRotateAndScale(transform, matrix);
+		/*VertexConsumer builder = ItemRenderer.getFoilBuffer(buffer, Sheets.translucentItemSheet(), true,
+				stack.hasFoil());
+		Minecraft.getInstance().getItemRenderer()
+			.renderModelLists(model, stack, light, OverlayTexture.NO_OVERLAY, matrix, builder);*/
 		Minecraft.getInstance().getItemRenderer().render(stack, TransformType.FIRST_PERSON_RIGHT_HAND, false, matrix,
 				buffer, light, OverlayTexture.NO_OVERLAY, model);
 		matrix.popPose();
@@ -259,21 +283,21 @@ public abstract class GunModel {
 
 	// Misc
 
-	public MagItem getMagItem() {
-		return (MagItem) Minecraft.getInstance().player.getInventory().getItem(ammoindex)
+	public MagItem getMagItem(int index) {
+		return (MagItem)Minecraft.getInstance().player.getInventory().getItem(index)
 				.getItem();
 	}
 
-	public ItemStack getMagStack() {
-		return Minecraft.getInstance().player.getInventory().getItem(ammoindex);
+	public ItemStack getMagStack(int index) {
+		return Minecraft.getInstance().player.getInventory().getItem(index);
 	}
 	
-	public String getMBPath() {
-		return getMagStack().getOrCreateTag().getString(NBTUtils.MAGBULLET);
+	public String getMBPath(int index) {
+		return NBTUtils.getMagBullet(getMagStack(index));
 	}
 
 	public String getMPath() {
-		return Utils.getR(NBTUtils.getMag(getMagStack()));
+		return NBTUtils.getMag(Utils.getStack());
 	}
 	
 	public void updateGunParts(Player player) {
@@ -315,11 +339,17 @@ public abstract class GunModel {
 		return parts;
 	}
 
+	public boolean renderMag() {
+		return true;
+	}
+	
 	public void setAnimation(Animation anim) {
-		this.animator.setAnimation(anim);
-		if (Minecraft.getInstance().screen instanceof AnimationScreen) {
-			AnimationScreen screen = (AnimationScreen) Minecraft.getInstance().screen;
-			screen.initKeyframes();
+		if(getAnimation() == null) {
+			this.animator.setAnimation(anim);
+			if (Minecraft.getInstance().screen instanceof AnimationScreen) {
+				AnimationScreen screen = (AnimationScreen) Minecraft.getInstance().screen;
+				screen.initKeyframes();
+			}
 		}
 	}
 
@@ -379,6 +409,8 @@ public abstract class GunModel {
 	public abstract Animation getLookAnimation();
 	
 	public abstract Animation getKickbackAnimation();
+	
+	public abstract Animation getGetOutMagAnimation();
 
 	public abstract WrapperModel getModifiedModel(BakedModel origin);
 

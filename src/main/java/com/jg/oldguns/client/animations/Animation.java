@@ -29,6 +29,10 @@ public class Animation {
 		this.startKeyframeIndex = -1;
 	}
 	
+	public static Animation empty(String name, String id) {
+		return new Animation(name, id).startKeyframe(4).end();
+	}
+	
 	public Animation startKeyframe(int dur) {
 		this.startKeyframeIndex++;
 		Keyframe kf = new Keyframe(dur);

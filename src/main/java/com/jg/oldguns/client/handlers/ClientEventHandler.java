@@ -1,14 +1,23 @@
 package com.jg.oldguns.client.handlers;
 
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 import org.lwjgl.glfw.GLFW;
 
 import com.jg.oldguns.OldGuns;
 import com.jg.oldguns.client.animations.parts.GunModel;
+import com.jg.oldguns.client.models.gunmodels.Aks74uGunModel;
+import com.jg.oldguns.client.models.gunmodels.Colt1911GunModel;
+import com.jg.oldguns.client.models.gunmodels.GalilGunModel;
+import com.jg.oldguns.client.models.gunmodels.IthacaModel37GunModel;
+import com.jg.oldguns.client.models.gunmodels.Kar98kGunModel;
 import com.jg.oldguns.client.models.gunmodels.Mp40GunModel;
 import com.jg.oldguns.client.models.gunmodels.WinchesterGunModel;
+import com.jg.oldguns.client.models.wrapper.ExtraItemWrapperModel;
 import com.jg.oldguns.client.render.RenderHelper;
 import com.jg.oldguns.client.screens.AnimationScreen;
 import com.jg.oldguns.client.screens.GunAmmoGui;
@@ -46,9 +55,11 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.ModelEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
@@ -68,8 +79,8 @@ public class ClientEventHandler {
 	public static final KeyMapping RELOAD = new KeyMapping("key.oldguns.reload", GLFW.GLFW_KEY_R, OldGuns.MODID);
 	public static final KeyMapping LOOKANIM = new KeyMapping("key.oldguns.look", GLFW.GLFW_KEY_LEFT_ALT, OldGuns.MODID);
 	public static final KeyMapping KICKBACK = new KeyMapping("key.oldguns.kickback", GLFW.GLFW_KEY_B, OldGuns.MODID);
-	public static final KeyMapping ATTACHMENTS = new KeyMapping("key.oldguns.attachments", GLFW.GLFW_KEY_V,
-			OldGuns.MODID);
+	public static final KeyMapping ATTACHMENTS = new KeyMapping("key.oldguns.attachments", GLFW.GLFW_KEY_V, OldGuns.MODID);
+	public static final KeyMapping GETOUTMAG = new KeyMapping("key.oldguns.getoutmag", GLFW.GLFW_KEY_U, OldGuns.MODID);
 	
 	public static final KeyMapping LEFT = new KeyMapping("key.oldguns.left", GLFW.GLFW_KEY_LEFT, OldGuns.MODID);
 	public static final KeyMapping UP = new KeyMapping("key.oldguns.up", GLFW.GLFW_KEY_UP, OldGuns.MODID);
@@ -98,6 +109,7 @@ public class ClientEventHandler {
 	public static void registerModEventListeners(IEventBus bus) {
 		bus.addListener(ClientEventHandler::registerSpecialModels);
 		bus.addListener(ClientEventHandler::bakeModels);
+		bus.addListener(ClientEventHandler::registerKeyMappings);
 	}
 	
 	public static void registerForgeEventListeners(IEventBus bus) {
@@ -112,9 +124,27 @@ public class ClientEventHandler {
 		bus.addListener(ClientEventHandler::handleRawMouse);
 	}
 	
+	// Keys
+	
+	private static void registerKeyMappings(RegisterKeyMappingsEvent e) {
+		e.register(RELOAD);
+		e.register(KICKBACK);
+		e.register(LOOKANIM);
+		e.register(ATTACHMENTS);
+		e.register(GETOUTMAG);
+	}
+	
+	// Models
+	
 	private static void registerSpecialModels(ModelEvent.RegisterAdditional e) {
 		e.register(new ModelResourceLocation(Paths.WINCHESTERBULLETLOADER, "inventory"));
 		e.register(new ModelResourceLocation(Paths.MP40HAMMER, "inventory"));
+		e.register(new ModelResourceLocation(Paths.AKS74UHAMMER, "inventory"));
+		e.register(new ModelResourceLocation(Paths.COLT1911HAMMER, "inventory"));
+		e.register(new ModelResourceLocation(Paths.COLT1911SLIDER, "inventory"));
+		e.register(new ModelResourceLocation(Paths.GALILHAMMER, "inventory"));
+		e.register(new ModelResourceLocation(Paths.ITHACAMODEL37HAMMER, "inventory"));
+		e.register(new ModelResourceLocation(Paths.KAR98KHAMMER, "inventory"));
 	}
 	
 	private static void bakeModels(ModelEvent.BakingCompleted e) {
@@ -138,6 +168,17 @@ public class ClientEventHandler {
 					gunModel.getModel());
 			LogUtils.getLogger().info("Registering " + item + " modelRes: " + Utils.getMR(gunModel.gun).toString());
 		}
+		for(Entry<String, ArrayList<Supplier<? extends Item>>> entry 
+				: ItemsReg.INSTANCE.getGunParts().entrySet()) {
+			for(Supplier<? extends Item> sup : entry.getValue()) {
+				ModelResourceLocation modelRes = Utils.getMR(sup.get());
+				models.put(modelRes, new ExtraItemWrapperModel(models.get(modelRes)));
+			}
+		}
+		for(Supplier<? extends Item> sup : ItemsReg.INSTANCE.getMags()) {
+			ModelResourceLocation modelRes = Utils.getMR(sup.get());
+			models.put(modelRes, new ExtraItemWrapperModel(models.get(modelRes)));
+		}
 	}
 	
 	// Custom events
@@ -146,6 +187,11 @@ public class ClientEventHandler {
 		LogUtils.getLogger().info("Registering models");
 		e.register(ItemRegistries.WINCHESTER.get(), new WinchesterGunModel(client));
 		e.register(ItemRegistries.MP40.get(), new Mp40GunModel(client));
+		e.register(ItemRegistries.AKS74U.get(), new Aks74uGunModel(client));
+		e.register(ItemRegistries.COLT1911.get(), new Colt1911GunModel(client));
+		e.register(ItemRegistries.GALIL.get(), new GalilGunModel(client));
+		e.register(ItemRegistries.ITHACAMODEL37.get(), new IthacaModel37GunModel(client));
+		e.register(ItemRegistries.KAR98K.get(), new Kar98kGunModel(client));
 	}
 	
 	// Rendering
@@ -177,7 +223,7 @@ public class ClientEventHandler {
 						e.setCanceled(true);
 					}
 				}
-				client.renderHitmarker = false;
+				client.renderHitmarker = true;
 				if (client.renderHitmarker || client.debugAim || 
 						client.getHitmarker().hitmarkerTime > 0) {
 					RenderHelper.drawHitmarker(e.getPoseStack(), RenderHelper.HITMARKER, 8);
@@ -202,14 +248,13 @@ public class ClientEventHandler {
 			ItemStack stack = player.getMainHandItem();
 			if (e.getOverlay() == VanillaGuiOverlay.HOTBAR.type()) {
 				if (stack.getItem() instanceof GunItem) {
-					GunItem gun = ((GunItem) stack.getItem());
-					Minecraft.getInstance().font.draw(e.getPoseStack(),
+					mc.font.draw(e.getPoseStack(),
 							NBTUtils.getAmmo(stack) + "/" + NBTUtils.getMaxAmmo(stack),
 							Minecraft.getInstance().getWindow().getGuiScaledWidth() / 7,
 							Minecraft.getInstance().getWindow().getGuiScaledHeight() / 1.5f, 0xFFFFFF);
 				} else if (stack.getItem() instanceof MagItem) {
 					MagItem mag = ((MagItem) stack.getItem());
-					Minecraft.getInstance().font.draw(e.getPoseStack(), 
+					mc.font.draw(e.getPoseStack(), 
 							NBTUtils.getAmmo(stack) + "/" + mag.getMaxAmmo(),
 							Minecraft.getInstance().getWindow().getGuiScaledWidth() / 7,
 							Minecraft.getInstance().getWindow().getGuiScaledHeight() / 1.5f, 0xFFFFFF);
@@ -333,8 +378,7 @@ public class ClientEventHandler {
 							//client.shoot(player);
 							if (!player.isSprinting() && Minecraft.getInstance().screen == null &&
 								((GunItem)stack.getItem()).getFireMode() == FireMode.AUTO) {
-								if (
-										client.getGunModel().getAnimation() == null) {
+								if (client.getGunModel().getAnimation() == null) {
 									client.shoot(player);
 								}
 							}
@@ -397,6 +441,30 @@ public class ClientEventHandler {
 								MinecraftForge.EVENT_BUS.post(new RegisterEasingsEvent());
 							} else if(ATTACHMENTS.getKey().getValue() == e.getKey()) {
 								OldGuns.channel.sendToServer(new OpenGunGuiMessage());
+							} else if(e.getKey() == 75) {
+								if(!NBTUtils.hasMag(stack)) {
+									int index = ServerUtils
+											.getIndexForCorrectMag(player.getInventory(), 
+													client.getGunModel().gun.getGunId(),
+													BulletItem.MEDIUM);
+									LogUtils.getLogger().info("index: " + index);
+									if(index != -1) {
+										ItemStack mag = mc.player
+												.getInventory().getItem(index);
+										//int magBullets = NBTUtils.getAmmo(mag);
+										ReloadHandler.setMag(client.getGunModel(), NBTUtils.getMaxAmmo(mag), 
+											true, NBTUtils.getMagBullet(mag), (MagItem)mag.getItem());
+									}
+								} else {
+									ReloadHandler.setMag(client.getGunModel(), 0, 
+											false, "", (MagItem)null);
+									LogUtils.getLogger().info("Setting mag to false");
+								}
+							} else if(e.getKey() == GETOUTMAG.getKey().getValue()){
+								if(client.getGunModel().getGetOutMagAnimation() != null) {
+									client.getGunModel().setAnimation(client.getGunModel()
+											.getGetOutMagAnimation());
+								}
 							}
 							if(true){//Config.CLIENT.doDebugStuff.get()) {
 								if (H.getKey().getValue() == e.getKey()) {

@@ -1,7 +1,5 @@
 package com.jg.oldguns.client.handlers;
 
-import com.mojang.logging.LogUtils;
-
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.DistExecutor;
 

@@ -12,17 +12,25 @@ public enum ItemsReg {
 
 	private ArrayList<Supplier<? extends Item>> guns;
 	private ArrayList<Supplier<? extends Item>> extraItems;
+	private ArrayList<Supplier<? extends Item>> mags;
 	private Map<String, ArrayList<Supplier<? extends Item>>> gunparts;
 
 	private ItemsReg() {
 		guns = new ArrayList<Supplier<? extends Item>>();
 		extraItems = new ArrayList<Supplier<? extends Item>>();
+		mags = new ArrayList<Supplier<? extends Item>>();
 		gunparts = new HashMap<String, ArrayList<Supplier<? extends Item>>>();
 	}
 
 	public void registerGun(Supplier<? extends Item> sup) {
 		if (!guns.contains(sup)) {
 			guns.add(sup);
+		}
+	}
+	
+	public void registerMag(Supplier<? extends Item> sup) {
+		if (!mags.contains(sup)) {
+			mags.add(sup);
 		}
 	}
 
@@ -46,6 +54,14 @@ public enum ItemsReg {
 	public Supplier<? extends Item> getExtraItemSup(int index) {
 		return extraItems.get(index);
 	}
+	
+	public Supplier<? extends Item> getGunPartSup(String name, int index) {
+		return gunparts.get(name).get(index);
+	}
+	
+	public Supplier<? extends Item> getMagSup(int index) {
+		return mags.get(index);
+	}
 
 	public Item getGun(int index) {
 		return guns.get(index).get();
@@ -54,13 +70,13 @@ public enum ItemsReg {
 	public Item getExtraItem(int index) {
 		return extraItems.get(index).get();
 	}
-
-	public Supplier<? extends Item> getGunPartSup(String name, int index) {
-		return gunparts.get(name).get(index);
-	}
-
-	public Item getItem(String name, int index) {
+	
+	public Item getGunPart(String name, int index) {
 		return gunparts.get(name).get(index).get();
+	}
+	
+	public Item getMagItem(int index) {
+		return extraItems.get(index).get();
 	}
 
 	public ArrayList<Supplier<? extends Item>> getGuns() {
@@ -73,5 +89,9 @@ public enum ItemsReg {
 
 	public ArrayList<Supplier<? extends Item>> getExtraItems() {
 		return extraItems;
+	}
+	
+	public ArrayList<Supplier<? extends Item>> getMags() {
+		return mags;
 	}
 }

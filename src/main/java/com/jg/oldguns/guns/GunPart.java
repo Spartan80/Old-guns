@@ -59,6 +59,7 @@ public class GunPart extends Item {
 		protected float weight;
 		protected int bulletsPerShoot;
 		protected int range;
+		protected String validSize;
 		protected SoundEvent sound;
 		
 		public GunPartProperties() {
@@ -100,6 +101,11 @@ public class GunPart extends Item {
 			return this;
 		}
 		
+		public GunPartProperties validSize(String size) {
+			this.validSize = size;
+			return this;
+		}
+		
 		public GunPartProperties shootSound(SoundEvent sound) {
 			this.sound = sound;
 			return this;
@@ -127,6 +133,10 @@ public class GunPart extends Item {
 
 		public int getRange() {
 			return range;
+		}
+		
+		public String getValidSize() {
+			return validSize;
 		}
 
 		public SoundEvent getSound() {

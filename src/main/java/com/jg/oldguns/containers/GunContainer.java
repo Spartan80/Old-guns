@@ -11,7 +11,6 @@ import com.jg.oldguns.utils.Utils;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;

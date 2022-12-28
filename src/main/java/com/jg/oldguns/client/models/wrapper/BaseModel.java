@@ -1,9 +1,7 @@
 package com.jg.oldguns.client.models.wrapper;
 
 import java.util.List;
-import java.util.Random;
 
-import com.jg.oldguns.client.handlers.ModelHandler;
 import com.jg.oldguns.guns.GunItem;
 import com.jg.oldguns.utils.Utils;
 
@@ -55,14 +53,15 @@ public abstract class BaseModel implements BakedModel {
 
 		return origin.getParticleIcon();
 	}
-
+	
 	@Override
 	public ItemTransforms getTransforms() {
 		return origin.getTransforms();
 	}
 
 	protected void addSpecialModel(List<BakedQuad> quads, String name, BlockState p_200117_1_, RandomSource p_200117_3_) {
-		BakedModel model = ModelHandler.INSTANCE.getModel(name);
+		BakedModel model = Minecraft.getInstance().getItemRenderer().getItemModelShaper()
+				.getModelManager().getModel(new ModelResourceLocation(name, "inventory"));
 		if (model != null) {
 			for (BakedQuad quad : model.getQuads(p_200117_1_, null, p_200117_3_)) {
 				quads.add(copyQuad(quad));

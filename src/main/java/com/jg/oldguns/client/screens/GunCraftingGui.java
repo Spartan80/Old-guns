@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.jg.oldguns.OldGuns;
 import com.jg.oldguns.client.handlers.ItemsReg;
-import com.jg.oldguns.client.handlers.ModelHandler;
 import com.jg.oldguns.client.handlers.ReloadHandler;
 import com.jg.oldguns.client.handlers.SoundHandler;
 import com.jg.oldguns.client.render.RenderHelper;

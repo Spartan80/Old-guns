@@ -1,0 +1,71 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"1": "oldguns:items/1911"
+	},
+	"elements": [
+		{
+			"from": [8.07, 6.766, 11.07],
+			"to": [8.91, 9.966, 11.92],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 1.6, 8]},
+			"faces": {
+				"north": {"uv": [3, 11, 3.9, 14.7], "texture": "#1"},
+				"east": {"uv": [4, 11, 4.8, 14.7], "texture": "#1"},
+				"south": {"uv": [14, 11, 14.9, 14.7], "texture": "#1"},
+				"west": {"uv": [11, 11, 11.8, 14.7], "texture": "#1"},
+				"up": {"uv": [6, 13, 6.9, 13.8], "texture": "#1"},
+				"down": {"uv": [6, 11, 6.9, 11.8], "texture": "#1"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [-0.25, -0.5, -3.25]
+		},
+		"thirdperson_lefthand": {
+			"translation": [-0.25, -0.5, -3.25]
+		},
+		"firstperson_righthand": {
+			"translation": [3.75, -2.25, -12],
+			"scale": [2, 2, 2]
+		},
+		"firstperson_lefthand": {
+			"translation": [3.75, -2.25, -12],
+			"scale": [2, 2, 2]
+		},
+		"ground": {
+			"rotation": [-89.25, 0, 6.75],
+			"translation": [-1.25, -4.75, 1.75]
+		},
+		"gui": {
+			"rotation": [-61, -3, -141],
+			"translation": [1, -5.75, 0.5],
+			"scale": [2, 2, 2]
+		},
+		"head": {
+			"rotation": [-87.25, 0, 0],
+			"translation": [3.75, -7.25, -24.75],
+			"scale": [2, 2, 2]
+		},
+		"fixed": {
+			"rotation": [-90, 31, 88],
+			"translation": [-3.75, -5.75, 1.75],
+			"scale": [2, 2, 2]
+		}
+	},
+	"groups": [
+		{
+			"name": "gun",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [
+				{
+					"name": "colt_barrel",
+					"origin": [8, 8, 8],
+					"color": 0,
+					"children": [0]
+				}
+			]
+		}
+	]
+}

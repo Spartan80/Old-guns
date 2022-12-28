@@ -23,13 +23,11 @@ import com.jg.oldguns.utils.MathUtils;
 import com.jg.oldguns.utils.Utils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.logging.LogUtils;
-import com.mojang.math.Matrix4f;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -483,10 +481,13 @@ public class AnimationScreen extends Screen {
 			}
 			if (rotKeys.length > 0) {
 				for (Key key : rotKeys) {
-					model.getAnimation().getKeyframes().get(keyframeLine.getSelected())
-					.rotations.remove(getPart(key.getKey()));
-					rotList.removeKey(key);
-					rot = true;
+					GunModelPart part = getPart(key.getKey());
+					if(part != null) {
+						model.getAnimation().getKeyframes().get(keyframeLine.getSelected())
+						.rotations.remove(part);
+						rotList.removeKey(key);
+						rot = true;
+					}
 				}
 			}
 			if (!pos && !rot) {
@@ -723,8 +724,7 @@ public class AnimationScreen extends Screen {
 				16777215, true);
 		if(model.getAnimation() != null) {
 			this.font.drawShadow(matrix, "Animation Name: " + model.getAnimation().getName(),
-					(float) 226
-							+ (-AnimationScreen.this.font.width("Animation Name: " + model.getAnimation().getName()) / 2),
+					(float) 180,
 					(float) (192), 16777215, true);
 		}
 		this.font.drawShadow(matrix, "Update Parts: " + model.getAnimator().shouldUpdateParts(),

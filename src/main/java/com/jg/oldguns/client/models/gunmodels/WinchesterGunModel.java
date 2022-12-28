@@ -105,6 +105,54 @@ public class WinchesterGunModel extends GunModel {
 				.end();
 		
 		kickback = new Animation("kickbackAnim", "oldguns:winchester")
+				.startKeyframe(12)
+				.translate(parts[1], -0.5999997f, 0.0f, 0.7399996f)
+				.translate(parts[2], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.translate(parts[0], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[2], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[6], -0.31415927f, 0.0f, 0.0f)
+				.rotate(parts[0], 0.0f, 0.0f, 0.0f)
+				.startKeyframe(12, "easeInQuint")
+				.translate(parts[1], -0.5999997f, 0.0f, 1.0699993f)
+				.translate(parts[2], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.translate(parts[0], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[2], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[6], -0.31415927f, 0.0f, 0.0f)
+				.rotate(parts[0], 0.0f, 0.0f, 0.0f)
+				.startKeyframe(4, "easeOutQuint")
+				.translate(parts[1], -0.44999987f, 0.0f, -0.16999999f)
+				.translate(parts[2], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.translate(parts[0], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[2], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[6], -0.34906584f, 0.0f, 0.0f)
+				.rotate(parts[0], 0.0f, 0.0f, 0.0f)
+				.startKeyframe(12)
+				.translate(parts[1], -0.44999987f, 0.0f, -0.16999999f)
+				.translate(parts[2], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.translate(parts[0], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[2], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[6], -0.34906584f, 0.0f, 0.0f)
+				.rotate(parts[0], 0.0f, 0.0f, 0.0f)
+				.startKeyframe(12, "easeInCubic")
+				.translate(parts[1], 0.0f, 0.0f, 0.0f)
+				.translate(parts[2], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.translate(parts[0], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[2], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[6], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[0], 0.0f, 0.0f, 0.0f)
+				.end();
+		
+		/*kickback = new Animation("kickbackAnim", "oldguns:winchester")
 				.startKeyframe(12, "easeInBack")
 				.translate(parts[6], 0.0f, 0.0f, 0.0f)
 				.translate(parts[1], 0.0f, 0.0f, 0.0f)
@@ -141,7 +189,7 @@ public class WinchesterGunModel extends GunModel {
 				.rotate(parts[6], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[2], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[0], 0.0f, 0.0f, 0.0f)
-				.end();
+				.end();*/
 		
 		shootAnim = new Animation("shootAnim", "oldguns:winchester")
 				.startKeyframe(8)
@@ -215,6 +263,11 @@ public class WinchesterGunModel extends GunModel {
 	@Override
 	public Animation getKickbackAnimation() {
 		return kickback;
+	}
+
+	@Override
+	public Animation getGetOutMagAnimation() {
+		return null;
 	}
 
 	@Override

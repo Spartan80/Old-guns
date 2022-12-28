@@ -1,6 +1,5 @@
 package com.jg.oldguns.client.screens.widgets;
 
-import com.jg.oldguns.client.handlers.ModelHandler;
 import com.jg.oldguns.client.render.RenderHelper;
 import com.jg.oldguns.utils.Utils;
 import com.mojang.blaze3d.vertex.PoseStack;

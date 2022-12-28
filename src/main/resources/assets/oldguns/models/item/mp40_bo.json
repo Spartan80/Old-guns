@@ -864,9 +864,9 @@
 			"scale": [1.5, 1.5, 1.5]
 		},
 		"head": {
-			"rotation": [-92.75, 0, 0],
-			"translation": [0, -29, 0],
-			"scale": [1.6, 1.6, 1.6]
+			"rotation": [-90, 0, 0],
+			"translation": [0, 2, -3],
+			"scale": [1.5, 1.5, 1.5]
 		},
 		"fixed": {
 			"rotation": [-90, 31, 88],

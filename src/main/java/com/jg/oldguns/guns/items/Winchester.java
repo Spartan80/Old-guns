@@ -8,7 +8,6 @@ import com.jg.oldguns.registries.SoundRegistries;
 import com.jg.oldguns.utils.Paths;
 
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.item.Item;
 
 public class Winchester extends GunItem {
 	

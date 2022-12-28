@@ -1,0 +1,56 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"particle": "oldguns:items/winchester"
+	},
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [-84, 0, 0],
+			"translation": [-0.5, -2.75, 4.25],
+			"scale": [0.8, 0.8, 0.8]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [-84, 0, 0],
+			"translation": [-0.5, -2.75, 4.25],
+			"scale": [0.8, 0.8, 0.8]
+		},
+		"firstperson_righthand": {
+			"rotation": [-89.5, 0, 0],
+			"translation": [8, -10, 0.25],
+			"scale": [2.3, 2.3, 2.3]
+		},
+		"firstperson_lefthand": {
+			"rotation": [-89.5, 0, 0],
+			"translation": [8, -10, 0.25],
+			"scale": [2.3, 2.3, 2.3]
+		},
+		"ground": {
+			"rotation": [-87.25, 0, 0],
+			"translation": [1, 0, 6.75],
+			"scale": [0.8, 0.8, 0.8]
+		},
+		"gui": {
+			"rotation": [-61.5, -3, -140],
+			"translation": [-3.5, -0.5, 0],
+			"scale": [0.8, 0.8, 0.8]
+		},
+		"head": {
+			"rotation": [-89.5, 0, 0],
+			"translation": [8, -10, 0.25],
+			"scale": [2.3, 2.3, 2.3]
+		},
+		"fixed": {
+			"rotation": [-90, 31, 88],
+			"translation": [4.25, -4.5, -0.5],
+			"scale": [0.8, 0.8, 0.8]
+		}
+	},
+	"groups": [
+		{
+			"name": "gun",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": []
+		}
+	]
+}

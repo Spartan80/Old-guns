@@ -1,0 +1,71 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"1": "oldguns:items/aks74u"
+	},
+	"elements": [
+		{
+			"from": [8.72, 7.38, 9.1],
+			"to": [8.92, 7.48, 9.2],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7.94, 1.9, 9.55]},
+			"faces": {
+				"north": {"uv": [0, 0, 0.2, 0.1], "rotation": 180, "texture": "#1"},
+				"east": {"uv": [0, 0, 0.1, 0.1], "rotation": 90, "texture": "#1"},
+				"south": {"uv": [0, 0, 0.2, 0.1], "texture": "#1"},
+				"west": {"uv": [0, 0, 0.1, 0.1], "rotation": 270, "texture": "#1"},
+				"up": {"uv": [0, 0, 0.2, 0.1], "texture": "#1"},
+				"down": {"uv": [0, 0, 0.2, 0.1], "rotation": 180, "texture": "#1"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [-85, 0, 0],
+			"translation": [0, 0, -2.75],
+			"scale": [1.5, 1.5, 1.5]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [-85, 0, 0],
+			"translation": [0, 0, -2.75],
+			"scale": [1.5, 1.5, 1.5]
+		},
+		"firstperson_righthand": {
+			"rotation": [-88.5, 0, 0],
+			"translation": [-4.5, 4.5, 1],
+			"scale": [2, 2, 2]
+		},
+		"firstperson_lefthand": {
+			"rotation": [-88.5, 0, 0],
+			"translation": [-4.5, 4.5, 1]
+		},
+		"ground": {
+			"rotation": [-90, 0, 90],
+			"translation": [-2.25, 0, 0.75]
+		},
+		"gui": {
+			"rotation": [-62, 0, -140],
+			"translation": [4.25, -1.25, 0],
+			"scale": [2, 2, 2]
+		},
+		"fixed": {
+			"rotation": [-90, 45, 90],
+			"translation": [-3.25, 3.5, 0.75],
+			"scale": [2, 2, 2]
+		}
+	},
+	"groups": [
+		{
+			"name": "gun",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [
+				{
+					"name": "hammer",
+					"origin": [8, 8, 8],
+					"color": 0,
+					"children": [0]
+				}
+			]
+		}
+	]
+}

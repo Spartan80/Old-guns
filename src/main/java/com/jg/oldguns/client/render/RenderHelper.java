@@ -32,64 +32,64 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 
 public class RenderHelper {
-	
+
 	public static final ResourceLocation HITMARKER = new ResourceLocation(OldGuns.MODID,
 			"textures/effects/hitmarker.png");
 
 	public static final ResourceLocation MUZZLE = new ResourceLocation(OldGuns.MODID,
 			"textures/effects/muzzle_flash.png");
-	
+
 	// Render images
 
-		public static void renderMuzzleFlash(PoseStack stack, BufferSource impl, float partialTicks, float xo, float yo,
-				float zo) {
-			stack.pushPose();
-			stack.translate(xo, yo, zo);
+	public static void renderMuzzleFlash(PoseStack stack, BufferSource impl, float partialTicks, float xo, float yo,
+			float zo) {
+		stack.pushPose();
+		stack.translate(xo, yo, zo);
 
-			stack.scale(0.03F, 0.03F, 0.0F);
+		stack.scale(0.03F, 0.03F, 0.0F);
 
-			// float scale = 0.5F + 0.5F * (1.0F - partialTicks);
-			// stack.scale(scale, scale, 1.0F);
-			float r = (float) (360f * Math.random());
-			// System.out.println(r);
-			stack.mulPose(Vector3f.ZP.rotationDegrees(r));
-			stack.translate(-8 / 2, -8 / 2, 0);
+		// float scale = 0.5F + 0.5F * (1.0F - partialTicks);
+		// stack.scale(scale, scale, 1.0F);
+		float r = (float) (360f * Math.random());
+		// System.out.println(r);
+		stack.mulPose(Vector3f.ZP.rotationDegrees(r));
+		stack.translate(-8 / 2, -8 / 2, 0);
 
-			float minU = 0.0f;
-			float maxU = 0.5f;
-			Matrix4f matrix = stack.last().pose();
-			VertexConsumer builder = impl.getBuffer(RenderTypes.MUZZLE_FLASH);
-			builder.vertex(matrix, 0, 0, 0).color(1.0F, 1.0F, 1.0F, 1.0F).uv(maxU, 1.0F).uv2(15728880).endVertex();
-			builder.vertex(matrix, 8, 0, 0).color(1.0F, 1.0F, 1.0F, 1.0F).uv(minU, 1.0F).uv2(15728880).endVertex();
-			builder.vertex(matrix, 8, 8, 0).color(1.0F, 1.0F, 1.0F, 1.0F).uv(minU, 0).uv2(15728880).endVertex();
-			builder.vertex(matrix, 0, 8, 0).color(1.0F, 1.0F, 1.0F, 1.0F).uv(maxU, 0).uv2(15728880).endVertex();
+		float minU = 0.0f;
+		float maxU = 0.5f;
+		Matrix4f matrix = stack.last().pose();
+		VertexConsumer builder = impl.getBuffer(RenderTypes.MUZZLE_FLASH);
+		builder.vertex(matrix, 0, 0, 0).color(1.0F, 1.0F, 1.0F, 1.0F).uv(maxU, 1.0F).uv2(15728880).endVertex();
+		builder.vertex(matrix, 8, 0, 0).color(1.0F, 1.0F, 1.0F, 1.0F).uv(minU, 1.0F).uv2(15728880).endVertex();
+		builder.vertex(matrix, 8, 8, 0).color(1.0F, 1.0F, 1.0F, 1.0F).uv(minU, 0).uv2(15728880).endVertex();
+		builder.vertex(matrix, 0, 8, 0).color(1.0F, 1.0F, 1.0F, 1.0F).uv(maxU, 0).uv2(15728880).endVertex();
 
-			stack.popPose();
-		}
+		stack.popPose();
+	}
 
-		public static void drawHitmarker(PoseStack stack, ResourceLocation image, int size) {
+	public static void drawHitmarker(PoseStack stack, ResourceLocation image, int size) {
 
-			RenderSystem.enableBlend();
+		RenderSystem.enableBlend();
 
-			BufferBuilder buffer = Tesselator.getInstance().getBuilder();
-			int window_width = Minecraft.getInstance().getWindow().getGuiScaledWidth();
-			int window_height = Minecraft.getInstance().getWindow().getGuiScaledHeight();
+		BufferBuilder buffer = Tesselator.getInstance().getBuilder();
+		int window_width = Minecraft.getInstance().getWindow().getGuiScaledWidth();
+		int window_height = Minecraft.getInstance().getWindow().getGuiScaledHeight();
 
-			stack.pushPose();
-			RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
-			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-			RenderSystem.setShaderTexture(0, HITMARKER);
-			Matrix4f matrix = stack.last().pose();
-			stack.translate((window_width - size) / 2F, (window_height - size) / 2F, 0);
-			buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-			buffer.vertex(matrix, 0, size, 0).uv(0, 1).color(1.0F, 1.0F, 1.0F, 1.0f).endVertex();
-			buffer.vertex(matrix, size, size, 0).uv(1, 1).color(1.0F, 1.0F, 1.0F, 1.0f).endVertex();
-			buffer.vertex(matrix, size, 0, 0).uv(1, 0).color(1.0F, 1.0F, 1.0F, 1.0f).endVertex();
-			buffer.vertex(matrix, 0, 0, 0).uv(0, 0).color(1.0F, 1.0F, 1.0F, 1.0f).endVertex();
-			BufferUploader.drawWithShader(buffer.end());
-			stack.popPose();
-		}
-	
+		stack.pushPose();
+		RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.setShaderTexture(0, HITMARKER);
+		Matrix4f matrix = stack.last().pose();
+		stack.translate((window_width - size) / 2F, (window_height - size) / 2F, 0);
+		buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+		buffer.vertex(matrix, 0, size, 0).uv(0, 1).color(1.0F, 1.0F, 1.0F, 1.0f).endVertex();
+		buffer.vertex(matrix, size, size, 0).uv(1, 1).color(1.0F, 1.0F, 1.0F, 1.0f).endVertex();
+		buffer.vertex(matrix, size, 0, 0).uv(1, 0).color(1.0F, 1.0F, 1.0F, 1.0f).endVertex();
+		buffer.vertex(matrix, 0, 0, 0).uv(0, 0).color(1.0F, 1.0F, 1.0F, 1.0f).endVertex();
+		BufferUploader.drawWithShader(buffer.end());
+		stack.popPose();
+	}
+
 	public static void renderPlayerArm(PoseStack matrix, MultiBufferSource buffer, int light, float p_109350_,
 			float p_109351_, HumanoidArm p_109352_) {
 		boolean flag = p_109352_ != HumanoidArm.LEFT;
@@ -175,62 +175,63 @@ public class RenderHelper {
 		bufferbuilder.end();
 		BufferUploader.draw(bufferbuilder.end());
 	}
-	
+
 	public static void renderScopeOverlay(float progress) {
-		
+
 		float screenWidth = Minecraft.getInstance().getWindow().getGuiScaledWidth();
 		float screenHeight = Minecraft.getInstance().getWindow().getGuiScaledHeight();
-		
+
 		RenderSystem.enableBlend();
 		RenderSystem.disableDepthTest();
-	      RenderSystem.depthMask(false);
-	      RenderSystem.defaultBlendFunc();
-	      RenderSystem.setShader(GameRenderer::getPositionTexShader);
-	      RenderSystem.setShaderTexture(0, new ResourceLocation("textures/misc/spyglass_scope.png"));
-	      Tesselator tesselator = Tesselator.getInstance();
-	      BufferBuilder bufferbuilder = tesselator.getBuilder();
-	      float f = (float)Math.min(screenWidth, screenHeight);
-	      float f1 = Math.min((float) screenWidth / f, (float) screenHeight 
-					/ f) * Mth.lerp((progress-0.5f)/0.5f, 
-							0.01f, 1.125f);
-	      float f2 = f * f1;
-	      float f3 = f * f1;
-	      float f4 = ((float)screenWidth - f2) / 2.0F;
-	      float f5 = ((float)screenHeight - f3) / 2.0F;
-	      float f6 = f4 + f2;
-	      float f7 = f5 + f3;
-	      bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-	      bufferbuilder.vertex((double)f4, (double)f7, -90.0D).uv(0.0F, 1.0F).endVertex();
-	      bufferbuilder.vertex((double)f6, (double)f7, -90.0D).uv(1.0F, 1.0F).endVertex();
-	      bufferbuilder.vertex((double)f6, (double)f5, -90.0D).uv(1.0F, 0.0F).endVertex();
-	      bufferbuilder.vertex((double)f4, (double)f5, -90.0D).uv(0.0F, 0.0F).endVertex();
-	      tesselator.end();
-	      
-	      RenderSystem.setShader(GameRenderer::getPositionColorShader);
-	      RenderSystem.disableTexture();
-	      bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-	      bufferbuilder.vertex(0.0D, (double)screenHeight, -90.0D).color(0, 0, 0, 255).endVertex();
-	      bufferbuilder.vertex((double)screenWidth, (double)screenHeight, -90.0D).color(0, 0, 0, 255).endVertex();
-	      bufferbuilder.vertex((double)screenWidth, (double)f7, -90.0D).color(0, 0, 0, 255).endVertex();
-	      bufferbuilder.vertex(0.0D, (double)f7, -90.0D).color(0, 0, 0, 255).endVertex();
-	      bufferbuilder.vertex(0.0D, (double)f5, -90.0D).color(0, 0, 0, 255).endVertex();
-	      bufferbuilder.vertex((double)screenWidth, (double)f5, -90.0D).color(0, 0, 0, 255).endVertex();
-	      bufferbuilder.vertex((double)screenWidth, 0.0D, -90.0D).color(0, 0, 0, 255).endVertex();
-	      bufferbuilder.vertex(0.0D, 0.0D, -90.0D).color(0, 0, 0, 255).endVertex();
-	      bufferbuilder.vertex(0.0D, (double)f7, -90.0D).color(0, 0, 0, 255).endVertex();
-	      bufferbuilder.vertex((double)f4, (double)f7, -90.0D).color(0, 0, 0, 255).endVertex();
-	      bufferbuilder.vertex((double)f4, (double)f5, -90.0D).color(0, 0, 0, 255).endVertex();
-	      bufferbuilder.vertex(0.0D, (double)f5, -90.0D).color(0, 0, 0, 255).endVertex();
-	      bufferbuilder.vertex((double)f6, (double)f7, -90.0D).color(0, 0, 0, 255).endVertex();
-	      bufferbuilder.vertex((double)screenWidth, (double)f7, -90.0D).color(0, 0, 0, 255).endVertex();
-	      bufferbuilder.vertex((double)screenWidth, (double)f5, -90.0D).color(0, 0, 0, 255).endVertex();
-	      bufferbuilder.vertex((double)f6, (double)f5, -90.0D).color(0, 0, 0, 255).endVertex();
-	      tesselator.end();
-	      RenderSystem.enableTexture();
-	      RenderSystem.depthMask(true);
-	      RenderSystem.enableDepthTest();
-	      RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.depthMask(false);
+		RenderSystem.defaultBlendFunc();
+		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+		RenderSystem.setShaderTexture(0, new ResourceLocation("textures/misc/spyglass_scope.png"));
+		Tesselator tesselator = Tesselator.getInstance();
+		BufferBuilder bufferbuilder = tesselator.getBuilder();
+		float f = (float) Math.min(screenWidth, screenHeight);
+		float f1 = Math.min((float) screenWidth / f, (float) screenHeight / f)
+				* Mth.lerp((progress - 0.5f) / 0.5f, 0.01f, 1.125f);
+		float f2 = f * f1;
+		float f3 = f * f1;
+		float f4 = ((float) screenWidth - f2) / 2.0F;
+		float f5 = ((float) screenHeight - f3) / 2.0F;
+		float f6 = f4 + f2;
+		float f7 = f5 + f3;
+		bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+		bufferbuilder.vertex((double) f4, (double) f7, -90.0D).uv(0.0F, 1.0F).endVertex();
+		bufferbuilder.vertex((double) f6, (double) f7, -90.0D).uv(1.0F, 1.0F).endVertex();
+		bufferbuilder.vertex((double) f6, (double) f5, -90.0D).uv(1.0F, 0.0F).endVertex();
+		bufferbuilder.vertex((double) f4, (double) f5, -90.0D).uv(0.0F, 0.0F).endVertex();
+		tesselator.end();
+
+		RenderSystem.setShader(GameRenderer::getPositionColorShader);
+		RenderSystem.disableTexture();
+		bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+		bufferbuilder.vertex(0.0D, (double) screenHeight, -90.0D).color(0, 0, 0, 255).endVertex();
+		bufferbuilder.vertex((double) screenWidth, (double) screenHeight, -90.0D).color(0, 0, 0, 255).endVertex();
+		bufferbuilder.vertex((double) screenWidth, (double) f7, -90.0D).color(0, 0, 0, 255).endVertex();
+		bufferbuilder.vertex(0.0D, (double) f7, -90.0D).color(0, 0, 0, 255).endVertex();
+		bufferbuilder.vertex(0.0D, (double) f5, -90.0D).color(0, 0, 0, 255).endVertex();
+		bufferbuilder.vertex((double) screenWidth, (double) f5, -90.0D).color(0, 0, 0, 255).endVertex();
+		bufferbuilder.vertex((double) screenWidth, 0.0D, -90.0D).color(0, 0, 0, 255).endVertex();
+		bufferbuilder.vertex(0.0D, 0.0D, -90.0D).color(0, 0, 0, 255).endVertex();
+		bufferbuilder.vertex(0.0D, (double) f7, -90.0D).color(0, 0, 0, 255).endVertex();
+		bufferbuilder.vertex((double) f4, (double) f7, -90.0D).color(0, 0, 0, 255).endVertex();
+		bufferbuilder.vertex((double) f4, (double) f5, -90.0D).color(0, 0, 0, 255).endVertex();
+		bufferbuilder.vertex(0.0D, (double) f5, -90.0D).color(0, 0, 0, 255).endVertex();
+		bufferbuilder.vertex((double) f6, (double) f7, -90.0D).color(0, 0, 0, 255).endVertex();
+		bufferbuilder.vertex((double) screenWidth, (double) f7, -90.0D).color(0, 0, 0, 255).endVertex();
+		bufferbuilder.vertex((double) screenWidth, (double) f5, -90.0D).color(0, 0, 0, 255).endVertex();
+		bufferbuilder.vertex((double) f6, (double) f5, -90.0D).color(0, 0, 0, 255).endVertex();
+		tesselator.end();
+		RenderSystem.enableTexture();
+		RenderSystem.depthMask(true);
+		RenderSystem.enableDepthTest();
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 	}
+	
+	// Item rendering
 
 	public static void renderGuiItem(ItemStack p_191962_1_, int p_191962_2_, int p_191962_3_, BakedModel p_191962_4_) {
 		Minecraft.getInstance().textureManager.getTexture(TextureAtlas.LOCATION_BLOCKS).setFilter(false, false);

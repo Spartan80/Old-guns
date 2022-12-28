@@ -2,7 +2,7 @@ package com.jg.oldguns.client.models.wrapper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+
 import org.apache.logging.log4j.Level;
 
 import com.jg.oldguns.OldGuns;

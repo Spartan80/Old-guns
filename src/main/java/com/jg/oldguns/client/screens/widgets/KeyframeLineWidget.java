@@ -1,6 +1,5 @@
 package com.jg.oldguns.client.screens.widgets;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.jg.oldguns.client.animations.Animation;
@@ -10,7 +9,6 @@ import com.jg.oldguns.client.animations.parts.GunModel;
 import com.jg.oldguns.client.animations.parts.GunModelPart;
 import com.jg.oldguns.client.screens.AnimationScreen;
 import com.jg.oldguns.client.screens.widgets.JGSelectionList.Key;
-import com.jg.oldguns.utils.Utils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -319,6 +317,9 @@ public class KeyframeLineWidget extends GuiComponent implements Widget {
 			                this.offset;
 			    this.maxX = (int)x;
 			    this.scrollWidth = (int)Mth.lerp((this.maxVX-10)/x, 0, this.deltaX);
+			    if(this.selected >= this.keyframes.size()) {
+			    	this.selected = 0;
+			    }
 			} else {
 				this.selected = -1;
 			}

@@ -1,6 +1,5 @@
 package com.jg.oldguns.events;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import com.jg.oldguns.client.animations.parts.GunModel;

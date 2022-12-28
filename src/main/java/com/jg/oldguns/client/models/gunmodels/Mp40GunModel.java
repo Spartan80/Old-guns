@@ -6,12 +6,15 @@ import com.jg.oldguns.client.animations.Animation;
 import com.jg.oldguns.client.animations.parts.GunModel;
 import com.jg.oldguns.client.animations.parts.GunModelPart;
 import com.jg.oldguns.client.handlers.ClientHandler;
+import com.jg.oldguns.client.handlers.ReloadHandler;
 import com.jg.oldguns.client.models.modmodels.Mp40ModModel;
 import com.jg.oldguns.client.models.wrapper.WrapperModel;
 import com.jg.oldguns.guns.BulletItem;
-import com.jg.oldguns.guns.GunItem;
+import com.jg.oldguns.guns.MagItem;
 import com.jg.oldguns.registries.ItemRegistries;
+import com.jg.oldguns.utils.NBTUtils;
 import com.jg.oldguns.utils.ServerUtils;
+import com.jg.oldguns.utils.Utils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
 
@@ -25,6 +28,9 @@ public class Mp40GunModel extends GunModel {
 
 	public static Animation look;
 	public static Animation kickback;
+	public static Animation reloadNoMag;
+	public static Animation getOutMag;
+	public static Animation reloadMagByMag;
 	
 	public Mp40GunModel(ClientHandler client) {
 		super(new GunModelPart[] { 
@@ -70,42 +76,262 @@ public class Mp40GunModel extends GunModel {
 				.rotate(parts[6], 0.0f, 0.0f, 0.0f)
 				.end();
 		kickback = new Animation("kickbackAnim", "oldguns:mp40")
-				.startKeyframe(12, "easeInBack")
+				.startKeyframe(12)
+				.translate(parts[1], -0.5999997f, 0.0f, 0.7399996f)
+				.translate(parts[2], 0.0f, 0.0f, 0.0f)
 				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.translate(parts[0], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[2], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[6], -0.31415927f, 0.0f, 0.0f)
+				.rotate(parts[0], 0.0f, 0.0f, 0.0f)
+				.startKeyframe(12, "easeInQuint")
+				.translate(parts[1], -0.5999997f, 0.0f, 1.0699993f)
+				.translate(parts[2], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.translate(parts[0], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[2], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[6], -0.31415927f, 0.0f, 0.0f)
+				.rotate(parts[0], 0.0f, 0.0f, 0.0f)
+				.startKeyframe(4, "easeOutQuint")
+				.translate(parts[1], -0.44999987f, 0.0f, -0.16999999f)
+				.translate(parts[2], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.translate(parts[0], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[2], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[6], -0.34906584f, 0.0f, 0.0f)
+				.rotate(parts[0], 0.0f, 0.0f, 0.0f)
+				.startKeyframe(12)
+				.translate(parts[1], -0.44999987f, 0.0f, -0.16999999f)
+				.translate(parts[2], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.translate(parts[0], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[2], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[6], -0.34906584f, 0.0f, 0.0f)
+				.rotate(parts[0], 0.0f, 0.0f, 0.0f)
+				.startKeyframe(12, "easeInCubic")
 				.translate(parts[1], 0.0f, 0.0f, 0.0f)
 				.translate(parts[2], 0.0f, 0.0f, 0.0f)
-				.translate(parts[0], 0.0f, 0.0f, 0.0f)
-				.rotate(parts[5], 0.0f, -0.13962634f, 0.0f)
-				.rotate(parts[6], 0.0f, 0.0f, 0.0f)
-				.rotate(parts[2], 0.0f, 0.0f, 0.0f)
-				.rotate(parts[0], 0.0f, 0.0f, 0.0f)
-				.startKeyframe(8)
 				.translate(parts[6], 0.0f, 0.0f, 0.0f)
-				.translate(parts[1], -2.0099986f, 0.11999998f, 0.9399994f)
-				.translate(parts[2], 0.0f, 0.0f, 0.0f)
-				.translate(parts[0], 0.33999994f, 0.16f, 0.0f)
+				.translate(parts[0], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[2], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
-				.rotate(parts[6], 0.0f, 0.66322523f, 0.0f)
-				.rotate(parts[2], 0.0f, 1.2042779f, 0.0f)
-				.rotate(parts[0], 0.0f, 0.45378554f, 0.0f)
+				.rotate(parts[6], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[0], 0.0f, 0.0f, 0.0f)
+				.end();
+		getOutMag = new Animation("getOutMagAnim", "oldguns:mp40")
+				.startKeyframe(12)
+				.translate(parts[6], 0.0f, -0.01f, 0.0f)
+				.translate(parts[1], -0.029999984f, -0.17000002f, 0.20000003f)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.startKeyframe(12)
 				.translate(parts[6], 0.0f, 0.0f, 0.0f)
-				.translate(parts[1], -2.0099986f, 0.11999998f, 0.9399994f)
-				.translate(parts[2], 0.0f, 0.0f, 0.0f)
-				.translate(parts[0], 0.33999994f, 0.16f, 0.0f)
-				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
-				.rotate(parts[6], 0.0f, 0.66322523f, 0.0f)
-				.rotate(parts[2], 0.0f, 1.2042779f, 0.0f)
-				.rotate(parts[0], 0.0f, 0.45378554f, 0.0f)
-				.startKeyframe(12, "easeInCubic")
+				.translate(parts[1], -0.029999984f, -0.17000002f, 0.20000003f)
+				.translate(parts[7], 0.0f, -0.8499995f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
+				.startKeyframe(18)
+				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], -0.029999984f, -0.17000002f, 0.20000003f)
+				.translate(parts[7], 0.0f, -0.8499995f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
+				.startKeyframe(12)
 				.translate(parts[6], 0.0f, 0.0f, 0.0f)
 				.translate(parts[1], 0.0f, 0.0f, 0.0f)
-				.translate(parts[2], 0.0f, 0.0f, 0.0f)
-				.translate(parts[0], 0.0f, 0.0f, 0.0f)
-				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.end();
+		reloadNoMag = new Animation("reloadNoMagAnim", "oldguns:mp40")
+				.startKeyframe(12, "easeInQuint")
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, -0.11999998f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[6], 0.0f, 0.0f, 0.17453294f)
+				.startKeyframe(12)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], -0.17f, 0.31999996f, 0.5099998f)
+				.translate(parts[6], 0.0f, -0.11999998f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[6], 0.0f, 0.0f, 0.17453294f)
+				.startKeyframe(12, "easeInQuint")
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], -0.17f, 0.29999998f, 0.79999954f)
+				.translate(parts[6], 0.0f, -0.11999998f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[6], 0.0f, 0.0f, 0.17453294f)
+				.startKeyframe(12, "easeInQuint")
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], -0.17f, 0.33999994f, 0.79999954f)
+				.translate(parts[6], 0.0f, -0.11999998f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.29999998f)
+				.rotate(parts[6], 0.0f, 0.0f, 0.17453294f)
+				.startKeyframe(12)
+				.translate(parts[7], 0.0f, -0.8499995f, 0.0f)
+				.translate(parts[1], -0.029999984f, -0.17000002f, 0.20000003f)
+				.translate(parts[6], 0.0f, 0.039999995f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.29999998f)
+				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
+				.startKeyframe(20, "easeOutExpo")
+				.translate(parts[7], 0.0f, -0.8499995f, 0.0f)
+				.translate(parts[1], -0.029999984f, -0.17000002f, 0.20000003f)
+				.translate(parts[6], 0.0f, 0.039999995f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.29999998f)
+				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
+				.startKeyframe(12)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], -0.029999984f, -0.17000002f, 0.20000003f)
+				.translate(parts[6], 0.0f, 0.039999995f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.29999998f)
+				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
+				.startKeyframe(6, "easeInQuint")
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], -0.029999984f, -0.17000002f, 0.20000003f)
+				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.29999998f)
+				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
+				.startKeyframe(12)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], -0.27f, 0.16999999f, 0.20000003f)
+				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.29999998f)
+				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
+				.startKeyframe(12)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], -0.25000003f, 0.4799998f, 0.77999955f)
+				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.29999998f)
+				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
+				.startKeyframe(4, "easeOutExpo")
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], -0.25000003f, 0.35999992f, 0.77999955f)
+				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
+				.translate(parts[3], 0.0f, 0.01f, 0.29999998f)
+				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
+				.startKeyframe(4, "easeOutExpo")
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], -0.25000003f, 0.35999992f, 0.77999955f)
+				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
+				.translate(parts[3], 0.0f, 0.01f, 0.29999998f)
+				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
+				.startKeyframe(2)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], -0.25000003f, 0.35999992f, 0.77999955f)
+				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
+				.startKeyframe(12)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], -0.25000003f, -0.080000006f, 0.23000005f)
+				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
+				.startKeyframe(12)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.0f, 0.0f, 0.0f)
-				.rotate(parts[2], 0.0f, 0.0f, 0.0f)
-				.rotate(parts[0], 0.0f, 0.0f, 0.0f)
+				.end();
+		reloadMagByMag = new Animation("reloadMagByMagAnim", "oldguns:mp40")
+				.startKeyframe(12, "easeInQuint")
+				.translate(parts[6], 0.0f, -0.11999998f, 0.0f)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[6], 0.0f, 0.0f, 0.17453294f)
+				.startKeyframe(12)
+				.translate(parts[6], 0.0f, -0.11999998f, 0.0f)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], -0.17f, 0.31999996f, 0.5099998f)
+				.rotate(parts[6], 0.0f, 0.0f, 0.17453294f)
+				.startKeyframe(12, "easeInQuint")
+				.translate(parts[6], 0.0f, -0.11999998f, 0.0f)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], -0.17f, 0.29999998f, 0.79999954f)
+				.rotate(parts[6], 0.0f, 0.0f, 0.17453294f)
+				.startKeyframe(12, "easeInQuint")
+				.translate(parts[6], 0.0f, -0.11999998f, 0.0f)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.29999998f)
+				.translate(parts[1], -0.17f, 0.33999994f, 0.79999954f)
+				.rotate(parts[6], 0.0f, 0.0f, 0.17453294f)
+				.startKeyframe(12)
+				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.29999998f)
+				.translate(parts[1], -0.029999984f, -0.17000002f, 0.20000003f)
+				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
+				.startKeyframe(12)
+				.translate(parts[6], 0.0f, 0.039999995f, 0.0f)
+				.translate(parts[7], 0.0f, -0.8499995f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.29999998f)
+				.translate(parts[1], -0.029999984f, -0.17000002f, 0.20000003f)
+				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
+				.startKeyframe(20, "easeOutExpo")
+				.translate(parts[6], 0.0f, 0.039999995f, 0.0f)
+				.translate(parts[7], 0.0f, -0.8499995f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.29999998f)
+				.translate(parts[1], -0.029999984f, -0.17000002f, 0.20000003f)
+				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
+				.startKeyframe(12)
+				.translate(parts[6], 0.0f, 0.039999995f, 0.0f)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.29999998f)
+				.translate(parts[1], -0.029999984f, -0.17000002f, 0.20000003f)
+				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
+				.startKeyframe(6, "easeInQuint")
+				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.29999998f)
+				.translate(parts[1], -0.029999984f, -0.17000002f, 0.20000003f)
+				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
+				.startKeyframe(12)
+				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.29999998f)
+				.translate(parts[1], -0.27f, 0.16999999f, 0.20000003f)
+				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
+				.startKeyframe(12)
+				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.29999998f)
+				.translate(parts[1], -0.25000003f, 0.4799998f, 0.77999955f)
+				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
+				.startKeyframe(4, "easeOutExpo")
+				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[3], 0.0f, 0.01f, 0.29999998f)
+				.translate(parts[1], -0.25000003f, 0.35999992f, 0.77999955f)
+				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
+				.startKeyframe(4, "easeOutExpo")
+				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[3], 0.0f, 0.01f, 0.29999998f)
+				.translate(parts[1], -0.25000003f, 0.35999992f, 0.77999955f)
+				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
+				.startKeyframe(2)
+				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], -0.25000003f, 0.35999992f, 0.77999955f)
+				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
+				.startKeyframe(12)
+				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], -0.25000003f, -0.080000006f, 0.23000005f)
+				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
+				.startKeyframe(12)
+				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[6], 0.0f, 0.0f, 0.0f)
 				.end();
 	}
 
@@ -121,12 +347,28 @@ public class Mp40GunModel extends GunModel {
 
 	@Override
 	public void reload(Player player, ItemStack stack) {
-		/*GunItem gun = (GunItem)stack.getItem();
 		int index = ServerUtils
 				.getIndexForCorrectMag(player.getInventory(), 
 						gun.getGunId(),
 				BulletItem.SMALL);
-		LogUtils.getLogger().info("index: " + index);*/
+		if(index != -1) {
+			LogUtils.getLogger().info("index: " + index);
+			ItemStack mag = getMagStack(index);
+			int magBullets = NBTUtils.getAmmo(mag);
+			if(NBTUtils.hasMag(stack)) {
+				ReloadHandler.restoreMag(getMPath(), ServerUtils.getBullets(Utils.getStack()));
+				ReloadHandler.setBullets(magBullets);
+				ReloadHandler.removeItem(index, 1);
+				setAnimation(reloadMagByMag);
+			} else {
+				MagItem magItem = getMagItem(index);
+				ReloadHandler.setMag(this, magItem.getMaxAmmo(), true, 
+						getMBPath(index), magItem);
+				ReloadHandler.removeItem(index, 1);
+				ReloadHandler.setBullets(magBullets);
+				setAnimation(reloadNoMag);
+			}
+		}
 	}
 
 	@Override
@@ -137,6 +379,11 @@ public class Mp40GunModel extends GunModel {
 	@Override
 	public Animation getKickbackAnimation() {
 		return kickback;
+	}
+	
+	@Override
+	public Animation getGetOutMagAnimation() {
+		return getOutMag;
 	}
 
 	@Override

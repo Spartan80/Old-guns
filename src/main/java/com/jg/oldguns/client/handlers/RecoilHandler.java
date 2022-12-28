@@ -46,9 +46,7 @@ public class RecoilHandler extends BasicHandler {
 	@Override
 	public float getProgress() {
 		float dv = (prevD + (progD - prevD)
-				* (prevD == 0 || 
-				prevD == MAXD ? 0 : 
-				ClientHandler.partialTicks)) / MAXD;
+				* (ClientHandler.partialTicks)) / MAXD;
 		return shoot ? super.getProgress() : dv;
 	}
 	

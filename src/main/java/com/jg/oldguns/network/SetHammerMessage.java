@@ -2,8 +2,6 @@ package com.jg.oldguns.network;
 
 import java.util.function.Supplier;
 
-import com.jg.oldguns.utils.ServerUtils;
-
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent.Context;

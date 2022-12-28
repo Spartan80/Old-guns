@@ -2,8 +2,6 @@ package com.jg.oldguns.client.animations;
 
 import java.util.Arrays;
 
-import net.minecraft.util.Mth;
-
 public class Transform {
 	
 	public static final Transform EMPTY = new Transform();
