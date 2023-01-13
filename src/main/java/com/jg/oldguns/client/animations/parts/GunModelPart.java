@@ -21,6 +21,13 @@ public class GunModelPart {
 		transform = new Transform();
 	}
 	
+	public GunModelPart(String name, float x, float y, float z, float rx, float ry, float rz,
+			float sx, float sy, float sz) {
+		this.name = name;
+		dtransform = new Transform(x, y, z, rx, ry, rz, sx, sy, sz);
+		transform = new Transform();
+	}
+	
 	public void reset() {
 		for(int i = 0; i < transform.pos.length; i++) {
 			transform.pos[i] = 0;

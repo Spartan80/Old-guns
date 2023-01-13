@@ -19,6 +19,7 @@ public class Animator {
 	protected int prevStartTick;
 	protected int prevDur;
 	protected int current;
+	protected int old;
 	protected float tick;
 	protected float prog;
 	protected float prevTick;
@@ -37,10 +38,11 @@ public class Animator {
 	
 	public Animator(GunModel model) {
 		this.model = model;
-		currentTranslations = new HashMap<>();
-		currentRotations = new HashMap<>();
-		prevTranslations = new HashMap<>();
-		prevRotations = new HashMap<>();
+		this.old = -1;
+		this.currentTranslations = new HashMap<>();
+		this.currentRotations = new HashMap<>();
+		this.prevTranslations = new HashMap<>();
+		this.prevRotations = new HashMap<>();
 		this.easing = (x) -> x;
 		for(int i = 0; i < model.getGunParts().size(); i++){
             this.prevTranslations.put(model.getGunParts().get(i), 
@@ -54,12 +56,13 @@ public class Animator {
     				Arrays.toString(prevRotations.get(model.getPart("rightarm"))) + " current: " + 
     				Arrays.toString(currentRotations.get(model.getPart("rightarm"))));
     	}*/
-		animation = null;
-		easings.put("easeInOut", (x) -> { return 0; });
+		this.animation = null;
+		//easings.put("easeInOut", (x) -> { return 0; });
 	}
 
 	public void setAnimation(Animation animation) {
-		current = 0;
+		this.current = 0;
+		this.old = -1;
 		this.animation = animation;
 		this.tick = 0;
 		this.prevTick = 0;
@@ -87,6 +90,11 @@ public class Animator {
 	            this.prevTick = this.tick;
 	            this.tick += 1;
 	            Keyframe kf = this.animation.keyframes.get(current);
+	            if(current != old) {
+	            	this.old = this.current;
+	            	LogUtils.getLogger().info("New Keyframe Started");
+	            	selectEasing(kf);
+	            }
 	            if(this.tick-kf.startTick > kf.dur){
 	                this.tick = kf.startTick + kf.dur;
 	                this.currentTranslations = kf.translations;
@@ -103,6 +111,9 @@ public class Animator {
 	            /*String key = "easeInQuint";
 	            this.prog = easings.getOrDefault(key, (x) -> x).get(this.prog);
 	            LogUtils.getLogger().info("Easing: " + easings.containsKey(key));*/
+	            //selectEasing(kf);
+	            LogUtils.getLogger().info("Keyframe easing: " + kf.easing + " current: " + 
+	            		this.current);
 	            doEasing();
 	        	/*LogUtils.getLogger().info("Prog: " + prog);
 	        	for(Entry<String, Easing> e : easings.entrySet()) {
@@ -110,6 +121,7 @@ public class Animator {
 	        			LogUtils.getLogger().info("Easing: " + e.getKey());
 	        		}
 	        	}*/
+	            //LogUtils.getLogger().info("Progress : " + prog);
 	            for(GunModelPart part : currentTranslations.keySet()) {
 	            	if(!prevTranslations.containsKey(part)) {
 	            		prevTranslations.put(part, new float[] { 0, 0, 0 });
@@ -153,20 +165,33 @@ public class Animator {
 					}
 	            }
 	            if(this.tick-kf.startTick >= kf.dur){
+	            	this.old = this.current;
 	                this.current++;
+	                LogUtils.getLogger().info("Keyframe ended");
 	                if(this.current+1 > this.animation.keyframes.size()){ 
 	                	finishAll();
 	                    return;
 	                }
-	                this.easing = easings.getOrDefault(kf.easing, (x) -> x);
-	                //LogUtils.getLogger().info("Keyframe easing: " + kf.easing);
+	                //LogUtils.getLogger().info("After Keyframe easing: " + kf.easing);
 	                this.updateCurrentMaps();
 			}
         }
 	}
 	
+	public void selectEasing(Keyframe kf) {
+		try {
+        	this.easing = easings.getOrDefault(kf.easing, (x) -> x);
+        } catch(NullPointerException e) {
+        	e.printStackTrace();
+        }
+	}
+	
 	public void doEasing() {
-		this.prog = easing.get(this.prog);
+		if(easing != null) {
+			this.prog = easing.get(this.prog);
+		} else {
+			LogUtils.getLogger().info("Easing = null");
+		}
 	}
 	
 	public void finishAll() {

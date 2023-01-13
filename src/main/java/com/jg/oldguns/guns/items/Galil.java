@@ -21,6 +21,11 @@ public class Galil extends GunItem {
 	public float getDamage() {
 		return 6;
 	}
+	
+	@Override
+	public float getShootTime() {
+		return 1.2f;
+	}
 
 	@Override
 	public float getPower() {

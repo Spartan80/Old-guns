@@ -23,6 +23,11 @@ public class Aks74u extends GunItem {
 	}
 
 	@Override
+	public float getShootTime() {
+		return 1;
+	}
+	
+	@Override
 	public float getPower() {
 		return 12;
 	}

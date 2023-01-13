@@ -46,6 +46,8 @@ public abstract class GunItem extends Item {
 	
 	public abstract float getDamage();
 	
+	public abstract float getShootTime();
+	
 	public abstract float getPower();
 	
 	public abstract int getBulletsPerShoot();

@@ -16,14 +16,20 @@ import com.jg.oldguns.registries.SoundRegistries;
 import com.jg.oldguns.utils.InventoryUtils;
 import com.jg.oldguns.utils.InventoryUtils.InvData;
 import com.jg.oldguns.utils.NBTUtils;
+import com.jg.oldguns.utils.Paths;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class WinchesterGunModel extends GunModel {
 	
@@ -35,13 +41,11 @@ public class WinchesterGunModel extends GunModel {
 	public WinchesterGunModel(ClientHandler client) {
 		super(new GunModelPart[] { 
 				new GunModelPart("rightarm", -0.11f, -0.18f, -0.31f, -0.6f, 0, 0.6f), 
-				new GunModelPart("leftarm", -0.11f, 0.51f, -0.61f, 0.005235f, -1.117001f, 0), 
+				new GunModelPart("leftarm", -0.11f, 0.51f, -0.61f, 0.005235f, -1.117001f, 0, 1.3f, 2.5f, 1.3f), 
 				new GunModelPart("gun", 0.667001f, -0.446002f, -1.1f, 0.021459f, -0.034906f, 0),
 				new GunModelPart("hammer", 0.667001f, -0.446002f, -1.1f, 0.021459f, -0.034906f, 0),
-				new GunModelPart("mag", 0.8f, -0.6f, -1.1f, 0.1f, 0, 0),
 				new GunModelPart("all"),
 				new GunModelPart("alllessleft"),
-				new GunModelPart("leftarmmag"),
 				new GunModelPart("aim", -0.728f, 0.176f, 0, -0.027925f, 0.040142f, 0), 
 				new GunModelPart("sprint", 1.32f, -0.89f, -0.221f, 0.548036f, 1.326451f, -0.191986f),
 				new GunModelPart("recoil", 0.02f, -0.18f, 0.02f, 0.139626f, -0.069813f, 0) }, 
@@ -240,7 +244,7 @@ public class WinchesterGunModel extends GunModel {
 
 	@Override
 	public void render(LocalPlayer player, ItemStack stack, MultiBufferSource buffer, PoseStack matrix, int light) {
-		renderAll(player, stack, buffer, matrix, light);
+		renderOneHammerNoMag(matrix, stack, player, buffer, light);
 	}
 
 	@Override

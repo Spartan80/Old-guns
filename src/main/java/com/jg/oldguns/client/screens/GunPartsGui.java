@@ -1,7 +1,9 @@
 package com.jg.oldguns.client.screens;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -11,6 +13,7 @@ import com.jg.oldguns.client.handlers.SoundHandler;
 import com.jg.oldguns.client.render.RenderHelper;
 import com.jg.oldguns.client.screens.widgets.Button;
 import com.jg.oldguns.client.screens.widgets.GunSlot;
+import com.jg.oldguns.config.Config;
 import com.jg.oldguns.containers.GunPartsContainer;
 import com.jg.oldguns.guns.GunItem;
 import com.jg.oldguns.guns.GunPart;
@@ -39,6 +42,8 @@ import net.minecraft.world.item.Items;
 
 public class GunPartsGui extends AbstractContainerScreen<GunPartsContainer> {
 
+	private Map<String, Boolean> canCraft;
+	
 	private int gunTab, gunTabs, partTab, partTabs;
 
 	private boolean gunLevel;
@@ -88,6 +93,28 @@ public class GunPartsGui extends AbstractContainerScreen<GunPartsContainer> {
 		WOOD = new ItemStack(Items.OAK_PLANKS);
 		IRON_INGOT = new ItemStack(Items.IRON_INGOT);
 		STEEL_INGOT = new ItemStack(ItemRegistries.SteelIngot.get());
+		
+		canCraft = new HashMap<>();
+		canCraft.put(((GunItem)ItemRegistries.AKS74U.get()).getGunId(), 
+				Config.SERVER.craftAks74u.get());
+		canCraft.put(((GunItem)ItemRegistries.COLT1911.get()).getGunId(), 
+				Config.SERVER.craftColt1911.get());
+		canCraft.put(((GunItem)ItemRegistries.GALIL.get()).getGunId(), 
+				Config.SERVER.craftGalil.get());
+		canCraft.put(((GunItem)ItemRegistries.ITHACAMODEL37.get()).getGunId(), 
+				Config.SERVER.craftIthacaModel37.get());
+		canCraft.put(((GunItem)ItemRegistries.KAR98K.get()).getGunId(), 
+				Config.SERVER.craftKar98k.get());
+		canCraft.put(((GunItem)ItemRegistries.MP40.get()).getGunId(), 
+				Config.SERVER.craftMp40.get());
+		canCraft.put(((GunItem)ItemRegistries.SCORPION.get()).getGunId(), 
+				Config.SERVER.craftScorpion.get());
+		canCraft.put(((GunItem)ItemRegistries.STEN.get()).getGunId(), 
+				Config.SERVER.craftSten.get());
+		canCraft.put(((GunItem)ItemRegistries.THOMPSON.get()).getGunId(), 
+				Config.SERVER.craftThompson.get());
+		canCraft.put(((GunItem)ItemRegistries.WINCHESTER.get()).getGunId(), 
+				Config.SERVER.craftWinchester.get());
 	}
 
 	@Override
@@ -260,6 +287,8 @@ public class GunPartsGui extends AbstractContainerScreen<GunPartsContainer> {
 				 */
 				if (part != null) {
 
+					if(!canCraft.get(part.getGunId())) return;
+					
 					searchMaterials();
 
 					if (hasWood && hasMetal) {

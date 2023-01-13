@@ -16,6 +16,7 @@ import com.jg.oldguns.guns.MagItem;
 import com.jg.oldguns.network.ShootMessage;
 import com.jg.oldguns.utils.MathUtils;
 import com.jg.oldguns.utils.NBTUtils;
+import com.jg.oldguns.utils.Paths;
 import com.jg.oldguns.utils.Utils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
@@ -89,6 +90,52 @@ public abstract class GunModel {
 		matrix.mulPose(new Quaternion(MathUtils.rotLerp(p, 0, t.rot[0]), MathUtils.rotLerp(p, 0, t.rot[1]),
 				MathUtils.rotLerp(p, 0, t.rot[2]), false));
 	}
+	
+	protected void lerpGunStuff(PoseStack matrix, ItemStack stack, int aim, int sprint, 
+			int cooldown) {
+		lerpTransform(matrix, client.getAimHandler().getProgress(), parts[aim].getDTransform());
+		lerpTransform(matrix, client.getSprintHandler().getProgress(), parts[sprint].getDTransform());
+		lerpTransform(matrix, client.getCooldown().getProgress(NBTUtils.getId(stack)), 
+				parts[cooldown].getDTransform());
+	}
+	
+	protected void leftArm(PoseStack matrix, LocalPlayer player, MultiBufferSource buffer, 
+			int light, int leftarm) {
+		matrix.pushPose(); // 2+
+		renderArm(player, buffer, matrix, light, HumanoidArm.LEFT, parts[leftarm].getCombined());
+		matrix.popPose(); // 2-
+	}
+	
+	protected void leftArmMag(PoseStack matrix, LocalPlayer player, MultiBufferSource buffer, 
+			int light, int leftarm, int leftarmwithmag) {
+		matrix.pushPose(); // 2+
+		translateAndRotateAndScale(parts[leftarmwithmag].getCombined(), matrix);
+		renderArm(player, buffer, matrix, light, HumanoidArm.LEFT, parts[leftarm].getCombined());
+		matrix.popPose(); // 2-
+	}
+	
+	protected void gunWithMag(PoseStack matrix, LocalPlayer player, ItemStack stack, 
+			MultiBufferSource buffer, int light, int mag) {
+		renderGunPart(player, stack, buffer, matrix, light);
+		if(NBTUtils.hasMag(stack) && renderMag()) {
+			matrix.pushPose();
+			translateAndRotateAndScale(parts[7].getCombined(), matrix);
+			renderItem(player, new ItemStack(ForgeRegistries.ITEMS
+					.getValue(new ResourceLocation(NBTUtils.getMag(stack)))), 
+					buffer, matrix, light, 
+					parts[mag].getCombined());
+			matrix.popPose();
+		}
+	}
+	
+	protected void hammer(PoseStack matrix, LocalPlayer player, ItemStack stack, 
+			MultiBufferSource buffer, int light, int hammer, String path) {
+		renderModel(player, stack, buffer, matrix, light, Minecraft.getInstance()
+				.getItemRenderer()
+				.getItemModelShaper().getModelManager()
+				.getModel(new ModelResourceLocation(path, "inventory")), 
+				parts[hammer].getTransform());
+	}
 
 	// Gun Methods
 
@@ -96,7 +143,7 @@ public abstract class GunModel {
 		if(gun.getFireMode() == FireMode.SEMI) {
 			Utils.spawnParticlesOnPlayerView(player, 50, 0, 0, 0);
 		}
-		setAnimation(shootAnim);
+		//setAnimation(shootAnim);
 		OldGuns.channel.sendToServer(
 				new ShootMessage(player.getYRot(), player.getXRot(), 
 						gun.getShootSound().getLocation().toString()));
@@ -110,6 +157,21 @@ public abstract class GunModel {
 
 	// Rendering
 
+	protected void renderOneHammerNoMag(PoseStack matrix, ItemStack stack, LocalPlayer player, 
+			MultiBufferSource buffer, int light) {
+		matrix.pushPose();
+		lerpGunStuff(matrix, stack, 6, 7, 8);
+		translateAndRotateAndScale(parts[4].getCombined(), matrix);
+		leftArm(matrix, player, buffer, light, 1);
+		matrix.pushPose();
+		translateAndRotateAndScale(parts[5].getCombined(), matrix);
+		renderArm(player, buffer, matrix, light, HumanoidArm.RIGHT, parts[0].getCombined());
+		renderGunPart(player, stack, buffer, matrix, light);
+		hammer(matrix, player, stack, buffer, light, 3, stuff.hammers[0]);
+		matrix.popPose();
+		matrix.popPose();
+	}
+	
 	protected void renderAll(LocalPlayer player, ItemStack stack, MultiBufferSource buffer, PoseStack matrix, int light,
 			int rightarm, int leftarm, int gun, int hammer, int mag, int all, int allminusleft, int leftarmmag, int aim,
 			int sprint, int recoil) {
@@ -198,30 +260,13 @@ public abstract class GunModel {
 
 	protected void renderGunPart(LocalPlayer player, ItemStack stack, MultiBufferSource buffer, PoseStack matrix,
 			int light) {
-		//matrix.pushPose();
 		translateAndRotateAndScale(parts[2].getCombined(), matrix);
-		/*Minecraft.getInstance().gameRenderer.itemInHandRenderer.renderItem(player, 
-				stack,
-				TransformType.FIRST_PERSON_RIGHT_HAND, false, matrix, buffer, light);*/
-		/*renderModel(player, stack, buffer, matrix, light, Minecraft.getInstance()
-				.getItemRenderer()
-				.getItemModelShaper().getModelManager()
-				.getModel(Utils.getMR(stuff.getBarrel().getItem())));
-		renderModel(player, stack, buffer, matrix, light, Minecraft.getInstance()
-				.getItemRenderer()
-				.getItemModelShaper().getModelManager()
-				.getModel(Utils.getMR(stuff.getBody().getItem())));
-		renderModel(player, stack, buffer, matrix, light, Minecraft.getInstance()
-				.getItemRenderer()
-				.getItemModelShaper().getModelManager()
-				.getModel(Utils.getMR(stuff.getStock().getItem())));*/
 		Minecraft.getInstance().gameRenderer.itemInHandRenderer.renderItem(player, stuff.getBarrel(),
 				TransformType.FIRST_PERSON_RIGHT_HAND, false, matrix, buffer, light);
 		Minecraft.getInstance().gameRenderer.itemInHandRenderer.renderItem(player, stuff.getBody(),
 				TransformType.FIRST_PERSON_RIGHT_HAND, false, matrix, buffer, light);
 		Minecraft.getInstance().gameRenderer.itemInHandRenderer.renderItem(player, stuff.getStock(),
 				TransformType.FIRST_PERSON_RIGHT_HAND, false, matrix, buffer, light);
-		//matrix.popPose();
 	}
 
 	protected void renderItem(LocalPlayer player, ItemStack stack, MultiBufferSource buffer, PoseStack matrix,

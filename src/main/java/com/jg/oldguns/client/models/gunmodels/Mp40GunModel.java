@@ -3,6 +3,7 @@ package com.jg.oldguns.client.models.gunmodels;
 import java.util.List;
 
 import com.jg.oldguns.client.animations.Animation;
+import com.jg.oldguns.client.animations.Transform;
 import com.jg.oldguns.client.animations.parts.GunModel;
 import com.jg.oldguns.client.animations.parts.GunModelPart;
 import com.jg.oldguns.client.handlers.ClientHandler;
@@ -18,11 +19,16 @@ import com.jg.oldguns.utils.Utils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class Mp40GunModel extends GunModel {
 
@@ -44,13 +50,13 @@ public class Mp40GunModel extends GunModel {
 				new GunModelPart("leftarmmag"),
 				new GunModelPart("aim", -0.67f, 0.392f, 0.691f, -0.013962f, 0.036651f, 0), 
 				new GunModelPart("sprint", 1.32f, -0.89f, -0.221f, 0.548036f, 1.326451f, -0.191986f),
-				new GunModelPart("recoil", 0, 0, 0.02f, 0, 0, 0) }, 
+				new GunModelPart("recoil", 0, 0, 0.03f, 0, 0, 0) }, 
 				ItemRegistries.MP40.get(), client);
 		
 		shootAnim = new Animation("shootAnim", "oldguns:mp40")
-				.startKeyframe(6)
+				.startKeyframe(1)
 				.translate(parts[3], 0.0f, -0.010000001f, 0.33000004f)
-				.startKeyframe(6)
+				.startKeyframe(1)
 				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.end();
 		look = new Animation("lookAnim", "oldguns:mp40")
@@ -237,98 +243,98 @@ public class Mp40GunModel extends GunModel {
 				.end();
 		reloadMagByMag = new Animation("reloadMagByMagAnim", "oldguns:mp40")
 				.startKeyframe(12, "easeInQuint")
-				.translate(parts[6], 0.0f, -0.11999998f, 0.0f)
 				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, -0.11999998f, 0.0f)
 				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.translate(parts[1], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.0f, 0.0f, 0.17453294f)
 				.startKeyframe(12)
-				.translate(parts[6], 0.0f, -0.11999998f, 0.0f)
 				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, -0.11999998f, 0.0f)
 				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.translate(parts[1], -0.17f, 0.31999996f, 0.5099998f)
 				.rotate(parts[6], 0.0f, 0.0f, 0.17453294f)
 				.startKeyframe(12, "easeInQuint")
-				.translate(parts[6], 0.0f, -0.11999998f, 0.0f)
 				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, -0.11999998f, 0.0f)
 				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.translate(parts[1], -0.17f, 0.29999998f, 0.79999954f)
 				.rotate(parts[6], 0.0f, 0.0f, 0.17453294f)
 				.startKeyframe(12, "easeInQuint")
-				.translate(parts[6], 0.0f, -0.11999998f, 0.0f)
 				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, -0.11999998f, 0.0f)
 				.translate(parts[3], 0.0f, 0.0f, 0.29999998f)
 				.translate(parts[1], -0.17f, 0.33999994f, 0.79999954f)
 				.rotate(parts[6], 0.0f, 0.0f, 0.17453294f)
 				.startKeyframe(12)
-				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
 				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
 				.translate(parts[3], 0.0f, 0.0f, 0.29999998f)
 				.translate(parts[1], -0.029999984f, -0.17000002f, 0.20000003f)
 				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
 				.startKeyframe(12)
-				.translate(parts[6], 0.0f, 0.039999995f, 0.0f)
 				.translate(parts[7], 0.0f, -0.8499995f, 0.0f)
+				.translate(parts[6], 0.0f, 0.039999995f, 0.0f)
 				.translate(parts[3], 0.0f, 0.0f, 0.29999998f)
 				.translate(parts[1], -0.029999984f, -0.17000002f, 0.20000003f)
 				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
 				.startKeyframe(20, "easeOutExpo")
-				.translate(parts[6], 0.0f, 0.039999995f, 0.0f)
 				.translate(parts[7], 0.0f, -0.8499995f, 0.0f)
+				.translate(parts[6], 0.0f, 0.039999995f, 0.0f)
 				.translate(parts[3], 0.0f, 0.0f, 0.29999998f)
 				.translate(parts[1], -0.029999984f, -0.17000002f, 0.20000003f)
 				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
 				.startKeyframe(12)
-				.translate(parts[6], 0.0f, 0.039999995f, 0.0f)
 				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.039999995f, 0.0f)
 				.translate(parts[3], 0.0f, 0.0f, 0.29999998f)
 				.translate(parts[1], -0.029999984f, -0.17000002f, 0.20000003f)
 				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
 				.startKeyframe(6, "easeInQuint")
-				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
 				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
 				.translate(parts[3], 0.0f, 0.0f, 0.29999998f)
 				.translate(parts[1], -0.029999984f, -0.17000002f, 0.20000003f)
 				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
 				.startKeyframe(12)
-				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
 				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
 				.translate(parts[3], 0.0f, 0.0f, 0.29999998f)
 				.translate(parts[1], -0.27f, 0.16999999f, 0.20000003f)
 				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
 				.startKeyframe(12)
-				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
 				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
 				.translate(parts[3], 0.0f, 0.0f, 0.29999998f)
 				.translate(parts[1], -0.25000003f, 0.4799998f, 0.77999955f)
 				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
-				.startKeyframe(4, "easeOutExpo")
-				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
+				.startKeyframe(4, "easeInExpo")
 				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
 				.translate(parts[3], 0.0f, 0.01f, 0.29999998f)
 				.translate(parts[1], -0.25000003f, 0.35999992f, 0.77999955f)
 				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
 				.startKeyframe(4, "easeOutExpo")
-				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
 				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
 				.translate(parts[3], 0.0f, 0.01f, 0.29999998f)
 				.translate(parts[1], -0.25000003f, 0.35999992f, 0.77999955f)
 				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
 				.startKeyframe(2)
-				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
 				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
 				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.translate(parts[1], -0.25000003f, 0.35999992f, 0.77999955f)
 				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
 				.startKeyframe(12)
-				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
 				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.06999999f, 0.0f)
 				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.translate(parts[1], -0.25000003f, -0.080000006f, 0.23000005f)
 				.rotate(parts[6], 0.0f, 0.0f, -0.034906574f)
 				.startKeyframe(12)
-				.translate(parts[6], 0.0f, 0.0f, 0.0f)
 				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.0f, 0.0f)
 				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.translate(parts[1], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.0f, 0.0f, 0.0f)
@@ -342,7 +348,42 @@ public class Mp40GunModel extends GunModel {
 
 	@Override
 	public void render(LocalPlayer player, ItemStack stack, MultiBufferSource buffer, PoseStack matrix, int light) {
-		renderAll(player, stack, buffer, matrix, light);
+		matrix.pushPose();
+		lerpTransform(matrix, client.getAimHandler().getProgress(), parts[8].getDTransform());
+		lerpTransform(matrix, client.getSprintHandler().getProgress(), parts[9].getDTransform());
+		lerpTransform(matrix, client.getCooldown().getProgress(NBTUtils.getId(stack)), parts[10].getDTransform());
+		translateAndRotateAndScale(parts[5].getCombined(), matrix);
+		matrix.pushPose();
+		parts[1].getDTransform().setScale(1.3f, 2.5f, 1.3f);
+		translateAndRotateAndScale(parts[7].getCombined(), matrix);
+		renderArm(player, buffer, matrix, light, HumanoidArm.LEFT, parts[1].getCombined());
+		if(NBTUtils.hasMag(stack) && renderMag()) {
+			//LogUtils.getLogger().info("HasMag: " + NBTUtils.getMag(stack));
+			matrix.pushPose();
+			translateAndRotateAndScale(parts[6].getCombined(), matrix);
+			renderItem(player, new ItemStack(ForgeRegistries.ITEMS
+					.getValue(new ResourceLocation(NBTUtils.getMag(stack)))), buffer, matrix, light, 
+					parts[4].getCombined());
+			matrix.popPose();
+		}
+		matrix.popPose();
+		matrix.pushPose();
+		translateAndRotateAndScale(parts[6].getCombined(), matrix);
+		renderArm(player, buffer, matrix, light, HumanoidArm.RIGHT, parts[0].getCombined());
+		renderGunPart(player, stack, buffer, matrix, light);
+		matrix.pushPose();
+		//translateAndRotateAndScale(parts[3].getCombined(), matrix);
+		//LogUtils.getLogger().info(parts[3].getCombined().toString());
+		lerpTransform(matrix, client.getCooldown().getProgress(NBTUtils.getId(stack)), 
+				new Transform(0.0f, -0.010000001f, 0.33000004f, 0, 0, 0));
+		for (String hammerP : stuff.getHammers()) {
+			renderModel(player, stack, buffer, matrix, light, Minecraft.getInstance().getItemRenderer()
+					.getItemModelShaper().getModelManager()
+					.getModel(new ModelResourceLocation(hammerP, "inventory")));
+		}
+		matrix.popPose();
+		matrix.popPose();
+		matrix.popPose();
 	}
 
 	@Override

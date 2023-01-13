@@ -9,4 +9,7 @@ public class Paths {
 	public static final String GALILHAMMER = "oldguns:special/galil_hammer";
 	public static final String ITHACAMODEL37HAMMER = "oldguns:special/ithaca_model_37_hammer";
 	public static final String KAR98KHAMMER = "oldguns:special/kar98k_hammer";
+	public static final String STENHAMMER = "oldguns:special/sten_hammer";
+	public static final String SCORPIONHAMMER = "oldguns:special/scorpion_hammer";
+	public static final String THOMPSONHAMMER = "oldguns:special/thompson_hammer";
 }

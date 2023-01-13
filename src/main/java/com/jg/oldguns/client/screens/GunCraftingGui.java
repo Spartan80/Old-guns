@@ -1,7 +1,9 @@
 package com.jg.oldguns.client.screens;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.jg.oldguns.OldGuns;
 import com.jg.oldguns.client.handlers.ItemsReg;
@@ -11,9 +13,11 @@ import com.jg.oldguns.client.render.RenderHelper;
 import com.jg.oldguns.client.screens.widgets.Button;
 import com.jg.oldguns.client.screens.widgets.GunPartCheckSlot;
 import com.jg.oldguns.client.screens.widgets.GunSlot;
+import com.jg.oldguns.config.Config;
 import com.jg.oldguns.containers.GunCraftingTableContainer;
 import com.jg.oldguns.guns.GunItem;
 import com.jg.oldguns.network.AddItemMessage;
+import com.jg.oldguns.registries.ItemRegistries;
 import com.jg.oldguns.registries.SoundRegistries;
 import com.jg.oldguns.utils.Utils;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -29,6 +33,8 @@ import net.minecraft.world.item.ItemStack;
 
 public class GunCraftingGui extends AbstractContainerScreen<GunCraftingTableContainer> {
 
+	private Map<String, Boolean> canCraft;
+	
 	private int tab, tabs;
 
 	private List<GunSlot> slots;
@@ -50,6 +56,27 @@ public class GunCraftingGui extends AbstractContainerScreen<GunCraftingTableCont
 		this.slots = new ArrayList<GunSlot>();
 		parts = new GunPartCheckSlot[3];
 		this.pi = p_i51105_2_;
+		canCraft = new HashMap<>();
+		canCraft.put(((GunItem)ItemRegistries.AKS74U.get()).getGunId(), 
+				Config.SERVER.craftAks74u.get());
+		canCraft.put(((GunItem)ItemRegistries.COLT1911.get()).getGunId(), 
+				Config.SERVER.craftColt1911.get());
+		canCraft.put(((GunItem)ItemRegistries.GALIL.get()).getGunId(), 
+				Config.SERVER.craftGalil.get());
+		canCraft.put(((GunItem)ItemRegistries.ITHACAMODEL37.get()).getGunId(), 
+				Config.SERVER.craftIthacaModel37.get());
+		canCraft.put(((GunItem)ItemRegistries.KAR98K.get()).getGunId(), 
+				Config.SERVER.craftKar98k.get());
+		canCraft.put(((GunItem)ItemRegistries.MP40.get()).getGunId(), 
+				Config.SERVER.craftMp40.get());
+		canCraft.put(((GunItem)ItemRegistries.SCORPION.get()).getGunId(), 
+				Config.SERVER.craftScorpion.get());
+		canCraft.put(((GunItem)ItemRegistries.STEN.get()).getGunId(), 
+				Config.SERVER.craftSten.get());
+		canCraft.put(((GunItem)ItemRegistries.THOMPSON.get()).getGunId(), 
+				Config.SERVER.craftThompson.get());
+		canCraft.put(((GunItem)ItemRegistries.WINCHESTER.get()).getGunId(), 
+				Config.SERVER.craftWinchester.get());
 	}
 
 	@Override
@@ -126,6 +153,7 @@ public class GunCraftingGui extends AbstractContainerScreen<GunCraftingTableCont
 			@Override
 			public void onPress() {
 				super.onPress();
+				if(!canCraft.get(((GunItem)current.getItem()).getGunId())) return;
 				parts[0].check(pi);
 				parts[1].check(pi);
 				parts[2].check(pi);

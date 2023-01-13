@@ -21,6 +21,11 @@ public class Winchester extends GunItem {
 	public float getDamage() {
 		return 4;
 	}
+	
+	@Override
+	public float getShootTime() {
+		return 2;
+	}
 
 	@Override
 	public float getPower() {

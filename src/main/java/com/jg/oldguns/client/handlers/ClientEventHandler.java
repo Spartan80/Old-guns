@@ -10,13 +10,7 @@ import org.lwjgl.glfw.GLFW;
 
 import com.jg.oldguns.OldGuns;
 import com.jg.oldguns.client.animations.parts.GunModel;
-import com.jg.oldguns.client.models.gunmodels.Aks74uGunModel;
-import com.jg.oldguns.client.models.gunmodels.Colt1911GunModel;
-import com.jg.oldguns.client.models.gunmodels.GalilGunModel;
-import com.jg.oldguns.client.models.gunmodels.IthacaModel37GunModel;
-import com.jg.oldguns.client.models.gunmodels.Kar98kGunModel;
-import com.jg.oldguns.client.models.gunmodels.Mp40GunModel;
-import com.jg.oldguns.client.models.gunmodels.WinchesterGunModel;
+import com.jg.oldguns.client.models.gunmodels.*;
 import com.jg.oldguns.client.models.wrapper.ExtraItemWrapperModel;
 import com.jg.oldguns.client.render.RenderHelper;
 import com.jg.oldguns.client.screens.AnimationScreen;
@@ -31,6 +25,7 @@ import com.jg.oldguns.events.RegisterGunModelEvent;
 import com.jg.oldguns.guns.BulletItem;
 import com.jg.oldguns.guns.FireMode;
 import com.jg.oldguns.guns.GunItem;
+import com.jg.oldguns.guns.GunPart;
 import com.jg.oldguns.guns.MagItem;
 import com.jg.oldguns.network.InitGunMessage;
 import com.jg.oldguns.network.OpenGunGuiMessage;
@@ -68,6 +63,7 @@ import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class ClientEventHandler {
 
@@ -145,6 +141,9 @@ public class ClientEventHandler {
 		e.register(new ModelResourceLocation(Paths.GALILHAMMER, "inventory"));
 		e.register(new ModelResourceLocation(Paths.ITHACAMODEL37HAMMER, "inventory"));
 		e.register(new ModelResourceLocation(Paths.KAR98KHAMMER, "inventory"));
+		e.register(new ModelResourceLocation(Paths.STENHAMMER, "inventory"));
+		e.register(new ModelResourceLocation(Paths.SCORPIONHAMMER, "inventory"));
+		e.register(new ModelResourceLocation(Paths.THOMPSONHAMMER, "inventory"));
 	}
 	
 	private static void bakeModels(ModelEvent.BakingCompleted e) {
@@ -192,6 +191,9 @@ public class ClientEventHandler {
 		e.register(ItemRegistries.GALIL.get(), new GalilGunModel(client));
 		e.register(ItemRegistries.ITHACAMODEL37.get(), new IthacaModel37GunModel(client));
 		e.register(ItemRegistries.KAR98K.get(), new Kar98kGunModel(client));
+		e.register(ItemRegistries.STEN.get(), new StenGunModel(client));
+		e.register(ItemRegistries.SCORPION.get(), new ScorpionGunModel(client));
+		e.register(ItemRegistries.THOMPSON.get(), new ThompsonGunModel(client));
 	}
 	
 	// Rendering
@@ -223,7 +225,7 @@ public class ClientEventHandler {
 						e.setCanceled(true);
 					}
 				}
-				client.renderHitmarker = true;
+				client.renderHitmarker = false;
 				if (client.renderHitmarker || client.debugAim || 
 						client.getHitmarker().hitmarkerTime > 0) {
 					RenderHelper.drawHitmarker(e.getPoseStack(), RenderHelper.HITMARKER, 8);
@@ -263,6 +265,7 @@ public class ClientEventHandler {
 		}
 	
 	private static void registerEasings(RegisterEasingsEvent e){
+		e.register("empty", (x) -> x);
 		e.register("easeInSine", (x) -> (float)(1 - Math.cos((x * Math.PI) / 2)));
 		e.register("easeOutSine", (x) -> (float)(Math.sin((x * Math.PI) / 2)));
 		e.register("easeInOutSine", (x) -> (float)(-(Math.cos(Math.PI * x) - 1) / 2));
@@ -378,7 +381,8 @@ public class ClientEventHandler {
 							//client.shoot(player);
 							if (!player.isSprinting() && Minecraft.getInstance().screen == null &&
 								((GunItem)stack.getItem()).getFireMode() == FireMode.AUTO) {
-								if (client.getGunModel().getAnimation() == null) {
+								if (client.getGunModel().getAnimation() == null && 
+										!client.getCooldown().hasCooldown(NBTUtils.getId(stack))) {
 									client.shoot(player);
 								}
 							}
@@ -403,6 +407,7 @@ public class ClientEventHandler {
 	// Input
 
 		private static void handleKeyboard(InputEvent.Key e) {
+			//LogUtils.getLogger().info("Key: " + e.getKey());
 			Screen screen = mc.screen;
 			if (screen == null || screen instanceof AnimationScreen || screen instanceof GunPartsScreen) {
 				boolean animEditFocused = false;
@@ -419,12 +424,13 @@ public class ClientEventHandler {
 					return;
 				// if(e.getAction() == GLFW.GLFW_PRESS) {
 				Player player = mc.player;
+				
 				if (player != null) {
 					ItemStack stack = player.getMainHandItem();
 					if (stack.getItem() instanceof GunItem) {
 						if (client.getGunModel() == null)
 							return;
-						//LogUtils.getLogger().info("Key: " + e.getKey());
+						
 						if (e.getAction() == GLFW.GLFW_PRESS) {
 							if (RELOAD.getKey().getValue() == e.getKey()) {
 								// OldGuns.channel.sendToServer(new LoadBulletMessage(true));
@@ -442,11 +448,20 @@ public class ClientEventHandler {
 							} else if(ATTACHMENTS.getKey().getValue() == e.getKey()) {
 								OldGuns.channel.sendToServer(new OpenGunGuiMessage());
 							} else if(e.getKey() == 75) {
+								Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(NBTUtils.getBody(stack)));
+								LogUtils.getLogger().info("Body string: " + NBTUtils.getBody(stack) + 
+										" item == null: " + (item == null) + "" + ((item == null) ? "" : 
+											" item reg: " + Utils.getR(item)) + " " + 
+										((item instanceof GunPart) ? ((GunPart)item)
+												.getGunPartProperties().getValidSize() : "Nothing"));
 								if(!NBTUtils.hasMag(stack)) {
+									String size = item == null ? BulletItem.MEDIUM :
+										((GunPart)item).getGunPartProperties()
+										.getValidSize();
+									LogUtils.getLogger().info("Size: " + size);
 									int index = ServerUtils
 											.getIndexForCorrectMag(player.getInventory(), 
-													client.getGunModel().gun.getGunId(),
-													BulletItem.MEDIUM);
+													client.getGunModel().gun.getGunId(), size);
 									LogUtils.getLogger().info("index: " + index);
 									if(index != -1) {
 										ItemStack mag = mc.player

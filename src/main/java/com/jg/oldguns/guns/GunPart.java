@@ -63,7 +63,7 @@ public class GunPart extends Item {
 		protected SoundEvent sound;
 		
 		public GunPartProperties() {
-			
+			this.validSize = BulletItem.SMALL;
 		}
 		
 		public GunPartProperties damage(float dmg) {

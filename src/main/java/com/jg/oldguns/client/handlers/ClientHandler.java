@@ -2,6 +2,7 @@ package com.jg.oldguns.client.handlers;
 
 import com.jg.oldguns.client.animations.parts.GunModel;
 import com.jg.oldguns.client.animations.parts.GunModelPart;
+import com.jg.oldguns.utils.NBTUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
 
@@ -29,12 +30,14 @@ public class ClientHandler {
 	private AimHandler aim;
 	private RecoilHandler recoil;
 	private HitmarkerHandler hitmarker;
+	private CooldownHandler cooldown;
 	
 	public ClientHandler() {
 		sprint = new SprintHandler();
 		aim = new AimHandler();
 		recoil = new RecoilHandler();
 		hitmarker = new HitmarkerHandler();
+		cooldown = new CooldownHandler();
 	}
 	
 	// Methods
@@ -42,11 +45,14 @@ public class ClientHandler {
 	public void tick() {
 		recoil.tick();
 		hitmarker.tick();
+		cooldown.tick();
 	}
 	
 	public void shoot(Player player) {
 		if(current.canShoot(player, player.getMainHandItem())) {
 			current.shoot(player, player.getMainHandItem());
+			cooldown.addCooldown(NBTUtils.getId(player.getMainHandItem()), current.gun
+					.getShootTime());
 			LogUtils.getLogger().info("shoot2");
 			recoil.setShoot();
 			player.setXRot(player.getXRot()-(float)(Math.random() * current.getKnockback()));
@@ -256,6 +262,10 @@ public class ClientHandler {
 	
 	public HitmarkerHandler getHitmarker() {
 		return hitmarker;
+	}
+	
+	public CooldownHandler getCooldown() {
+		return cooldown;
 	}
 	
 }

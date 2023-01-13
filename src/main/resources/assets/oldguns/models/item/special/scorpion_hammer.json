@@ -1,0 +1,74 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "oldguns:items/skorpion",
+		"particle": "oldguns:items/skorpion"
+	},
+	"elements": [
+		{
+			"from": [9, 7.6, 8.9],
+			"to": [9.1, 7.9, 9.2],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8.5, 0.6262, 9.51796]},
+			"faces": {
+				"north": {"uv": [13.5, 14, 13.625, 14.125], "texture": "#0"},
+				"east": {"uv": [14, 13.5, 14.125, 13.625], "texture": "#0"},
+				"south": {"uv": [14, 14, 14.125, 14.125], "texture": "#0"},
+				"west": {"uv": [0, 14.5, 0.125, 14.625], "texture": "#0"},
+				"up": {"uv": [14.625, 0.125, 14.5, 0], "texture": "#0"},
+				"down": {"uv": [0.625, 14.5, 0.5, 14.625], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [-86.25, 0, 0],
+			"translation": [0, 1, -4.75]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [-86.25, 0, 0],
+			"translation": [0, 1, -4.75]
+		},
+		"firstperson_righthand": {
+			"rotation": [-85.5, 0, 0],
+			"translation": [0.25, 1.25, -7.5]
+		},
+		"firstperson_lefthand": {
+			"rotation": [-85.5, 0, 0],
+			"translation": [0.25, 1.25, -7.5]
+		},
+		"ground": {
+			"rotation": [-90, 0, 0],
+			"translation": [-1.5, 2, -3]
+		},
+		"gui": {
+			"rotation": [-61.5, -3, -140],
+			"translation": [4.25, -0.75, 0],
+			"scale": [1.5, 1.5, 1.5]
+		},
+		"head": {
+			"rotation": [-85.5, 0, 0],
+			"translation": [0.25, 1.25, -7.5]
+		},
+		"fixed": {
+			"rotation": [-90, 31, 88],
+			"translation": [-4.25, 4.25, 0.5],
+			"scale": [1.5, 1.5, 1.5]
+		}
+	},
+	"groups": [
+		{
+			"name": "scorpion",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [
+				{
+					"name": "hammer",
+					"origin": [8, 8, 8],
+					"color": 0,
+					"children": [0]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,82 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "oldguns:items/skorpion",
+		"particle": "oldguns:items/skorpion"
+	},
+	"elements": [
+		{
+			"from": [8, 8.43124, 8.08001],
+			"to": [9, 8.99124, 9.08001],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8.5, 8.68124, 8.58001]},
+			"faces": {
+				"north": {"uv": [4, 3, 4.5, 4.25], "texture": "#0"},
+				"east": {"uv": [1, 4.5, 1.5, 5.75], "texture": "#0"},
+				"south": {"uv": [1.5, 4.5, 2, 5.75], "texture": "#0"},
+				"west": {"uv": [4.5, 1.5, 5, 2.75], "texture": "#0"},
+				"up": {"uv": [7.5, 1, 7, 0.5], "texture": "#0"},
+				"down": {"uv": [1.5, 7, 1, 7.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [8.24, 8.99124, 8.29],
+			"to": [8.76, 10.99124, 8.81],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8.5, 9.24124, 8.58001]},
+			"faces": {
+				"north": {"uv": [4, 3, 4.5, 4.25], "texture": "#0"},
+				"east": {"uv": [1, 4.5, 1.5, 5.75], "texture": "#0"},
+				"south": {"uv": [1.5, 4.5, 2, 5.75], "texture": "#0"},
+				"west": {"uv": [4.5, 1.5, 5, 2.75], "texture": "#0"},
+				"up": {"uv": [7.5, 1, 7, 0.5], "texture": "#0"},
+				"down": {"uv": [1.5, 7, 1, 7.5], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [0, -0.75, -0.5]
+		},
+		"thirdperson_lefthand": {
+			"translation": [0, -0.75, -0.5]
+		},
+		"firstperson_righthand": {
+			"translation": [-2, 1.25, 2.25]
+		},
+		"firstperson_lefthand": {
+			"translation": [-2, 1.25, 2.25]
+		},
+		"ground": {
+			"translation": [0, -1.75, -0.5]
+		},
+		"gui": {
+			"rotation": [-61.5, -3, -140],
+			"translation": [-0.5, 0.5, 0],
+			"scale": [1.5, 1.5, 1.5]
+		},
+		"head": {
+			"rotation": [-85.5, 0, 0],
+			"translation": [0.25, 1.25, -7.5]
+		},
+		"fixed": {
+			"rotation": [-90, 31, 88],
+			"translation": [0.75, -1.75, 1.5],
+			"scale": [1.5, 1.5, 1.5]
+		}
+	},
+	"groups": [
+		{
+			"name": "scorpion",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [
+				{
+					"name": "barrel",
+					"origin": [8, 8, 8],
+					"color": 0,
+					"children": [0, 1]
+				}
+			]
+		}
+	]
+}

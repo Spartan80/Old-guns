@@ -402,7 +402,13 @@ public class AnimationScreen extends Screen {
 		edits.get(8).setValue("1");
 		edits.get(8).setResponder((s) -> {
 			if (!edits.get(8).getValue().isBlank()) {
-				keyframeLine.setScale(Integer.parseInt(edits.get(8).getValue()));
+				int scale = 1;
+				try {
+					scale = Integer.parseInt(edits.get(8).getValue());
+				} catch(NumberFormatException e) {
+					e.printStackTrace();
+				}
+				keyframeLine.setScale(scale);
 			}
 		});
 		edits.add(new EditBox(font, 16, 182, 80, 20, Component.translatable("animationScreen.easing")));
@@ -481,6 +487,7 @@ public class AnimationScreen extends Screen {
 			}
 			if (rotKeys.length > 0) {
 				for (Key key : rotKeys) {
+					if(key == null) continue;
 					GunModelPart part = getPart(key.getKey());
 					if(part != null) {
 						model.getAnimation().getKeyframes().get(keyframeLine.getSelected())
@@ -611,6 +618,7 @@ public class AnimationScreen extends Screen {
 						List<Integer> posIndexes = posList.getSelectedIndexes();
 						if(!posIndexes.isEmpty()) {
 							for(int i : posIndexes) {
+								if(i >= posList.getKeys().size()) continue;
 								cero.translations.put(Utils.getGunPartByName(model, 
 										posList.getKeys().get(i).getKey()), 
 										new float[] { 0, 0, 0 });
@@ -627,6 +635,7 @@ public class AnimationScreen extends Screen {
 						List<Integer> rotIndexes = rotList.getSelectedIndexes();
 						if(!rotIndexes.isEmpty()) {
 							for(int i : rotIndexes) {
+								if(i >= rotList.getKeys().size()) continue;
 								cero.rotations.put(Utils.getGunPartByName(model, 
 										rotList.getKeys().get(i).getKey()), 
 										new float[] { 0, 0, 0 });

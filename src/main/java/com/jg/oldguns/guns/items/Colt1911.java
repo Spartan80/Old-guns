@@ -22,6 +22,11 @@ public class Colt1911 extends GunItem {
 	public float getDamage() {
 		return 3;
 	}
+	
+	@Override
+	public float getShootTime() {
+		return 2;
+	}
 
 	@Override
 	public float getPower() {

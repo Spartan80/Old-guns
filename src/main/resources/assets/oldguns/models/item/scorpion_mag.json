@@ -1,0 +1,87 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "oldguns:items/skorpion",
+		"particle": "oldguns:items/skorpion"
+	},
+	"elements": [
+		{
+			"from": [8.02, 5.33216, 4.42466],
+			"to": [8.98, 6.43216, 5.42466],
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [8.5, 5.88216, 3.92466]},
+			"faces": {
+				"north": {"uv": [8, 3, 8.5, 3.5], "texture": "#0"},
+				"east": {"uv": [8, 3.5, 8.5, 4], "texture": "#0"},
+				"south": {"uv": [8, 4, 8.5, 4.5], "texture": "#0"},
+				"west": {"uv": [8, 4.5, 8.5, 5], "texture": "#0"},
+				"up": {"uv": [8.5, 5.5, 8, 5], "texture": "#0"},
+				"down": {"uv": [8.5, 5.5, 8, 6], "texture": "#0"}
+			}
+		},
+		{
+			"from": [8.02, 4.8, 5.1],
+			"to": [8.98, 5.9, 8.1],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8.5, 5.10231, 6.99664]},
+			"faces": {
+				"north": {"uv": [8, 6, 8.5, 6.5], "texture": "#0"},
+				"east": {"uv": [1, 4, 2.5, 4.5], "texture": "#0"},
+				"south": {"uv": [8, 6.5, 8.5, 7], "texture": "#0"},
+				"west": {"uv": [4, 1, 5.5, 1.5], "texture": "#0"},
+				"up": {"uv": [4.5, 3, 4, 1.5], "texture": "#0"},
+				"down": {"uv": [3, 4, 2.5, 5.5], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [-86.25, 0, 0],
+			"translation": [0, 1, -2.25]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [-86.25, 0, 0],
+			"translation": [0, 1, -2.25]
+		},
+		"firstperson_righthand": {
+			"rotation": [-85.5, 0, 0],
+			"translation": [-2.75, 4.75, 0.25]
+		},
+		"firstperson_lefthand": {
+			"rotation": [-85.5, 0, 0],
+			"translation": [-2.75, 4.75, 0.25]
+		},
+		"ground": {
+			"rotation": [-90, 0, 0],
+			"translation": [-1.5, 2, -3]
+		},
+		"gui": {
+			"rotation": [-61.5, -3, -140],
+			"translation": [3, 1.25, 0],
+			"scale": [1.5, 1.5, 1.5]
+		},
+		"head": {
+			"rotation": [-85.5, 0, 0],
+			"translation": [0.25, 1.25, -7.5]
+		},
+		"fixed": {
+			"rotation": [-90, 31, 88],
+			"translation": [-2.25, 4.25, 1.25],
+			"scale": [1.5, 1.5, 1.5]
+		}
+	},
+	"groups": [
+		{
+			"name": "scorpion",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [
+				{
+					"name": "mag",
+					"origin": [8, 8, 8],
+					"color": 0,
+					"children": [0, 1]
+				}
+			]
+		}
+	]
+}

@@ -24,6 +24,11 @@ public class Kar98k extends GunItem {
 	}
 
 	@Override
+	public float getShootTime() {
+		return 2;
+	}
+	
+	@Override
 	public float getPower() {
 		return 16;
 	}
