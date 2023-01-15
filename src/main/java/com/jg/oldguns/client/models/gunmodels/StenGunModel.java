@@ -7,12 +7,20 @@ import com.jg.oldguns.client.animations.Transform;
 import com.jg.oldguns.client.animations.parts.GunModel;
 import com.jg.oldguns.client.animations.parts.GunModelPart;
 import com.jg.oldguns.client.handlers.ClientHandler;
+import com.jg.oldguns.client.handlers.ReloadHandler;
+import com.jg.oldguns.client.handlers.SoundHandler;
 import com.jg.oldguns.client.models.modmodels.StenModModel;
 import com.jg.oldguns.client.models.wrapper.WrapperModel;
+import com.jg.oldguns.guns.BulletItem;
+import com.jg.oldguns.guns.MagItem;
 import com.jg.oldguns.registries.ItemRegistries;
+import com.jg.oldguns.registries.SoundRegistries;
 import com.jg.oldguns.utils.NBTUtils;
 import com.jg.oldguns.utils.Paths;
+import com.jg.oldguns.utils.ServerUtils;
+import com.jg.oldguns.utils.Utils;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -324,10 +332,72 @@ public class StenGunModel extends GunModel {
 		matrix.popPose(); // 3-
 		matrix.popPose(); // 1-
 	}
+	
+	@Override
+	public void tick(Player player, ItemStack stack) {
+		super.tick(player, stack);
+		Animation anim = getAnimation();
+		float tick = animator.getTick();
+		if(anim == reloadMagByMag) {
+			if(tick == 1) {
+				SoundHandler.playSoundOnServer(SoundRegistries.STENMAGOUT.get());
+			} else if(tick == 60) {
+				SoundHandler.playSoundOnServer(SoundRegistries.STENMAGIN.get());
+			} else if(tick == 103) {
+				SoundHandler.playSoundOnServer(SoundRegistries.STENHAMMERBACK.get());
+			} else if(tick == 118) {
+				SoundHandler.playSoundOnServer(SoundRegistries.STENHAMMERFORWARD.get());
+				ReloadHandler.restoreMag(getMPath(), ServerUtils.getBullets(Utils.getStack()));
+				ReloadHandler.setBullets((int)data.get("magBullets"));
+				ReloadHandler.removeItem((int)data.get("index"), 1);
+			}
+		} else if(anim == reloadNoMag) {
+			if(tick == 18) {
+				MagItem magItem = getMagItem((int)data.get("index"));
+				ReloadHandler.setMag(this, magItem.getMaxAmmo(), true, 
+						getMBPath((int)data.get("index")), magItem);
+				ReloadHandler.removeItem((int)data.get("index"), 1);
+				ReloadHandler.setBullets((int)data.get("magBullets"));
+			} else if(tick == 41) {
+				SoundHandler.playSoundOnServer(SoundRegistries.STENMAGIN.get());
+			} else if(tick == 93) {
+				SoundHandler.playSoundOnServer(SoundRegistries.STENHAMMERBACK.get());
+			} else if(tick == 107) {
+				SoundHandler.playSoundOnServer(SoundRegistries.STENHAMMERFORWARD.get());
+			}
+		} else if(anim == getOutMag) {
+			if(tick == 1) {
+				SoundHandler.playSoundOnServer(SoundRegistries.STENMAGOUT.get());
+			} else if(tick == 26) {
+				ReloadHandler.restoreMag(getMPath(), ServerUtils.getBullets(Utils.getStack()));
+				ReloadHandler.setMag(this, 0, false, 
+						"", "");
+			}
+		} else if(anim == kickback) {
+			if(tick == 6) {
+				SoundHandler.playSoundOnServer(SoundRegistries.SWING.get());
+			}
+		}
+	}
 
 	@Override
 	public void reload(Player player, ItemStack stack) {
-		setAnimation(reloadNoMag);
+		int index = ServerUtils
+				.getIndexForCorrectMag(player.getInventory(), 
+						gun.getGunId(),
+				BulletItem.SMALL);
+		if(index != -1) {
+			data.put("index", index);
+			LogUtils.getLogger().info("index: " + index);
+			ItemStack mag = getMagStack(index);
+			data.put("mag", mag);
+			data.put("magBullets", NBTUtils.getAmmo(mag));
+			if(NBTUtils.hasMag(stack)) {
+				setAnimation(reloadMagByMag);
+			} else {
+				setAnimation(reloadNoMag);
+			}
+		}
 	}
 
 	@Override

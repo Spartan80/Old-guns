@@ -410,6 +410,11 @@ public class Mp40GunModel extends GunModel {
 	}
 
 	@Override
+	public void tick(Player player, ItemStack stack) {
+		super.tick(player, stack);
+	}
+	
+	@Override
 	public void reload(Player player, ItemStack stack) {
 		int index = ServerUtils
 				.getIndexForCorrectMag(player.getInventory(), 

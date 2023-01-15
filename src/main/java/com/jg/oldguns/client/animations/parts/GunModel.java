@@ -1,6 +1,8 @@
 package com.jg.oldguns.client.animations.parts;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.jg.oldguns.OldGuns;
 import com.jg.oldguns.client.animations.Animation;
@@ -39,6 +41,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class GunModel {
 
+	protected Map<String, Object> data;
+	
 	protected ClientHandler client;
 
 	protected GunModelPart[] parts;
@@ -60,6 +64,7 @@ public abstract class GunModel {
 	protected boolean init;
 
 	public GunModel(GunModelPart[] gunModelParts, Item gun, ClientHandler client) {
+		data = new HashMap<>();
 		this.parts = gunModelParts;
 		this.gun = (GunItem) gun;
 		this.client = client;

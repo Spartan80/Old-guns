@@ -286,6 +286,11 @@ public class Kar98kGunModel extends GunModel {
 	}
 
 	@Override
+	public void tick(Player player, ItemStack stack) {
+		super.tick(player, stack);
+	}
+	
+	@Override
 	public void reload(Player player, ItemStack stack) {
 		reload.setTimes(6);
 		setAnimation(reload);

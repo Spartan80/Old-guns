@@ -517,6 +517,11 @@ public class Colt1911GunModel extends GunModel {
 	}
 
 	@Override
+	public void tick(Player player, ItemStack stack) {
+		super.tick(player, stack);
+	}
+	
+	@Override
 	public void reload(Player player, ItemStack stack) {
 		setAnimation(reloadNoMag);
 		//setAnimation(getOutMag);

@@ -237,7 +237,7 @@ public class WinchesterGunModel extends GunModel {
 	@Override
 	public void tick(Player player, ItemStack stack) {
 		super.tick(player, stack);
-		/*float tick = animator.getTick();
+		float tick = animator.getTick();
 		if(getAnimation() == shootAnim) {
 			if(tick == 18) {
 				SoundHandler.playSoundOnServer(SoundRegistries.WINCHESTERBOLTFORWARD.get());
@@ -245,16 +245,16 @@ public class WinchesterGunModel extends GunModel {
 				SoundHandler.playSoundOnServer(SoundRegistries.WINCHESTERBOLTBACK.get());
 			}
 		} else if(getAnimation() == reload) {
-			if(isRepTick(12, 29, tick, 36, times)) {
+			if(isRepTick(12, 41, tick, 36, times)) {
 				SoundHandler.playSoundOnServer(SoundRegistries.WINCHESTERINSERTSHELL.get());
-				ReloadHandler.growOneBullet(stack);
+				//ReloadHandler.growOneBullet(stack);
 				LogUtils.getLogger().info("Bullet inserted");
 			}
 		} else if(getAnimation() == kickback) {
-			if(tick == 17) {
+			if(tick == 7) {
 				SoundHandler.playSoundOnServer(SoundRegistries.SWING.get());
 			}
-		}*/
+		}
 	}
 	
 	@Override
