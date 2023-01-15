@@ -9,6 +9,7 @@ import com.jg.oldguns.client.animations.parts.GunModelPart;
 import com.jg.oldguns.client.handlers.ClientHandler;
 import com.jg.oldguns.client.models.modmodels.Aks74uModModel;
 import com.jg.oldguns.client.models.wrapper.WrapperModel;
+import com.jg.oldguns.guns.BulletItem;
 import com.jg.oldguns.registries.ItemRegistries;
 import com.jg.oldguns.utils.NBTUtils;
 import com.jg.oldguns.utils.Paths;
@@ -292,7 +293,8 @@ public class Aks74uGunModel extends GunModel {
 		renderArm(player, buffer, matrix, light, HumanoidArm.RIGHT, parts[0].getCombined());
 		matrix.pushPose(); // 4+
 		gunWithMag(matrix, player, stack, buffer, light, 4);
-		lerpTransform(matrix, client.getCooldown().getProgress(NBTUtils.getId(stack)), 
+		lerpTransform(matrix, client.getCooldownRecoil().getCooldownPercent(gun, 
+				Minecraft.getInstance().getFrameTime()), 
 				new Transform(0.0f, -0.010000001f, 0.33000004f, 0, 0, 0));
 		hammer(matrix, player, stack, buffer, light, 3, Paths.AKS74UHAMMER);
 		matrix.popPose();
@@ -307,7 +309,7 @@ public class Aks74uGunModel extends GunModel {
 	
 	@Override
 	public void reload(Player player, ItemStack stack) {
-		setAnimation(reloadMagByMag);
+		fillReloadData(BulletItem.MEDIUM, player, stack, reloadMagByMag, reloadNoMag);
 	}
 
 	@Override

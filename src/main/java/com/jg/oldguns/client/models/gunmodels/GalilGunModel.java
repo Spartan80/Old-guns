@@ -9,6 +9,7 @@ import com.jg.oldguns.client.animations.parts.GunModelPart;
 import com.jg.oldguns.client.handlers.ClientHandler;
 import com.jg.oldguns.client.models.modmodels.GalilModModel;
 import com.jg.oldguns.client.models.wrapper.WrapperModel;
+import com.jg.oldguns.guns.BulletItem;
 import com.jg.oldguns.registries.ItemRegistries;
 import com.jg.oldguns.utils.NBTUtils;
 import com.jg.oldguns.utils.Paths;
@@ -315,7 +316,7 @@ public class GalilGunModel extends GunModel {
 	
 	@Override
 	public void reload(Player player, ItemStack stack) {
-		setAnimation(reloadNoMag);
+		fillReloadData(BulletItem.BIG, player, stack, reloadMagByMag, reloadNoMag);
 	}
 
 	@Override

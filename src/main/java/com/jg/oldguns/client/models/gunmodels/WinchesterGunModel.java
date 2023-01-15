@@ -261,6 +261,12 @@ public class WinchesterGunModel extends GunModel {
 	public float getKnockback() {
 		return 0;
 	}
+	
+	@Override
+	public void shoot(Player player, ItemStack stack) {
+		super.shoot(player, stack);
+		setAnimation(shootAnim);
+	}
 
 	@Override
 	public void render(LocalPlayer player, ItemStack stack, MultiBufferSource buffer, PoseStack matrix, int light) {

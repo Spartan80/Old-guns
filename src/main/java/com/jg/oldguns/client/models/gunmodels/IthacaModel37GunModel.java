@@ -116,7 +116,7 @@ public class IthacaModel37GunModel extends GunModel {
 	public float getKnockback() {
 		return 0;
 	}
-
+	
 	@Override
 	public void render(LocalPlayer player, ItemStack stack, MultiBufferSource buffer, PoseStack matrix, int light) {
 		renderOneHammerNoMag(matrix, stack, player, buffer, light);
@@ -135,6 +135,12 @@ public class IthacaModel37GunModel extends GunModel {
 		matrix.popPose(); // 1-*/
 	}
 
+	@Override
+	public void shoot(Player player, ItemStack stack) {
+		super.shoot(player, stack);
+		setAnimation(shootAnim);
+	}
+	
 	@Override
 	public void tick(Player player, ItemStack stack) {
 		super.tick(player, stack);

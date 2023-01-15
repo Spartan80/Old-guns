@@ -69,15 +69,16 @@ public class ClientEventHandler {
 
 	private static Minecraft mc = Minecraft.getInstance();
 	private static ClientHandler client = new ClientHandler();
-	
+
 	public static final KeyMapping SWITCH = new KeyMapping("key.oldguns.switch", GLFW.GLFW_KEY_C, OldGuns.MODID);
 	public static final KeyMapping DISPLAY = new KeyMapping("key.oldguns.display", GLFW.GLFW_KEY_KP_ADD, OldGuns.MODID);
 	public static final KeyMapping RELOAD = new KeyMapping("key.oldguns.reload", GLFW.GLFW_KEY_R, OldGuns.MODID);
 	public static final KeyMapping LOOKANIM = new KeyMapping("key.oldguns.look", GLFW.GLFW_KEY_LEFT_ALT, OldGuns.MODID);
 	public static final KeyMapping KICKBACK = new KeyMapping("key.oldguns.kickback", GLFW.GLFW_KEY_B, OldGuns.MODID);
-	public static final KeyMapping ATTACHMENTS = new KeyMapping("key.oldguns.attachments", GLFW.GLFW_KEY_V, OldGuns.MODID);
+	public static final KeyMapping ATTACHMENTS = new KeyMapping("key.oldguns.attachments", GLFW.GLFW_KEY_V,
+			OldGuns.MODID);
 	public static final KeyMapping GETOUTMAG = new KeyMapping("key.oldguns.getoutmag", GLFW.GLFW_KEY_U, OldGuns.MODID);
-	
+
 	public static final KeyMapping LEFT = new KeyMapping("key.oldguns.left", GLFW.GLFW_KEY_LEFT, OldGuns.MODID);
 	public static final KeyMapping UP = new KeyMapping("key.oldguns.up", GLFW.GLFW_KEY_UP, OldGuns.MODID);
 	public static final KeyMapping DOWN = new KeyMapping("key.oldguns.down", GLFW.GLFW_KEY_DOWN, OldGuns.MODID);
@@ -87,27 +88,27 @@ public class ClientEventHandler {
 	public static final KeyMapping H = new KeyMapping("key.oldguns.z", GLFW.GLFW_KEY_H, OldGuns.MODID);
 	public static final KeyMapping J = new KeyMapping("key.oldguns.x", GLFW.GLFW_KEY_J, OldGuns.MODID);
 	public static final KeyMapping MINUS = new KeyMapping("key.oldguns.-", GLFW.GLFW_KEY_MINUS, OldGuns.MODID);
-	
+
 	private static boolean clicked = false;
-	
+
 	public static void setup() {
 		ClientsHandler.register(mc.getUser(), client);
-		
+
 		MenuScreens.register(ContainerRegistries.GUN_AMMO_CONTAINER.get(), GunAmmoGui::new);
 		MenuScreens.register(ContainerRegistries.GUN_CONTAINER.get(), GunGui::new);
 		MenuScreens.register(ContainerRegistries.GUN_CRAFTING_CONTAINER.get(), GunCraftingGui::new);
 		MenuScreens.register(ContainerRegistries.GUN_PARTS_CONTAINER.get(), GunPartsGui::new);
 		MenuScreens.register(ContainerRegistries.MAG_CONTAINER.get(), MagGui::new);
-		
+
 		EntityRenderers.register(EntityRegistries.BULLET.get(), ThrownItemRenderer::new);
 	}
-	
+
 	public static void registerModEventListeners(IEventBus bus) {
 		bus.addListener(ClientEventHandler::registerSpecialModels);
 		bus.addListener(ClientEventHandler::bakeModels);
 		bus.addListener(ClientEventHandler::registerKeyMappings);
 	}
-	
+
 	public static void registerForgeEventListeners(IEventBus bus) {
 		bus.addListener(ClientEventHandler::registerGunModels);
 		bus.addListener(ClientEventHandler::renderFirstPersonStuff);
@@ -119,9 +120,9 @@ public class ClientEventHandler {
 		bus.addListener(ClientEventHandler::handleKeyboard);
 		bus.addListener(ClientEventHandler::handleRawMouse);
 	}
-	
+
 	// Keys
-	
+
 	private static void registerKeyMappings(RegisterKeyMappingsEvent e) {
 		e.register(RELOAD);
 		e.register(KICKBACK);
@@ -129,9 +130,9 @@ public class ClientEventHandler {
 		e.register(ATTACHMENTS);
 		e.register(GETOUTMAG);
 	}
-	
+
 	// Models
-	
+
 	private static void registerSpecialModels(ModelEvent.RegisterAdditional e) {
 		e.register(new ModelResourceLocation(Paths.WINCHESTERBULLETLOADER, "inventory"));
 		e.register(new ModelResourceLocation(Paths.MP40HAMMER, "inventory"));
@@ -145,43 +146,40 @@ public class ClientEventHandler {
 		e.register(new ModelResourceLocation(Paths.SCORPIONHAMMER, "inventory"));
 		e.register(new ModelResourceLocation(Paths.THOMPSONHAMMER, "inventory"));
 	}
-	
+
 	private static void bakeModels(ModelEvent.BakingCompleted e) {
 		LogUtils.getLogger().info("Baking models");
 		GunModelsHandler.setInit(false);
-		if(!GunModelsHandler.getInit()) {
+		if (!GunModelsHandler.getInit()) {
 			GunModelsHandler.setInit(true);
-			
+
 			MinecraftForge.EVENT_BUS.start();
 			MinecraftForge.EVENT_BUS.post(new RegisterGunModelEvent());
 			MinecraftForge.EVENT_BUS.post(new RegisterEasingsEvent());
 		}
-		
+
 		Map<ResourceLocation, BakedModel> models = e.getModels();
 
 		for (String item : GunModelsHandler.getMap().keySet()) {
 			GunModel gunModel = GunModelsHandler.get(item);
-			gunModel.setModel(
-					gunModel.getModifiedModel(models.get(Utils.getMR(gunModel.gun))));
-			models.put(Utils.getMR(gunModel.gun),
-					gunModel.getModel());
+			gunModel.setModel(gunModel.getModifiedModel(models.get(Utils.getMR(gunModel.gun))));
+			models.put(Utils.getMR(gunModel.gun), gunModel.getModel());
 			LogUtils.getLogger().info("Registering " + item + " modelRes: " + Utils.getMR(gunModel.gun).toString());
 		}
-		for(Entry<String, ArrayList<Supplier<? extends Item>>> entry 
-				: ItemsReg.INSTANCE.getGunParts().entrySet()) {
-			for(Supplier<? extends Item> sup : entry.getValue()) {
+		for (Entry<String, ArrayList<Supplier<? extends Item>>> entry : ItemsReg.INSTANCE.getGunParts().entrySet()) {
+			for (Supplier<? extends Item> sup : entry.getValue()) {
 				ModelResourceLocation modelRes = Utils.getMR(sup.get());
 				models.put(modelRes, new ExtraItemWrapperModel(models.get(modelRes)));
 			}
 		}
-		for(Supplier<? extends Item> sup : ItemsReg.INSTANCE.getMags()) {
+		for (Supplier<? extends Item> sup : ItemsReg.INSTANCE.getMags()) {
 			ModelResourceLocation modelRes = Utils.getMR(sup.get());
 			models.put(modelRes, new ExtraItemWrapperModel(models.get(modelRes)));
 		}
 	}
-	
+
 	// Custom events
-	
+
 	private static void registerGunModels(RegisterGunModelEvent e) {
 		LogUtils.getLogger().info("Registering models");
 		e.register(ItemRegistries.WINCHESTER.get(), new WinchesterGunModel(client));
@@ -195,9 +193,9 @@ public class ClientEventHandler {
 		e.register(ItemRegistries.SCORPION.get(), new ScorpionGunModel(client));
 		e.register(ItemRegistries.THOMPSON.get(), new ThompsonGunModel(client));
 	}
-	
+
 	// Rendering
-	
+
 	private static void renderFirstPersonStuff(RenderHandEvent e) {
 		Player player = mc.player;
 		if (player != null) {
@@ -211,142 +209,123 @@ public class ClientEventHandler {
 			}
 		}
 	}
-	
+
 	// Rendering Overlay
 
-		public static void renderOverlayPre(RenderGuiOverlayEvent.Pre e) {
-			Player player = mc.player;
-			if (player == null)
-				return;
-			
-			if (player.getMainHandItem().getItem() instanceof GunItem) {
-				if (e.getOverlay() == VanillaGuiOverlay.CROSSHAIR.type()) {
-					if (mc.options.getCameraType().isFirstPerson()) {
-						e.setCanceled(true);
-					}
-				}
-				client.renderHitmarker = false;
-				if (client.renderHitmarker || client.debugAim || 
-						client.getHitmarker().hitmarkerTime > 0) {
-					RenderHelper.drawHitmarker(e.getPoseStack(), RenderHelper.HITMARKER, 8);
-				}
-			}
-		}
+	public static void renderOverlayPre(RenderGuiOverlayEvent.Pre e) {
+		Player player = mc.player;
+		if (player == null)
+			return;
 
-		public static void renderOverlayPost(RenderGuiOverlayEvent.Post e) {
-			Player player = mc.player;
-			if (player == null)
-				return;
-			/*if (player.getMainHandItem().getItem() instanceof GunItem) {
-				if(((GunItem)player.getMainHandItem().getItem()).hasScope()) {
-					if (e.getOverlay()== VanillaGuiOverlay.HOTBAR.type()) {
-						if(client.getAimHandler().getProgress() > 0.5f) {
-							/*RenderHelper.renderScopeOverlay(
-									client.getAimHandler().getProgress());*/
-						/*}
-					}
-				}
-			}*/
-			ItemStack stack = player.getMainHandItem();
-			if (e.getOverlay() == VanillaGuiOverlay.HOTBAR.type()) {
-				if (stack.getItem() instanceof GunItem) {
-					mc.font.draw(e.getPoseStack(),
-							NBTUtils.getAmmo(stack) + "/" + NBTUtils.getMaxAmmo(stack),
-							Minecraft.getInstance().getWindow().getGuiScaledWidth() / 7,
-							Minecraft.getInstance().getWindow().getGuiScaledHeight() / 1.5f, 0xFFFFFF);
-				} else if (stack.getItem() instanceof MagItem) {
-					MagItem mag = ((MagItem) stack.getItem());
-					mc.font.draw(e.getPoseStack(), 
-							NBTUtils.getAmmo(stack) + "/" + mag.getMaxAmmo(),
-							Minecraft.getInstance().getWindow().getGuiScaledWidth() / 7,
-							Minecraft.getInstance().getWindow().getGuiScaledHeight() / 1.5f, 0xFFFFFF);
+		if (player.getMainHandItem().getItem() instanceof GunItem) {
+			if (e.getOverlay() == VanillaGuiOverlay.CROSSHAIR.type()) {
+				if (mc.options.getCameraType().isFirstPerson()) {
+					e.setCanceled(true);
 				}
 			}
+			client.renderHitmarker = false;
+			if (client.renderHitmarker || client.debugAim || client.getHitmarker().hitmarkerTime > 0) {
+				RenderHelper.drawHitmarker(e.getPoseStack(), RenderHelper.HITMARKER, 8);
+			}
 		}
-	
-	private static void registerEasings(RegisterEasingsEvent e){
+	}
+
+	public static void renderOverlayPost(RenderGuiOverlayEvent.Post e) {
+		Player player = mc.player;
+		if (player == null)
+			return;
+		/*
+		 * if (player.getMainHandItem().getItem() instanceof GunItem) {
+		 * if(((GunItem)player.getMainHandItem().getItem()).hasScope()) { if
+		 * (e.getOverlay()== VanillaGuiOverlay.HOTBAR.type()) {
+		 * if(client.getAimHandler().getProgress() > 0.5f) {
+		 * /*RenderHelper.renderScopeOverlay( client.getAimHandler().getProgress());
+		 */
+		/*
+		 * } } } }
+		 */
+		ItemStack stack = player.getMainHandItem();
+		if (e.getOverlay() == VanillaGuiOverlay.HOTBAR.type()) {
+			if (stack.getItem() instanceof GunItem) {
+				mc.font.draw(e.getPoseStack(), NBTUtils.getAmmo(stack) + "/" + NBTUtils.getMaxAmmo(stack),
+						Minecraft.getInstance().getWindow().getGuiScaledWidth() / 7,
+						Minecraft.getInstance().getWindow().getGuiScaledHeight() / 1.5f, 0xFFFFFF);
+			} else if (stack.getItem() instanceof MagItem) {
+				MagItem mag = ((MagItem) stack.getItem());
+				mc.font.draw(e.getPoseStack(), NBTUtils.getAmmo(stack) + "/" + mag.getMaxAmmo(),
+						Minecraft.getInstance().getWindow().getGuiScaledWidth() / 7,
+						Minecraft.getInstance().getWindow().getGuiScaledHeight() / 1.5f, 0xFFFFFF);
+			}
+		}
+	}
+
+	private static void registerEasings(RegisterEasingsEvent e) {
 		e.register("empty", (x) -> x);
-		e.register("easeInSine", (x) -> (float)(1 - Math.cos((x * Math.PI) / 2)));
-		e.register("easeOutSine", (x) -> (float)(Math.sin((x * Math.PI) / 2)));
-		e.register("easeInOutSine", (x) -> (float)(-(Math.cos(Math.PI * x) - 1) / 2));
-		
-		e.register("easeInQuad", (x) -> (float)(x * x));
-		e.register("easeOutQuad", (x) -> (float)(1 - (1 - x) * (1 - x)));
-		e.register("easeInOutQuad", (x) -> (float)(x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2));
-		
-		e.register("easeInCubic", (x) -> (float)(x * x * x));
-		e.register("easeOutCubic", (x) -> (float)(1 - Math.pow(1 - x, 3)));
-		e.register("easeInOutCubic", (x) -> (float)(x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2));
-		
-		e.register("easeInQuart", (x) -> (float)(x * x * x * x));
-		e.register("easeOutQuart", (x) -> (float)(1 - Math.pow(1 - x, 4)));
-		e.register("easeInOutQuart", (x) -> (float)(x < 0.5 ? 8 * x * x * x * x : 1 - Math.pow(-2 * x + 2, 4) / 2));
-		
-		e.register("easeInQuint", (x) -> (float)(x * x * x * x * x));
-		e.register("easeOutQuint", (x) -> (float)(1 - Math.pow(1 - x, 5)));
-		e.register("easeInOutQuint", (x) -> (float)(x < 0.5 ? 16 * x * x * x * x * x : 1 - Math.pow(-2 * x + 2, 5) / 2));
-		
-		e.register("easeInExpo", (x) -> (float)(x == 0 ? 0 : Math.pow(2, 10 * x - 10)));
-		e.register("easeOutExpo", (x) -> (float)(x == 1 ? 1 : 1 - Math.pow(2, -10 * x)));
-		e.register("easeInOutExpo", (x) -> (float)(x == 0
-				  ? 0
-				  : x == 1
-				  ? 1
-			      : x < 0.5 ? Math.pow(2, 20 * x - 10) / 2
-				  : (2 - Math.pow(2, -20 * x + 10)) / 2));
-		
-		e.register("easeInCirc", (x) -> (float)(1 - Math.sqrt(1 - Math.pow(x, 2))));
-		e.register("easeOutCirc", (x) -> (float)(Math.sqrt(1 - Math.pow(x - 1, 2))));
-		e.register("easeInOutCirc", (x) -> (float)(x < 0.5
-				  ? (1 - Math.sqrt(1 - Math.pow(2 * x, 2))) / 2
-						  : (Math.sqrt(1 - Math.pow(-2 * x + 2, 2)) + 1) / 2));
-		
-		e.register("easeInBack", (x) -> (float)(2.70158 * x * x * x - 1.70158f * x * x));
-		e.register("easeOutBack", (x) -> (float)(1 + 2.70158 * Math.pow(x - 1, 3) + 1.70158 * Math.pow(x - 1, 2)));
-		e.register("easeInOutBack", (x) -> (float)(x < 0.5
-				  ? (Math.pow(2 * x, 2) * ((2.5949095f + 1) * 2 * x - 2.5949095f)) / 2
-						  : (Math.pow(2 * x - 2, 2) * ((2.5949095f + 1) * (x * 2 - 2) + 2.5949095f) + 2) / 2));
-		
-		e.register("easeInElastic", (x) -> (float)(x == 0
-				  ? 0
-				  : x == 1
-				  ? 1
-				  : -Math.pow(2, 10 * x - 10) * Math.sin((x * 10 - 10.75) 
-						  * ((2 * Math.PI) / 3))));
-		e.register("easeOutElastic", (x) -> (float)(x == 0
-				  ? 0
-				  : x == 1
-				  ? 1
-				  : Math.pow(2, -10 * x) * Math.sin((x * 10 - 0.75f) * 
-						  ((2 * Math.PI) / 3)) + 1));
-		e.register("easeInOutElastic", (x) -> (float)(x == 0
-				  ? 0
-				  : x == 1
-				  ? 1
-				  : x < 0.5
-				  ? -(Math.pow(2, 20 * x - 10) * Math.sin((20 * x - 11.125) * 
-						  ((2 * Math.PI) / 4.5))) / 2
-				  : (Math.pow(2, -20 * x + 10) * Math.sin((20 * x - 11.125) * 
-						  ((2 * Math.PI) / 4.5))) / 2 + 1));
-		
-		e.register("easeInBounce", (x) -> (float)(1 - e.getEasing("easeOutBounce").get(1 - x)));
+		e.register("easeInSine", (x) -> (float) (1 - Math.cos((x * Math.PI) / 2)));
+		e.register("easeOutSine", (x) -> (float) (Math.sin((x * Math.PI) / 2)));
+		e.register("easeInOutSine", (x) -> (float) (-(Math.cos(Math.PI * x) - 1) / 2));
+
+		e.register("easeInQuad", (x) -> (float) (x * x));
+		e.register("easeOutQuad", (x) -> (float) (1 - (1 - x) * (1 - x)));
+		e.register("easeInOutQuad", (x) -> (float) (x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2));
+
+		e.register("easeInCubic", (x) -> (float) (x * x * x));
+		e.register("easeOutCubic", (x) -> (float) (1 - Math.pow(1 - x, 3)));
+		e.register("easeInOutCubic", (x) -> (float) (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2));
+
+		e.register("easeInQuart", (x) -> (float) (x * x * x * x));
+		e.register("easeOutQuart", (x) -> (float) (1 - Math.pow(1 - x, 4)));
+		e.register("easeInOutQuart", (x) -> (float) (x < 0.5 ? 8 * x * x * x * x : 1 - Math.pow(-2 * x + 2, 4) / 2));
+
+		e.register("easeInQuint", (x) -> (float) (x * x * x * x * x));
+		e.register("easeOutQuint", (x) -> (float) (1 - Math.pow(1 - x, 5)));
+		e.register("easeInOutQuint",
+				(x) -> (float) (x < 0.5 ? 16 * x * x * x * x * x : 1 - Math.pow(-2 * x + 2, 5) / 2));
+
+		e.register("easeInExpo", (x) -> (float) (x == 0 ? 0 : Math.pow(2, 10 * x - 10)));
+		e.register("easeOutExpo", (x) -> (float) (x == 1 ? 1 : 1 - Math.pow(2, -10 * x)));
+		e.register("easeInOutExpo", (x) -> (float) (x == 0 ? 0
+				: x == 1 ? 1 : x < 0.5 ? Math.pow(2, 20 * x - 10) / 2 : (2 - Math.pow(2, -20 * x + 10)) / 2));
+
+		e.register("easeInCirc", (x) -> (float) (1 - Math.sqrt(1 - Math.pow(x, 2))));
+		e.register("easeOutCirc", (x) -> (float) (Math.sqrt(1 - Math.pow(x - 1, 2))));
+		e.register("easeInOutCirc", (x) -> (float) (x < 0.5 ? (1 - Math.sqrt(1 - Math.pow(2 * x, 2))) / 2
+				: (Math.sqrt(1 - Math.pow(-2 * x + 2, 2)) + 1) / 2));
+
+		e.register("easeInBack", (x) -> (float) (2.70158 * x * x * x - 1.70158f * x * x));
+		e.register("easeOutBack", (x) -> (float) (1 + 2.70158 * Math.pow(x - 1, 3) + 1.70158 * Math.pow(x - 1, 2)));
+		e.register("easeInOutBack",
+				(x) -> (float) (x < 0.5 ? (Math.pow(2 * x, 2) * ((2.5949095f + 1) * 2 * x - 2.5949095f)) / 2
+						: (Math.pow(2 * x - 2, 2) * ((2.5949095f + 1) * (x * 2 - 2) + 2.5949095f) + 2) / 2));
+
+		e.register("easeInElastic", (x) -> (float) (x == 0 ? 0
+				: x == 1 ? 1 : -Math.pow(2, 10 * x - 10) * Math.sin((x * 10 - 10.75) * ((2 * Math.PI) / 3))));
+		e.register("easeOutElastic", (x) -> (float) (x == 0 ? 0
+				: x == 1 ? 1 : Math.pow(2, -10 * x) * Math.sin((x * 10 - 0.75f) * ((2 * Math.PI) / 3)) + 1));
+		e.register("easeInOutElastic", (x) -> (float) (x == 0 ? 0
+				: x == 1 ? 1
+						: x < 0.5
+								? -(Math.pow(2, 20 * x - 10) * Math.sin((20 * x - 11.125) * ((2 * Math.PI) / 4.5))) / 2
+								: (Math.pow(2, -20 * x + 10) * Math.sin((20 * x - 11.125) * ((2 * Math.PI) / 4.5))) / 2
+										+ 1));
+
+		e.register("easeInBounce", (x) -> (float) (1 - e.getEasing("easeOutBounce").get(1 - x)));
 		e.register("easeOutBounce", (x) -> {
 			float n1 = 7.5625f;
 			float d1 = 2.75f;
-			
+
 			if (x < 1 / d1) {
-			    return n1 * x * x;
+				return n1 * x * x;
 			} else if (x < 2 / d1) {
-			    return (float)(n1 * (x -= 1.5 / d1) * x + 0.75);
+				return (float) (n1 * (x -= 1.5 / d1) * x + 0.75);
 			} else if (x < 2.5 / d1) {
-			    return (float)(n1 * (x -= 2.25 / d1) * x + 0.9375);
+				return (float) (n1 * (x -= 2.25 / d1) * x + 0.9375);
 			} else {
-			    return (float)(n1 * (x -= 2.625 / d1) * x + 0.984375);
+				return (float) (n1 * (x -= 2.625 / d1) * x + 0.984375);
 			}
 		});
-		e.register("easeInOutBounce", (x) -> (float)(x < 0.5
-				  ? (1 - e.getEasing("easeOutBounce").get(1 - 2 * x)) / 2
-						  : (1 + e.getEasing("easeOutBounce").get(2 * x - 1)) / 2));
+		e.register("easeInOutBounce", (x) -> (float) (x < 0.5 ? (1 - e.getEasing("easeOutBounce").get(1 - 2 * x)) / 2
+				: (1 + e.getEasing("easeOutBounce").get(2 * x - 1)) / 2));
 		LogUtils.getLogger().info("Registering easings");
 	}
 
@@ -356,12 +335,12 @@ public class ClientEventHandler {
 			if (player != null) {
 				ItemStack stack = player.getMainHandItem();
 				if (stack.getItem() instanceof GunItem) {
-					
+
 					if (stack.getOrCreateTag().getString(NBTUtils.ID) == "") {
 						OldGuns.channel.sendToServer(new InitGunMessage(UUID.randomUUID()));
 						System.out.println("Id set to: " + stack.getOrCreateTag().getString(NBTUtils.ID));
 					}
-					
+
 					client.tick();
 					client.selectGunModel();
 					if (client.getGunModel() != null) {
@@ -378,11 +357,12 @@ public class ClientEventHandler {
 						// Shoot handler
 						if (GLFW.glfwGetMouseButton(Minecraft.getInstance().getWindow().getWindow(),
 								GLFW.GLFW_MOUSE_BUTTON_LEFT) == GLFW.GLFW_PRESS) {
-							//client.shoot(player);
-							if (!player.isSprinting() && Minecraft.getInstance().screen == null &&
-								((GunItem)stack.getItem()).getFireMode() == FireMode.AUTO) {
-								if (client.getGunModel().getAnimation() == null && 
-										!client.getCooldown().hasCooldown(NBTUtils.getId(stack))) {
+							// client.shoot(player);
+							if (!player.isSprinting() && Minecraft.getInstance().screen == null
+									&& ((GunItem) stack.getItem()).getFireMode() == FireMode.AUTO) {
+								if (client.getGunModel().getAnimation() == null &&
+								// !client.getCooldown().hasCooldown(NBTUtils.getId(stack))) {
+										!client.getCooldownRecoil().isOnCooldown(player.getMainHandItem().getItem())) {
 									client.shoot(player);
 								}
 							}
@@ -394,153 +374,150 @@ public class ClientEventHandler {
 	}
 
 	// Player
-	
+
 	public static void interruptInteractions(PlayerInteractEvent.LeftClickBlock e) {
 		Player player = e.getEntity();
-		if(player != null) {
-			if(player.getMainHandItem().getItem() instanceof GunItem) {
+		if (player != null) {
+			if (player.getMainHandItem().getItem() instanceof GunItem) {
 				e.setCanceled(true);
 			}
 		}
 	}
-	
+
 	// Input
 
-		private static void handleKeyboard(InputEvent.Key e) {
-			//LogUtils.getLogger().info("Key: " + e.getKey());
-			Screen screen = mc.screen;
-			if (screen == null || screen instanceof AnimationScreen || screen instanceof GunPartsScreen) {
-				boolean animEditFocused = false;
-				if (screen instanceof AnimationScreen) {
-					AnimationScreen animScreen = (AnimationScreen)screen;
-					for(EditBox edit : animScreen.getEditBoxes()) {
-						if(edit.isFocused()) {
-							animEditFocused = true;
-							break;
-						}
-					}
-				}
-				if (animEditFocused)
-					return;
-				// if(e.getAction() == GLFW.GLFW_PRESS) {
-				Player player = mc.player;
-				
-				if (player != null) {
-					ItemStack stack = player.getMainHandItem();
-					if (stack.getItem() instanceof GunItem) {
-						if (client.getGunModel() == null)
-							return;
-						
-						if (e.getAction() == GLFW.GLFW_PRESS) {
-							if (RELOAD.getKey().getValue() == e.getKey()) {
-								// OldGuns.channel.sendToServer(new LoadBulletMessage(true));
-								client.getGunModel().reload(player, stack);
-							} else if (LOOKANIM.getKey().getValue() == e.getKey()) {
-								client.getGunModel().setAnimation(client.getGunModel().getLookAnimation());
-								LogUtils.getLogger().info("Setting look animation");
-							} else if(KICKBACK.getKey().getValue() == e.getKey()) {
-								client.getGunModel().setAnimation(
-										client.getGunModel().getKickbackAnimation());
-							} else if(e.getKey() == 93) {
-								MinecraftForge.EVENT_BUS.start();
-								MinecraftForge.EVENT_BUS.post(new RegisterGunModelEvent());
-								MinecraftForge.EVENT_BUS.post(new RegisterEasingsEvent());
-							} else if(ATTACHMENTS.getKey().getValue() == e.getKey()) {
-								OldGuns.channel.sendToServer(new OpenGunGuiMessage());
-							} else if(e.getKey() == 75) {
-								Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(NBTUtils.getBody(stack)));
-								LogUtils.getLogger().info("Body string: " + NBTUtils.getBody(stack) + 
-										" item == null: " + (item == null) + "" + ((item == null) ? "" : 
-											" item reg: " + Utils.getR(item)) + " " + 
-										((item instanceof GunPart) ? ((GunPart)item)
-												.getGunPartProperties().getValidSize() : "Nothing"));
-								if(!NBTUtils.hasMag(stack)) {
-									String size = item == null ? BulletItem.MEDIUM :
-										((GunPart)item).getGunPartProperties()
-										.getValidSize();
-									LogUtils.getLogger().info("Size: " + size);
-									int index = ServerUtils
-											.getIndexForCorrectMag(player.getInventory(), 
-													client.getGunModel().gun.getGunId(), size);
-									LogUtils.getLogger().info("index: " + index);
-									if(index != -1) {
-										ItemStack mag = mc.player
-												.getInventory().getItem(index);
-										//int magBullets = NBTUtils.getAmmo(mag);
-										ReloadHandler.setMag(client.getGunModel(), NBTUtils.getMaxAmmo(mag), 
-											true, NBTUtils.getMagBullet(mag), (MagItem)mag.getItem());
-									}
-								} else {
-									ReloadHandler.setMag(client.getGunModel(), 0, 
-											false, "", (MagItem)null);
-									LogUtils.getLogger().info("Setting mag to false");
-								}
-							} else if(e.getKey() == GETOUTMAG.getKey().getValue()){
-								if(client.getGunModel().getGetOutMagAnimation() != null) {
-									client.getGunModel().setAnimation(client.getGunModel()
-											.getGetOutMagAnimation());
-								}
-							}
-							if(true){//Config.CLIENT.doDebugStuff.get()) {
-								if (H.getKey().getValue() == e.getKey()) {
-									client.right();
-								} else if (J.getKey().getValue() == e.getKey()) {
-									client.left();
-								}
-								if (47 == e.getKey() && mc.screen == null) {
-									mc.setScreen(new GunPartsScreen(client.getGunModel()).setAnimScreen());
-								} else if (SWITCH.getKey().getValue() == e.getKey()) {
-									client.switchRotationMode();
-								} else if (DISPLAY.getKey().getValue() == e.getKey()) {
-									client.display = !client.display;
-									LogUtils.getLogger().info("Display: " + client.display);
-								} else if(e.getKey() == 89) {
-									client.getGunModel().setShouldUpdateAnimation(true);
-								}
-							}
-						}
-						if(true){//Config.CLIENT.doDebugStuff.get()) {
-							if (LEFT.getKey().getValue() == e.getKey()) {
-								client.dec(0);
-							} else if (RIGHT.getKey().getValue() == e.getKey()) {
-								client.inc(0);
-							} else if (UP.getKey().getValue() == e.getKey()) {
-								client.inc(1);
-							} else if (DOWN.getKey().getValue() == e.getKey()) {
-								client.dec(1);
-							} else if (M.getKey().getValue() == e.getKey()) {
-								client.inc(2);
-							} else if (N.getKey().getValue() == e.getKey()) {
-								client.dec(2);
-							}
-						}
+	private static void handleKeyboard(InputEvent.Key e) {
+		// LogUtils.getLogger().info("Key: " + e.getKey());
+		Screen screen = mc.screen;
+		if (screen == null || screen instanceof AnimationScreen || screen instanceof GunPartsScreen) {
+			boolean animEditFocused = false;
+			if (screen instanceof AnimationScreen) {
+				AnimationScreen animScreen = (AnimationScreen) screen;
+				for (EditBox edit : animScreen.getEditBoxes()) {
+					if (edit.isFocused()) {
+						animEditFocused = true;
+						break;
 					}
 				}
 			}
-		}
+			if (animEditFocused)
+				return;
+			// if(e.getAction() == GLFW.GLFW_PRESS) {
+			Player player = mc.player;
 
-		private static void handleRawMouse(InputEvent.MouseButton e) {
-			if (mc.screen == null) {
-				Player player = mc.player;
-				if (player != null) {
-					if (player.getMainHandItem().getItem() instanceof GunItem) {
-						if(((GunItem)player.getMainHandItem().getItem()).getFireMode() 
-								!= FireMode.SEMI) return;
-						if (e.getAction() == GLFW.GLFW_PRESS && !clicked) {
-							clicked = true;
-							if (e.getButton() == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
-								if (client.getGunModel() != null) {
-									if (client.getRecoilHandler().getProgress() == 0) {
-										client.shoot(player);
-									}
+			if (player != null) {
+				ItemStack stack = player.getMainHandItem();
+				if (stack.getItem() instanceof GunItem) {
+					if (client.getGunModel() == null)
+						return;
+
+					if (e.getAction() == GLFW.GLFW_PRESS) {
+						if (RELOAD.getKey().getValue() == e.getKey()) {
+							// OldGuns.channel.sendToServer(new LoadBulletMessage(true));
+							client.getGunModel().reload(player, stack);
+						} else if (LOOKANIM.getKey().getValue() == e.getKey()) {
+							client.getGunModel().setAnimation(client.getGunModel().getLookAnimation());
+							LogUtils.getLogger().info("Setting look animation");
+						} else if (KICKBACK.getKey().getValue() == e.getKey()) {
+							client.getGunModel().setAnimation(client.getGunModel().getKickbackAnimation());
+						} else if (e.getKey() == 93) {
+							MinecraftForge.EVENT_BUS.start();
+							MinecraftForge.EVENT_BUS.post(new RegisterGunModelEvent());
+							MinecraftForge.EVENT_BUS.post(new RegisterEasingsEvent());
+						} else if (ATTACHMENTS.getKey().getValue() == e.getKey()) {
+							OldGuns.channel.sendToServer(new OpenGunGuiMessage());
+						} else if (e.getKey() == 75) {
+							Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(NBTUtils.getBody(stack)));
+							LogUtils.getLogger()
+									.info("Body string: " + NBTUtils.getBody(stack) + " item == null: " + (item == null)
+											+ "" + ((item == null) ? "" : " item reg: " + Utils.getR(item)) + " "
+											+ ((item instanceof GunPart)
+													? ((GunPart) item).getGunPartProperties().getValidSize()
+													: "Nothing"));
+							if (!NBTUtils.hasMag(stack)) {
+								String size = item == null ? BulletItem.MEDIUM
+										: ((GunPart) item).getGunPartProperties().getValidSize();
+								LogUtils.getLogger().info("Size: " + size);
+								int index = ServerUtils.getIndexForCorrectMag(player.getInventory(),
+										client.getGunModel().gun.getGunId(), size);
+								LogUtils.getLogger().info("index: " + index);
+								if (index != -1) {
+									ItemStack mag = mc.player.getInventory().getItem(index);
+									// int magBullets = NBTUtils.getAmmo(mag);
+									ReloadHandler.setMag(client.getGunModel(), NBTUtils.getMaxAmmo(mag), true,
+											NBTUtils.getMagBullet(mag), (MagItem) mag.getItem());
 								}
+							} else {
+								ReloadHandler.setMag(client.getGunModel(), 0, false, "", (MagItem) null);
+								LogUtils.getLogger().info("Setting mag to false");
 							}
-						} else if(e.getAction() == GLFW.GLFW_RELEASE){
-							clicked = false;
+						} else if (e.getKey() == GETOUTMAG.getKey().getValue()) {
+							if (client.getGunModel().getGetOutMagAnimation() != null) {
+								client.getGunModel().setAnimation(client.getGunModel().getGetOutMagAnimation());
+							}
+						}
+						if (true) {// Config.CLIENT.doDebugStuff.get()) {
+							if (H.getKey().getValue() == e.getKey()) {
+								client.right();
+							} else if (J.getKey().getValue() == e.getKey()) {
+								client.left();
+							}
+							if (47 == e.getKey() && mc.screen == null) {
+								mc.setScreen(new GunPartsScreen(client.getGunModel()).setAnimScreen());
+							} else if (SWITCH.getKey().getValue() == e.getKey()) {
+								client.switchRotationMode();
+							} else if (DISPLAY.getKey().getValue() == e.getKey()) {
+								client.display = !client.display;
+								LogUtils.getLogger().info("Display: " + client.display);
+							} else if (e.getKey() == 89) {
+								client.getGunModel().setShouldUpdateAnimation(true);
+							}
+						}
+					}
+					if (true) {// Config.CLIENT.doDebugStuff.get()) {
+						if (LEFT.getKey().getValue() == e.getKey()) {
+							client.dec(0);
+						} else if (RIGHT.getKey().getValue() == e.getKey()) {
+							client.inc(0);
+						} else if (UP.getKey().getValue() == e.getKey()) {
+							client.inc(1);
+						} else if (DOWN.getKey().getValue() == e.getKey()) {
+							client.dec(1);
+						} else if (M.getKey().getValue() == e.getKey()) {
+							client.inc(2);
+						} else if (N.getKey().getValue() == e.getKey()) {
+							client.dec(2);
 						}
 					}
 				}
 			}
 		}
-	
+	}
+
+	private static void handleRawMouse(InputEvent.MouseButton e) {
+		if (mc.screen == null) {
+			Player player = mc.player;
+			if (player != null) {
+				if (player.getMainHandItem().getItem() instanceof GunItem) {
+					if (((GunItem) player.getMainHandItem().getItem()).getFireMode() != FireMode.SEMI)
+						return;
+					if (e.getAction() == GLFW.GLFW_PRESS && !clicked) {
+						clicked = true;
+						if (e.getButton() == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+							if (client.getGunModel() != null) {
+								if (!client.getCooldownRecoil().isOnCooldown(player.getMainHandItem().getItem())
+										&& client.getGunModel().getAnimation() == null) {// client.getRecoilHandler().getProgress()
+																							// == 0) {
+									client.shoot(player);
+								}
+							}
+						}
+					} else if (e.getAction() == GLFW.GLFW_RELEASE) {
+						clicked = false;
+					}
+				}
+			}
+		}
+	}
+
 }

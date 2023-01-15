@@ -303,28 +303,20 @@ public class ThompsonGunModel extends GunModel {
 				SoundHandler.playSoundOnServer(SoundRegistries.THOMPSONMAGIN.get());
 			} else if(tick == 85) {
 				SoundHandler.playSoundOnServer(SoundRegistries.THOMPSONCOCKING.get());
-				ReloadHandler.restoreMag(getMPath(), ServerUtils.getBullets(Utils.getStack()));
-				ReloadHandler.setBullets((int)data.get("magBullets"));
-				ReloadHandler.removeItem((int)data.get("index"), 1);
+				reloadMagByMagStuff();
 			}
 		} else if(getAnimation() == reloadNoMag) {
 			if(tick == 48) {
 				SoundHandler.playSoundOnServer(SoundRegistries.THOMPSONMAGIN.get());
 			} else if(tick == 18) {
-				MagItem magItem = getMagItem((int)data.get("index"));
-				ReloadHandler.setMag(this, magItem.getMaxAmmo(), true, 
-						getMBPath((int)data.get("index")), magItem);
-				ReloadHandler.removeItem((int)data.get("index"), 1);
-				ReloadHandler.setBullets((int)data.get("magBullets"));
+				reloadNoMagStuff();
 			} else if(tick == 74) {
 				SoundHandler.playSoundOnServer(SoundRegistries.THOMPSONCOCKING.get());
 			}
 		} else if(getAnimation() == getOutMag) {
 			if(tick == 10) {
 				SoundHandler.playSoundOnServer(SoundRegistries.THOMPSONMAGOUT.get());
-				ReloadHandler.restoreMag(getMPath(), ServerUtils.getBullets(Utils.getStack()));
-				ReloadHandler.setMag(this, 0, false, 
-						"", "");
+				getOutMagStuff();
 			}
 		} else if(getAnimation() == kickback) {
 			if(tick == 4) {
@@ -335,22 +327,7 @@ public class ThompsonGunModel extends GunModel {
 	
 	@Override
 	public void reload(Player player, ItemStack stack) {
-		int index = ServerUtils
-				.getIndexForCorrectMag(player.getInventory(), 
-						gun.getGunId(),
-				BulletItem.SMALL);
-		if(index != -1) {
-			data.put("index", index);
-			LogUtils.getLogger().info("index: " + index);
-			ItemStack mag = getMagStack(index);
-			data.put("mag", mag);
-			data.put("magBullets", NBTUtils.getAmmo(mag));
-			if(NBTUtils.hasMag(stack)) {
-				setAnimation(reloadMagByMag);
-			} else {
-				setAnimation(reloadNoMag);
-			}
-		}
+		fillReloadData(BulletItem.SMALL, player, stack, reloadMagByMag, reloadNoMag);
 	}
 
 	@Override

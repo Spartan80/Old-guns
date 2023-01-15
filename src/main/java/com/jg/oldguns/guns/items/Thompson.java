@@ -24,7 +24,7 @@ public class Thompson extends GunItem {
 
 	@Override
 	public float getShootTime() {
-		return 1;
+		return 2;
 	}
 
 	@Override

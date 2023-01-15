@@ -31,6 +31,7 @@ public class ClientHandler {
 	private RecoilHandler recoil;
 	private HitmarkerHandler hitmarker;
 	private CooldownHandler cooldown;
+	private CooldownRecoilHandler cooldownRecoil;
 	
 	public ClientHandler() {
 		sprint = new SprintHandler();
@@ -38,6 +39,7 @@ public class ClientHandler {
 		recoil = new RecoilHandler();
 		hitmarker = new HitmarkerHandler();
 		cooldown = new CooldownHandler();
+		cooldownRecoil = new CooldownRecoilHandler();
 	}
 	
 	// Methods
@@ -46,13 +48,15 @@ public class ClientHandler {
 		recoil.tick();
 		hitmarker.tick();
 		cooldown.tick();
+		cooldownRecoil.tick();
 	}
 	
 	public void shoot(Player player) {
 		if(current.canShoot(player, player.getMainHandItem())) {
 			current.shoot(player, player.getMainHandItem());
-			cooldown.addCooldown(NBTUtils.getId(player.getMainHandItem()), current.gun
-					.getShootTime());
+			//cooldown.addCooldown(NBTUtils.getId(player.getMainHandItem()), current.gun
+			//		.getShootTime());
+			cooldownRecoil.addCooldown(current.gun, (int)current.gun.getShootTime());
 			LogUtils.getLogger().info("shoot2");
 			recoil.setShoot();
 			player.setXRot(player.getXRot()-(float)(Math.random() * current.getKnockback()));
@@ -266,6 +270,10 @@ public class ClientHandler {
 	
 	public CooldownHandler getCooldown() {
 		return cooldown;
+	}
+	
+	public CooldownRecoilHandler getCooldownRecoil() {
+		return cooldownRecoil;
 	}
 	
 }

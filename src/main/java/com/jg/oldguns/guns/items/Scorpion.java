@@ -24,7 +24,7 @@ public class Scorpion extends GunItem {
 
 	@Override
 	public float getShootTime() {
-		return 0.6f;
+		return 1;
 	}
 
 	@Override

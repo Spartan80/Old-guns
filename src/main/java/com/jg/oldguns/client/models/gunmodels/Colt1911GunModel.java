@@ -9,11 +9,13 @@ import com.jg.oldguns.client.animations.parts.GunModelPart;
 import com.jg.oldguns.client.handlers.ClientHandler;
 import com.jg.oldguns.client.models.modmodels.Colt1911ModModel;
 import com.jg.oldguns.client.models.wrapper.WrapperModel;
+import com.jg.oldguns.guns.BulletItem;
 import com.jg.oldguns.registries.ItemRegistries;
 import com.jg.oldguns.utils.NBTUtils;
 import com.jg.oldguns.utils.Paths;
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.resources.model.BakedModel;
@@ -196,80 +198,80 @@ public class Colt1911GunModel extends GunModel {
 				.end();
 		reloadNoMag = new Animation("reloadNoMagAnim", "oldguns:colt1911")
 				.startKeyframe(18, "easeInOutSine")
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.translate(parts[1], -0.3799999f, 0.0f, 0.0f)
 				.translate(parts[7], 0.0f, 0.0f, 0.0f)
 				.translate(parts[6], 0.41999987f, 0.36999992f, 0.0f)
 				.translate(parts[8], 0.0f, 0.0f, 0.0f)
-				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.06981318f, -0.034906585f, -0.24434613f)
 				.startKeyframe(12)
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.translate(parts[1], -0.3799999f, -0.45999983f, 0.0f)
 				.translate(parts[7], 0.0f, 0.0f, 0.0f)
 				.translate(parts[6], 0.41999987f, 0.36999992f, 0.0f)
 				.translate(parts[8], 0.0f, 0.0f, 0.0f)
-				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.06981318f, -0.034906585f, -0.24434613f)
 				.startKeyframe(12)
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.translate(parts[1], -0.3799999f, -0.45999983f, 0.0f)
 				.translate(parts[7], 0.0f, 0.0f, 0.0f)
 				.translate(parts[6], 0.41999987f, 0.36999992f, 0.0f)
 				.translate(parts[8], 0.0f, 0.0f, 0.0f)
-				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.06981318f, -0.034906585f, -0.24434613f)
 				.startKeyframe(12)
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.translate(parts[1], -0.3799999f, -0.45999983f, 0.0f)
 				.translate(parts[7], 0.0f, 0.0f, 0.0f)
 				.translate(parts[6], 0.41999987f, 0.36999992f, 0.0f)
 				.translate(parts[8], 0.0f, 0.0f, 0.0f)
-				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.06981318f, -0.034906585f, -0.24434613f)
 				.startKeyframe(12, "easeInOutExpo")
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.translate(parts[1], 0.22000004f, -0.09999997f, 0.0f)
 				.translate(parts[7], 0.0f, 0.0f, 0.0f)
 				.translate(parts[6], 0.41999987f, 0.3899999f, 0.0f)
 				.translate(parts[8], 0.0f, 0.0f, 0.0f)
-				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.06981318f, -0.034906585f, -0.24434613f)
 				.startKeyframe(12)
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.translate(parts[1], -0.5099998f, 0.27000004f, 0.0f)
 				.translate(parts[7], 0.0f, 0.0f, 0.0f)
 				.translate(parts[6], -0.6299997f, -0.66999966f, 0.02f)
 				.translate(parts[8], 0.0f, 0.0f, 0.0f)
-				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.06981318f, -0.034906585f, 0.43633223f)
 				.startKeyframe(12)
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.translate(parts[1], -0.39999992f, 0.79999954f, -0.019999985f)
 				.translate(parts[7], 0.0f, 0.0f, 0.0f)
 				.translate(parts[6], -0.6299997f, -0.66999966f, 0.02f)
 				.translate(parts[8], 0.0f, 0.0f, 0.0f)
-				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.06981318f, -0.034906585f, 0.43633223f)
-				.startKeyframe(6)
+				.startKeyframe(6, "easeOutExpo")
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.translate(parts[1], -0.39999992f, 0.79999954f, -0.019999985f)
 				.translate(parts[7], 0.0f, 0.0f, 0.11999998f)
 				.translate(parts[6], -0.6299997f, -0.66999966f, 0.02f)
 				.translate(parts[8], 0.0f, 0.0f, 0.1999999f)
-				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.06981318f, -0.034906585f, 0.43633223f)
 				.startKeyframe(6, "easeOutCirc")
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.translate(parts[1], -0.39999992f, 0.79999954f, -0.019999985f)
 				.translate(parts[7], 0.0f, 0.0f, 0.11999998f)
 				.translate(parts[6], -0.6299997f, -0.66999966f, 0.02f)
 				.translate(parts[8], 0.0f, 0.0f, 0.1999999f)
-				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.06981318f, -0.034906585f, 0.43633223f)
-				.startKeyframe(6, "easeOutQuart")
+				.startKeyframe(6, "easeOutQuint")
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.translate(parts[1], -0.39999992f, 0.79999954f, -0.019999985f)
 				.translate(parts[7], 0.0f, 0.0f, 0.0f)
 				.translate(parts[6], -0.6299997f, -0.66999966f, 0.02f)
 				.translate(parts[8], 0.0f, 0.0f, 0.0f)
-				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.06981318f, -0.034906585f, 0.43633223f)
 				.startKeyframe(12)
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.translate(parts[1], 0.0f, 0.0f, 0.0f)
 				.translate(parts[7], 0.0f, 0.0f, 0.0f)
 				.translate(parts[6], 0.0f, 0.0f, 0.0f)
-				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.0f, 0.0f, 0.0f)
 				.end();
 		reloadMagByMagEeasterEgg = new Animation("reloadMagByMagAnim", "oldguns:colt1911")
@@ -478,7 +480,6 @@ public class Colt1911GunModel extends GunModel {
 
 	@Override
 	public void render(LocalPlayer player, ItemStack stack, MultiBufferSource buffer, PoseStack matrix, int light) {
-		
 		shootAnim = new Animation("shootAnim", "oldguns:colt1911")
 				.startKeyframe(3)
 				.translate(parts[5], 0, -0.2f, 0.24f)
@@ -506,7 +507,8 @@ public class Colt1911GunModel extends GunModel {
 		renderGunPart(player, stack, buffer, matrix, light);
 		matrix.pushPose();
 		translateAndRotateAndScale(parts[7].getCombined(), matrix);
-		lerpTransform(matrix, client.getCooldown().getProgress(NBTUtils.getId(stack)), 
+		lerpTransform(matrix, client.getCooldownRecoil().getCooldownPercent(gun, 
+				Minecraft.getInstance().getFrameTime()), 
 				new Transform(0.0f, -0.010000001f, 0.13000004f, 0, 0, 0));
 		hammer(matrix, player, stack, buffer, light, 3, Paths.COLT1911HAMMER);
 		hammer(matrix, player, stack, buffer, light, 4, Paths.COLT1911SLIDER);
@@ -523,8 +525,7 @@ public class Colt1911GunModel extends GunModel {
 	
 	@Override
 	public void reload(Player player, ItemStack stack) {
-		setAnimation(reloadNoMag);
-		//setAnimation(getOutMag);
+		fillReloadData(BulletItem.SMALL, player, stack, reloadMagByMag, reloadNoMag);
 	}
 
 	@Override

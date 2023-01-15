@@ -25,7 +25,7 @@ public class Colt1911 extends GunItem {
 	
 	@Override
 	public float getShootTime() {
-		return 2;
+		return 4;
 	}
 
 	@Override

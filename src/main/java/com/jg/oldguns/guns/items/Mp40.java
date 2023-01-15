@@ -24,7 +24,7 @@ public class Mp40 extends GunItem {
 
 	@Override
 	public float getShootTime() {
-		return 1.5f;
+		return 3;
 	}
 	
 	@Override

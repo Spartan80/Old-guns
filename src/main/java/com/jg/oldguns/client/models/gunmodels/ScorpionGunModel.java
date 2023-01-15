@@ -9,6 +9,7 @@ import com.jg.oldguns.client.animations.parts.GunModelPart;
 import com.jg.oldguns.client.handlers.ClientHandler;
 import com.jg.oldguns.client.models.modmodels.ScorpionModModel;
 import com.jg.oldguns.client.models.wrapper.WrapperModel;
+import com.jg.oldguns.guns.BulletItem;
 import com.jg.oldguns.registries.ItemRegistries;
 import com.jg.oldguns.utils.NBTUtils;
 import com.jg.oldguns.utils.Paths;
@@ -299,7 +300,7 @@ public class ScorpionGunModel extends GunModel {
 	
 	@Override
 	public void reload(Player player, ItemStack stack) {
-		setAnimation(getOutMag);
+		fillReloadData(BulletItem.SMALL, player, stack, reloadMagByMag, reloadNoMag);
 	}
 
 	@Override

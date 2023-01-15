@@ -241,21 +241,71 @@ public class Kar98kGunModel extends GunModel {
 				.end();
 		
 		shootAnim = new Animation("shootAnim", "oldguns:kar98k")
-				.startKeyframe(8)
-				.translate(parts[5], 0.0f, -0.3799999f, 0.0f)
-				.rotate(parts[5], 0.0f, 0.0f, 0.296706f)
-				.startKeyframe(12)
-				.translate(parts[0], 0.0f, 0.0f, -0.30999997f)
-				.translate(parts[5], 0.0f, -0.3799999f, 0.0f)
-				.rotate(parts[5], 0.0f, 0.0f, 0.296706f)
-				.startKeyframe(8)
-				.translate(parts[0], 0.0f, 0.0f, 0.0f)
-				.translate(parts[5], 0.0f, -0.3799999f, 0.0f)
-				.rotate(parts[5], 0.0f, 0.0f, 0.296706f)
-				.startKeyframe(8)
-				.translate(parts[0], 0.0f, 0.0f, 0.0f)
+				.startKeyframe(12, "easeInSine")
 				.translate(parts[5], 0.0f, 0.0f, 0.0f)
+				.translate(parts[4], 0.0f, -0.30999997f, 0.0f)
+				.translate(parts[1], 0.0f, 0.0f, 0.0f)
+				.translate(parts[0], 0.20000002f, 0.0f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
+				.translate(parts[2], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[4], 0.0f, 0.0f, 0.2792527f)
+				.startKeyframe(12)
+				.translate(parts[5], 0.0f, 0.0f, 0.0f)
+				.translate(parts[4], 0.0f, -0.30999997f, 0.0f)
+				.translate(parts[1], 0.0f, 0.0f, 0.0f)
+				.translate(parts[0], 0.16f, 0.3899999f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
+				.translate(parts[2], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[4], 0.0f, 0.0f, 0.2792527f)
+				.startKeyframe(12, "easeInExpo")
+				.translate(parts[5], 0.0f, 0.0f, 0.0f)
+				.translate(parts[4], 0.0f, -0.30999997f, 0.0f)
+				.translate(parts[1], 0.0f, 0.0f, 0.0f)
+				.translate(parts[0], 0.16f, 0.3899999f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
+				.translate(parts[2], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.0f, 0.13999999f)
+				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[4], 0.0f, 0.0f, 0.2792527f)
+				.startKeyframe(4)
+				.translate(parts[5], 0.0f, 0.0f, 0.0f)
+				.translate(parts[4], 0.0f, -0.30999997f, 0.02f)
+				.translate(parts[1], 0.0f, 0.0f, 0.0f)
+				.translate(parts[0], 0.16f, 0.3899999f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
+				.translate(parts[2], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.0f, 0.13999999f)
+				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[4], 0.0f, 0.0f, 0.2792527f)
+				.startKeyframe(12, "easeInExpo")
+				.translate(parts[5], 0.0f, 0.0f, 0.0f)
+				.translate(parts[4], 0.0f, -0.30999997f, 0.0f)
+				.translate(parts[1], 0.0f, 0.0f, 0.0f)
+				.translate(parts[0], 0.16f, 0.3899999f, 0.0f)
+				.translate(parts[2], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[4], 0.0f, 0.0f, 0.2792527f)
+				.startKeyframe(12)
+				.translate(parts[5], 0.0f, 0.0f, 0.0f)
+				.translate(parts[4], 0.0f, -0.30999997f, 0.0f)
+				.translate(parts[1], 0.0f, 0.0f, 0.0f)
+				.translate(parts[0], 0.16f, 0.06999998f, 0.0f)
+				.translate(parts[2], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[4], 0.0f, 0.0f, 0.2792527f)
+				.startKeyframe(8)
+				.translate(parts[5], 0.0f, 0.0f, 0.0f)
+				.translate(parts[4], 0.0f, 0.0f, 0.0f)
+				.translate(parts[0], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[4], 0.0f, 0.0f, 0.0f)
 				.end();
 	}
 
@@ -283,6 +333,12 @@ public class Kar98kGunModel extends GunModel {
 		matrix.popPose();
 		matrix.popPose();
 		matrix.popPose();
+	}
+	
+	@Override
+	public void shoot(Player player, ItemStack stack) {
+		super.shoot(player, stack);
+		setAnimation(shootAnim);
 	}
 
 	@Override

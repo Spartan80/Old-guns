@@ -9,9 +9,11 @@ import com.jg.oldguns.client.animations.Animation;
 import com.jg.oldguns.client.animations.Animator;
 import com.jg.oldguns.client.animations.Transform;
 import com.jg.oldguns.client.handlers.ClientHandler;
+import com.jg.oldguns.client.handlers.ReloadHandler;
 import com.jg.oldguns.client.models.wrapper.WrapperModel;
 import com.jg.oldguns.client.render.RenderHelper;
 import com.jg.oldguns.client.screens.AnimationScreen;
+import com.jg.oldguns.guns.BulletItem;
 import com.jg.oldguns.guns.FireMode;
 import com.jg.oldguns.guns.GunItem;
 import com.jg.oldguns.guns.MagItem;
@@ -19,6 +21,7 @@ import com.jg.oldguns.network.ShootMessage;
 import com.jg.oldguns.utils.MathUtils;
 import com.jg.oldguns.utils.NBTUtils;
 import com.jg.oldguns.utils.Paths;
+import com.jg.oldguns.utils.ServerUtils;
 import com.jg.oldguns.utils.Utils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
@@ -100,8 +103,11 @@ public abstract class GunModel {
 			int cooldown) {
 		lerpTransform(matrix, client.getAimHandler().getProgress(), parts[aim].getDTransform());
 		lerpTransform(matrix, client.getSprintHandler().getProgress(), parts[sprint].getDTransform());
-		lerpTransform(matrix, client.getCooldown().getProgress(NBTUtils.getId(stack)), 
+		lerpTransform(matrix, client.getCooldownRecoil().getCooldownPercent(gun, 
+				Minecraft.getInstance().getFrameTime()), 
 				parts[cooldown].getDTransform());
+		//lerpTransform(matrix, client.getCooldown().getProgress(NBTUtils.getId(stack)), 
+		//		parts[cooldown].getDTransform());
 	}
 	
 	protected void leftArm(PoseStack matrix, LocalPlayer player, MultiBufferSource buffer, 
@@ -333,6 +339,47 @@ public abstract class GunModel {
 
 	// Misc
 
+	// Reloading
+	
+	public void fillReloadData(String bulletSize, Player player, ItemStack stack, 
+			Animation magByMag, Animation noMag) {
+		int index = ServerUtils
+				.getIndexForCorrectMag(player.getInventory(), 
+						gun.getGunId(), bulletSize);
+		if(index != -1) {
+			data.put("index", index);
+			LogUtils.getLogger().info("index: " + index);
+			ItemStack mag = getMagStack(index);
+			data.put("mag", mag);
+			data.put("magBullets", NBTUtils.getAmmo(mag));
+			if(NBTUtils.hasMag(stack)) {
+				setAnimation(magByMag);
+			} else {
+				setAnimation(noMag);
+			}
+		}
+	}
+	
+	public void reloadMagByMagStuff() {
+		ReloadHandler.restoreMag(getMPath(), ServerUtils.getBullets(Utils.getStack()));
+		ReloadHandler.setBullets((int)data.get("magBullets"));
+		ReloadHandler.removeItem((int)data.get("index"), 1);
+	}
+	
+	public void reloadNoMagStuff() {
+		MagItem magItem = getMagItem((int)data.get("index"));
+		ReloadHandler.setMag(this, magItem.getMaxAmmo(), true, 
+				getMBPath((int)data.get("index")), magItem);
+		ReloadHandler.removeItem((int)data.get("index"), 1);
+		ReloadHandler.setBullets((int)data.get("magBullets"));
+	}
+	
+	public void getOutMagStuff() {
+		ReloadHandler.restoreMag(getMPath(), ServerUtils.getBullets(Utils.getStack()));
+		ReloadHandler.setMag(this, 0, false, 
+				"", "");
+	}
+	
 	public MagItem getMagItem(int index) {
 		return (MagItem)Minecraft.getInstance().player.getInventory().getItem(index)
 				.getItem();

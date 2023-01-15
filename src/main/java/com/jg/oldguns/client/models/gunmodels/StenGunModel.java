@@ -382,22 +382,7 @@ public class StenGunModel extends GunModel {
 
 	@Override
 	public void reload(Player player, ItemStack stack) {
-		int index = ServerUtils
-				.getIndexForCorrectMag(player.getInventory(), 
-						gun.getGunId(),
-				BulletItem.SMALL);
-		if(index != -1) {
-			data.put("index", index);
-			LogUtils.getLogger().info("index: " + index);
-			ItemStack mag = getMagStack(index);
-			data.put("mag", mag);
-			data.put("magBullets", NBTUtils.getAmmo(mag));
-			if(NBTUtils.hasMag(stack)) {
-				setAnimation(reloadMagByMag);
-			} else {
-				setAnimation(reloadNoMag);
-			}
-		}
+		fillReloadData(BulletItem.SMALL, player, stack, reloadMagByMag, reloadNoMag);
 	}
 
 	@Override

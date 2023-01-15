@@ -372,9 +372,10 @@ public class Mp40GunModel extends GunModel {
 	@Override
 	public void render(LocalPlayer player, ItemStack stack, MultiBufferSource buffer, PoseStack matrix, int light) {
 		matrix.pushPose();
-		lerpTransform(matrix, client.getAimHandler().getProgress(), parts[8].getDTransform());
+		lerpGunStuff(matrix, stack, 8, 9, 10);
+		/*lerpTransform(matrix, client.getAimHandler().getProgress(), parts[8].getDTransform());
 		lerpTransform(matrix, client.getSprintHandler().getProgress(), parts[9].getDTransform());
-		lerpTransform(matrix, client.getCooldown().getProgress(NBTUtils.getId(stack)), parts[10].getDTransform());
+		lerpTransform(matrix, client.getCooldown().getProgress(NBTUtils.getId(stack)), parts[10].getDTransform());*/
 		translateAndRotateAndScale(parts[5].getCombined(), matrix);
 		matrix.pushPose();
 		parts[1].getDTransform().setScale(1.3f, 2.5f, 1.3f);
@@ -397,8 +398,11 @@ public class Mp40GunModel extends GunModel {
 		matrix.pushPose();
 		//translateAndRotateAndScale(parts[3].getCombined(), matrix);
 		//LogUtils.getLogger().info(parts[3].getCombined().toString());
-		lerpTransform(matrix, client.getCooldown().getProgress(NBTUtils.getId(stack)), 
+		lerpTransform(matrix, client.getCooldownRecoil().getCooldownPercent(gun, 
+				Minecraft.getInstance().getFrameTime()), 
 				new Transform(0.0f, -0.010000001f, 0.33000004f, 0, 0, 0));
+		//lerpTransform(matrix, client.getCooldown().getProgress(NBTUtils.getId(stack)), 
+		//		new Transform(0.0f, -0.010000001f, 0.33000004f, 0, 0, 0));
 		for (String hammerP : stuff.getHammers()) {
 			renderModel(player, stack, buffer, matrix, light, Minecraft.getInstance().getItemRenderer()
 					.getItemModelShaper().getModelManager()
@@ -416,28 +420,7 @@ public class Mp40GunModel extends GunModel {
 	
 	@Override
 	public void reload(Player player, ItemStack stack) {
-		int index = ServerUtils
-				.getIndexForCorrectMag(player.getInventory(), 
-						gun.getGunId(),
-				BulletItem.SMALL);
-		if(index != -1) {
-			LogUtils.getLogger().info("index: " + index);
-			ItemStack mag = getMagStack(index);
-			int magBullets = NBTUtils.getAmmo(mag);
-			if(NBTUtils.hasMag(stack)) {
-				ReloadHandler.restoreMag(getMPath(), ServerUtils.getBullets(Utils.getStack()));
-				ReloadHandler.setBullets(magBullets);
-				ReloadHandler.removeItem(index, 1);
-				setAnimation(reloadMagByMag);
-			} else {
-				MagItem magItem = getMagItem(index);
-				ReloadHandler.setMag(this, magItem.getMaxAmmo(), true, 
-						getMBPath(index), magItem);
-				ReloadHandler.removeItem(index, 1);
-				ReloadHandler.setBullets(magBullets);
-				setAnimation(reloadNoMag);
-			}
-		}
+		fillReloadData(BulletItem.SMALL, player, stack, reloadMagByMag, reloadNoMag);
 	}
 
 	@Override
