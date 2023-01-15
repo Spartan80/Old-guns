@@ -48,7 +48,23 @@ public class ThompsonGunModel extends GunModel {
 				ItemRegistries.THOMPSON.get(), client);
 		
 		look = new Animation("lookAnim", "oldguns:thompson").startKeyframe(12).end();
-		kickback = new Animation("kickbackAnim", "oldguns:thompson").startKeyframe(12).end();
+		kickback = new Animation("kickbackAnim", "oldguns:thompson")
+				.startKeyframe(8, "easeInQuint")
+				.translate(parts[2], 0.55999976f, -0.29f, -0.58999974f)
+				.translate(parts[0], 0.0f, 0.0f, -0.25000003f)
+				.translate(parts[1], -0.45999983f, -0.02f, 0.22000003f)
+				.rotate(parts[2], 0.0f, 1.6929706f, 1.3962643f)
+				.startKeyframe(12, "easeInOutBounce")
+				.translate(parts[2], 0.55999976f, -0.29f, -0.58999974f)
+				.translate(parts[0], 0.0f, 0.0f, -0.25000003f)
+				.translate(parts[1], -0.45999983f, -0.02f, 0.22000003f)
+				.rotate(parts[2], 0.0f, 1.6929706f, 1.3962643f)
+				.startKeyframe(12, "easeInSine")
+				.translate(parts[2], 0.0f, 0.0f, 0.0f)
+				.translate(parts[0], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[2], 0.0f, 0.0f, 0.0f)
+				.end();
 		getOutMag = new Animation("getOutMagAnim", "oldguns:thompson")
 				.startKeyframe(12)
 				.translate(parts[6], 0.0f, 0.0f, 0.0f)

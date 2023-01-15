@@ -32,7 +32,10 @@ public class Colt1911GunModel extends GunModel {
 	
 	public Colt1911GunModel(ClientHandler client) {
 		super(new GunModelPart[] { 
-				new GunModelPart("rightarm", 0.42f, -0.62f, -1.1f, -0.6f, 0, 0.6f), 
+				/*new GunModelPart("rightarm", 0.42f, -0.62f, -1.1f, -0.6f, 0, 0.6f, 
+						1.3f, 2.5f, 1.3f), */
+				new GunModelPart("rightarm", -0.0500001f, -0.19999996f, -0.9999999f, -0.6f, 0, 0.6f, 
+						1.3f, 2.5f, 1.3f), 
 				new GunModelPart("leftarm", 0.43f, -0.309f, -0.51f, 0.005235f, -1.117001f, 0, 
 						1.3f, 2.5f, 1.3f), 
 				new GunModelPart("gun", 0.987f, -0.906f, -1.13f, 0.021459f, -0.034906f, 0),
@@ -127,6 +130,40 @@ public class Colt1911GunModel extends GunModel {
 				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[0], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[2], 0.0f, 0.0f, 0.0f)
+				.end();
+		kickback = new Animation("kickbackAnim", "oldguns:colt1911")
+				.startKeyframe(8, "easeIntQuint")
+				.translate(parts[1], 0.0f, 0.0f, 0.0f)
+				.translate(parts[0], 0.0f, 0.0f, 0.0f)
+				.translate(parts[2], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 1.2299991f, -1.5899988f, 0.7499996f)
+				.rotate(parts[1], -0.47123882f, 0.6981318f, 0.0f)
+				.rotate(parts[2], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[6], 0.0f, 1.2740911f, 1.047198f)
+				.startKeyframe(8, "easeInExpo")
+				.translate(parts[1], 0.0f, 0.0f, 0.0f)
+				.translate(parts[0], 0.0f, 0.0f, 0.0f)
+				.translate(parts[2], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.60999966f, -1.3199991f, 0.43999988f)
+				.rotate(parts[1], -0.47123882f, 0.6981318f, 0.0f)
+				.rotate(parts[2], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[6], 0.0f, 0.89011824f, 1.047198f)
+				.startKeyframe(12)
+				.translate(parts[1], 0.0f, 0.0f, 0.0f)
+				.translate(parts[0], 0.0f, 0.0f, 0.0f)
+				.translate(parts[2], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.60999966f, -1.3199991f, 0.43999988f)
+				.rotate(parts[1], -0.47123882f, 0.6981318f, 0.0f)
+				.rotate(parts[2], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[6], 0.0f, 0.89011824f, 1.047198f)
+				.startKeyframe(12, "easeInSine")
+				.translate(parts[1], 0.0f, 0.0f, 0.0f)
+				.translate(parts[0], 0.0f, 0.0f, 0.0f)
+				.translate(parts[2], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[1], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[2], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[6], 0.0f, 0.0f, 0.0f)
 				.end();
 		getOutMag = new Animation("getOutMagAnim", "oldguns:colt1911")
 				.startKeyframe(12, "easeInCubic")

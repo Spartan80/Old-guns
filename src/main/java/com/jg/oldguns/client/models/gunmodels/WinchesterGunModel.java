@@ -76,36 +76,32 @@ public class WinchesterGunModel extends GunModel {
 
 		reload = new RepetitiveAnimation("reloadAnim", "oldguns:winchester")
 				.startKeyframe(12)
-				.translate(parts[2], 0.0f, 0.0f, 0.0f)
+				.translate(parts[5], 0.30999997f, 0.12999998f, 0.0f)
 				.translate(parts[1], -0.21000002f, -0.11999998f, 0.0f)
-				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[5], 0.0f, 0.0f, -0.38397238f)
 				.rotate(parts[1], -0.80285174f, 0.0f, 0.0f)
-				.rotate(parts[6], 0.0f, 0.0f, -0.3839724f)
 				.startKeyframe(12)
 				.type(1)
-				.translate(parts[2], 0.0f, 0.0f, 0.0f)
-				.translate(parts[1], -0.32999998f, 0.06000001f, -0.07999999f)
-				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.translate(parts[5], 0.30999997f, 0.12999998f, 0.0f)
+				.translate(parts[1], 0.049999982f, 1.4901161E-8f, 0.02f)
+				.rotate(parts[5], 0.0f, 0.0f, -0.38397238f)
 				.rotate(parts[1], -0.22689286f, 0.0f, 0.0f)
-				.rotate(parts[6], 0.0f, 0.0f, -0.3839724f)
 				.startKeyframe(12)
-				.translate(parts[2], 0.0f, 0.0f, -0.02f)
-				.translate(parts[1], -0.27000004f, 1.4901161E-8f, -0.44999984f)
-				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.translate(parts[5], 0.30999997f, 0.12999998f, 0.0f)
+				.translate(parts[1], 0.049999982f, 0.040000014f, 0.02f)
+				.rotate(parts[5], 0.0f, 0.0f, -0.38397238f)
 				.rotate(parts[1], -0.22689286f, 0.0f, 0.0f)
-				.rotate(parts[6], 0.0f, 0.0f, -0.3839724f)
-				.startKeyframe(12)
+				.startKeyframe(12, "easeInQuint")
 				.type(2)
-				.translate(parts[2], 0.0f, 0.0f, -0.02f)
-				.translate(parts[1], -0.32999998f, 0.06000001f, -0.07999999f)
-				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.translate(parts[5], 0.30999997f, 0.12999998f, 0.0f)
+				.translate(parts[1], 0.049999982f, 0.080000006f, -0.109999985f)
+				.rotate(parts[5], 0.0f, 0.0f, -0.38397238f)
 				.rotate(parts[1], -0.22689286f, 0.0f, 0.0f)
-				.rotate(parts[6], 0.0f, 0.0f, -0.3839724f)
 				.startKeyframe(12)
+				.translate(parts[5], 0.0f, 0.0f, 0.0f)
 				.translate(parts[1], 0.0f, 0.0f, 0.0f)
-				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[1], 0.0f, 0.0f, 0.0f)
-				.rotate(parts[6], 0.0f, 0.0f, 0.0f)
 				.end();
 		
 		kickback = new Animation("kickbackAnim", "oldguns:winchester")
@@ -154,6 +150,30 @@ public class WinchesterGunModel extends GunModel {
 				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[0], 0.0f, 0.0f, 0.0f)
+				.end();
+		
+		kickback = new Animation("kickbackAnim", "oldguns:winchester")
+				.startKeyframe(8, "easeInQuint")
+				.translate(parts[2], 0.55999976f, -0.29f, -0.58999974f)
+				.translate(parts[4], -0.87999946f, 0.0f, 0.0f)
+				.translate(parts[0], 0.5399998f, 0.02f, -0.6099997f)
+				.translate(parts[1], -0.8199995f, -0.09999999f, 0.38999993f)
+				.rotate(parts[2], 0.0f, 1.6929706f, 1.3962643f)
+				.rotate(parts[4], 0.0f, 0.17453294f, 0.0f)
+				.startKeyframe(12, "easeInOutBounce")
+				.translate(parts[2], 0.55999976f, -0.29f, -0.58999974f)
+				.translate(parts[4], -0.87999946f, 0.0f, 0.0f)
+				.translate(parts[0], 0.5399998f, 0.02f, -0.6099997f)
+				.translate(parts[1], -0.8199995f, -0.09999999f, 0.38999993f)
+				.rotate(parts[2], 0.0f, 1.6929706f, 1.3962643f)
+				.rotate(parts[4], 0.0f, 0.17453294f, 0.0f)
+				.startKeyframe(12, "easeInSine")
+				.translate(parts[2], 0.0f, 0.0f, 0.0f)
+				.translate(parts[4], 0.0f, 0.0f, 0.0f)
+				.translate(parts[0], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[2], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[4], 0.0f, 0.0f, 0.0f)
 				.end();
 		
 		/*kickback = new Animation("kickbackAnim", "oldguns:winchester")
@@ -217,7 +237,7 @@ public class WinchesterGunModel extends GunModel {
 	@Override
 	public void tick(Player player, ItemStack stack) {
 		super.tick(player, stack);
-		float tick = animator.getTick();
+		/*float tick = animator.getTick();
 		if(getAnimation() == shootAnim) {
 			if(tick == 18) {
 				SoundHandler.playSoundOnServer(SoundRegistries.WINCHESTERBOLTFORWARD.get());
@@ -234,7 +254,7 @@ public class WinchesterGunModel extends GunModel {
 			if(tick == 17) {
 				SoundHandler.playSoundOnServer(SoundRegistries.SWING.get());
 			}
-		}
+		}*/
 	}
 	
 	@Override
@@ -276,7 +296,7 @@ public class WinchesterGunModel extends GunModel {
 
 	@Override
 	public List<GunModelPart> getGunParts() {
-		return List.of(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], parts[6], parts[7]);
+		return List.of(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5]);
 	}
 
 	@Override
