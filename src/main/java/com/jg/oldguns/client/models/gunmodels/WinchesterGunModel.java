@@ -151,7 +151,6 @@ public class WinchesterGunModel extends GunModel {
 				.rotate(parts[6], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[0], 0.0f, 0.0f, 0.0f)
 				.end();
-		
 		kickback = new Animation("kickbackAnim", "oldguns:winchester")
 				.startKeyframe(8, "easeInQuint")
 				.translate(parts[2], 0.55999976f, -0.29f, -0.58999974f)

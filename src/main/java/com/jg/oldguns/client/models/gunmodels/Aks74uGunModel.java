@@ -7,10 +7,12 @@ import com.jg.oldguns.client.animations.Transform;
 import com.jg.oldguns.client.animations.parts.GunModel;
 import com.jg.oldguns.client.animations.parts.GunModelPart;
 import com.jg.oldguns.client.handlers.ClientHandler;
+import com.jg.oldguns.client.handlers.SoundHandler;
 import com.jg.oldguns.client.models.modmodels.Aks74uModModel;
 import com.jg.oldguns.client.models.wrapper.WrapperModel;
 import com.jg.oldguns.guns.BulletItem;
 import com.jg.oldguns.registries.ItemRegistries;
+import com.jg.oldguns.registries.SoundRegistries;
 import com.jg.oldguns.utils.NBTUtils;
 import com.jg.oldguns.utils.Paths;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -46,7 +48,7 @@ public class Aks74uGunModel extends GunModel {
 				new GunModelPart("leftarmmag"),
 				new GunModelPart("aim", -0.712f, 0.45f, 0.691f, -0.0209433f, 0.036651f, 0), 
 				new GunModelPart("sprint", 1.32f, -0.89f, -0.221f, 0.548036f, 1.326451f, -0.191986f),
-				new GunModelPart("recoil", 0, 0, 0.02f, 0, 0, 0) }, 
+				new GunModelPart("recoil", 0, 0, 0.07999999f, 0, 0, 0) }, 
 				ItemRegistries.AKS74U.get(), client);
 		
 		shootAnim = new Animation("shootAnim", "oldguns:aks-74u")
@@ -305,6 +307,36 @@ public class Aks74uGunModel extends GunModel {
 	@Override
 	public void tick(Player player, ItemStack stack) {
 		super.tick(player, stack);
+		Animation anim = getAnimation();
+		float tick = animator.getTick();
+		if(anim == reloadMagByMag) {
+			if(tick == 10) {
+				SoundHandler.playSoundOnServer(SoundRegistries.AK74UMAGOUT.get());
+			} else if(tick == 40) {
+				SoundHandler.playSoundOnServer(SoundRegistries.AK74UMAGIN.get());
+			} else if(tick == 88) {
+				SoundHandler.playSoundOnServer(SoundRegistries.AK74UHAMMERBACK.get());
+			}  else if(tick == 98) {
+				SoundHandler.playSoundOnServer(SoundRegistries.AK74UHAMMERFORWARD.get());
+				reloadMagByMagStuff();
+			} 
+		} else if(anim == reloadNoMag) {
+			if(tick == 18) {
+				reloadNoMagStuff();
+			} else if(tick == 24) {
+				SoundHandler.playSoundOnServer(SoundRegistries.AK74UMAGIN.get());
+			} else if(tick == 72) {
+				SoundHandler.playSoundOnServer(SoundRegistries.AK74UHAMMERBACK.get());
+			} else if(tick == 86) {
+				SoundHandler.playSoundOnServer(SoundRegistries.AK74UHAMMERFORWARD.get());
+			}
+		} else if(anim == getOutMag) {
+			if(tick == 10) {
+				SoundHandler.playSoundOnServer(SoundRegistries.AK74UMAGOUT.get());
+			} else if(tick == 22) {
+				getOutMagStuff();
+			}
+		}
 	}
 	
 	@Override

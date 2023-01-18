@@ -98,20 +98,6 @@ public class GunContainer extends JGGunContainer {
 			}
 		});
 
-		// Barrel mouth slot
-		this.addSlot(new GunPartSlot(inv, 4, 134, 51) {
-
-			@Override
-			public boolean mayPlace(ItemStack p_75214_1_) {
-				return super.mayPlace(p_75214_1_);//&& gun.canModifyBarrelMouth();
-			}
-
-			@Override
-			public boolean mayPickup(Player p_82869_1_) {
-				return super.mayPickup(p_82869_1_) && getSlot(3).hasItem();// && gun.canModifyBarrelMouth();
-			}
-		});
-
 		addPlayerSlots(pi);
 		if (!player.level.isClientSide) {
 
@@ -120,11 +106,21 @@ public class GunContainer extends JGGunContainer {
 			// Stock
 			if (NBTUtils.getStock(stack).equals("")) {
 				inv.setItem(1, new ItemStack(gun.getStock()));
+			} else {
+				inv.setItem(1, new ItemStack(ForgeRegistries.ITEMS
+						.getValue(new ResourceLocation(NBTUtils.getStock(stack)))));
+				GunModelsHandler.get(stack.getItem().getDescriptionId()).getModel()
+					.reconstruct(stack);
 			}
 
 			// Body
 			if (NBTUtils.getBody(stack).equals("")) {
 				inv.setItem(2, new ItemStack(gun.getBody()));
+			} else {
+				inv.setItem(2, new ItemStack(ForgeRegistries.ITEMS
+						.getValue(new ResourceLocation(NBTUtils.getBody(stack)))));
+				GunModelsHandler.get(stack.getItem().getDescriptionId()).getModel()
+					.reconstruct(stack);
 			}
 
 			// Barrel
@@ -218,8 +214,8 @@ public class GunContainer extends JGGunContainer {
 
 		if (slot != null && slot.hasItem()) {
 			e = stack.copy();
-			if (index >= 0 && index <= 4) {
-				if (!this.moveItemStackTo(stack, 5, 39, true)) {
+			if (index >= 0 && index <= 3) {
+				if (!this.moveItemStackTo(stack, 4, 39, true)) {
 					return ItemStack.EMPTY;
 				}
 
@@ -252,16 +248,12 @@ public class GunContainer extends JGGunContainer {
 					} else {
 						return ItemStack.EMPTY;
 					}
-				case 4:
-					if (!this.moveItemStackTo(stack, 4, 5, false)) {
-						return ItemStack.EMPTY;
-					}
 				}
 			} /*else if (stack.getItem() instanceof Scope) {
 				if (!this.moveItemStackTo(stack, 0, 1, false)) {
 					return ItemStack.EMPTY;
 				}
-			} */else if (!this.moveItemStackTo(stack, 5, 39, false)) {
+			} */else if (!this.moveItemStackTo(stack, 4, 39, false)) {
 				return ItemStack.EMPTY;
 			}
 

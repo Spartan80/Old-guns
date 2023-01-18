@@ -6,6 +6,7 @@ import com.jg.oldguns.registries.ContainerRegistries;
 import com.jg.oldguns.utils.NBTUtils;
 import com.jg.oldguns.utils.ServerUtils;
 import com.jg.oldguns.utils.Utils;
+import com.mojang.logging.LogUtils;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
@@ -24,7 +25,8 @@ public class MagContainer extends JGGunContainer {
 			@Override
 			public boolean mayPlace(ItemStack p_75214_1_) {
 				ItemStack stack = player.getMainHandItem();
-				if (stack.getItem() instanceof MagItem && p_75214_1_.getItem() instanceof BulletItem) {
+				if (stack.getItem() instanceof MagItem && 
+						p_75214_1_.getItem() instanceof BulletItem) {
 					MagItem mag = (MagItem) stack.getItem();
 					BulletItem bullet = (BulletItem) p_75214_1_.getItem();
 					if (mag.getAcceptedSize().equals(bullet.getSize())) {
@@ -55,8 +57,10 @@ public class MagContainer extends JGGunContainer {
 							ForgeRegistries.ITEMS.getValue(
 									new ResourceLocation(stack.getOrCreateTag()
 											.getString(NBTUtils.MAGBULLET))),
-							ServerUtils.getBullets(stack)));
+							player.getMainHandItem().getOrCreateTag().getInt(NBTUtils.BULLETS)));
 			ServerUtils.setBullets(player.getMainHandItem(), inv.getItem(0).getCount());
+			LogUtils.getLogger().info("Bullet: " + NBTUtils.getMagBullet(stack) + " bullets: " + 
+					ServerUtils.getBullets(stack));
 		}
 	}
 

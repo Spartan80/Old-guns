@@ -351,7 +351,7 @@ public abstract class GunModel {
 			LogUtils.getLogger().info("index: " + index);
 			ItemStack mag = getMagStack(index);
 			data.put("mag", mag);
-			data.put("magBullets", NBTUtils.getAmmo(mag));
+			data.put("magBullets", mag.getOrCreateTag().getInt(NBTUtils.BULLETS));
 			if(NBTUtils.hasMag(stack)) {
 				setAnimation(magByMag);
 			} else {
@@ -378,6 +378,7 @@ public abstract class GunModel {
 		ReloadHandler.restoreMag(getMPath(), ServerUtils.getBullets(Utils.getStack()));
 		ReloadHandler.setMag(this, 0, false, 
 				"", "");
+		ReloadHandler.setBullets(0);
 	}
 	
 	public MagItem getMagItem(int index) {

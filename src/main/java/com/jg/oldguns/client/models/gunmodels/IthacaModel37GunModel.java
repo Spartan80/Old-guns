@@ -7,11 +7,17 @@ import com.jg.oldguns.client.animations.RepetitiveAnimation;
 import com.jg.oldguns.client.animations.parts.GunModel;
 import com.jg.oldguns.client.animations.parts.GunModelPart;
 import com.jg.oldguns.client.handlers.ClientHandler;
+import com.jg.oldguns.client.handlers.SoundHandler;
 import com.jg.oldguns.client.models.modmodels.IthacaModel37ModModel;
 import com.jg.oldguns.client.models.wrapper.WrapperModel;
 import com.jg.oldguns.registries.ItemRegistries;
+import com.jg.oldguns.registries.SoundRegistries;
+import com.jg.oldguns.utils.InventoryUtils;
+import com.jg.oldguns.utils.NBTUtils;
 import com.jg.oldguns.utils.Paths;
+import com.jg.oldguns.utils.InventoryUtils.InvData;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -40,7 +46,7 @@ public class IthacaModel37GunModel extends GunModel {
 				new GunModelPart("alllessleft"),
 				new GunModelPart("aim", -1.107f, 0.732993f, 0.386998f, -0.052359f, 0f, 0), 
 				new GunModelPart("sprint", 1.32f, -0.89f, -0.221f, 0.548036f, 1.326451f, -0.191986f),
-				new GunModelPart("recoil", 0, 0, 0, 0, 0, 0) }, 
+				new GunModelPart("recoil", 0.024000002f, 0, 0.42799804f, 0, -0.06981317f, -0.03490659f) }, 
 				ItemRegistries.ITHACAMODEL37.get(), client);
 		
 		look = new Animation("lookAnim", "oldguns:ithacamodel37")
@@ -144,12 +150,37 @@ public class IthacaModel37GunModel extends GunModel {
 	@Override
 	public void tick(Player player, ItemStack stack) {
 		super.tick(player, stack);
+		Animation anim = getAnimation();
+		float tick = animator.getTick();
+		if(anim == shootAnim) {
+			if(tick == 10) {
+				SoundHandler.playSoundOnServer(SoundRegistries.MODEL37_SLIDE_BACK.get());
+			} else if(tick == 30) {
+				SoundHandler.playSoundOnServer(SoundRegistries.MODEL37_SLIDE_FORWARD.get());
+			}
+		} else if(anim == reload) {
+			if(isRepTick(12, 30, tick, 38, times)) {
+				SoundHandler.playSoundOnServer(SoundRegistries.MODEL37_SHELL_INSERT.get());
+				//ReloadHandler.growOneBullet(stack);
+				LogUtils.getLogger().info("Bullet inserted");
+			}
+		} else if(anim == kickback) {
+			if(tick == 7) {
+				SoundHandler.playSoundOnServer(SoundRegistries.SWING.get());
+			}
+		}
 	}
 	
 	@Override
 	public void reload(Player player, ItemStack stack) {
-		reload.setTimes(6);
-		setAnimation(reload);
+		InvData data = InventoryUtils.getTotalCountAndIndexForItem(player, 
+				ItemRegistries.ShotgunBullet.get(), 5-NBTUtils.getAmmo(stack));
+		if(data.getTotal() > 0) {
+			InventoryUtils.consumeItems(player, data.getData());
+			times = data.getTotal();
+			reload.setTimes(times);
+			setAnimation(reload);
+		}
 	}
 
 	@Override

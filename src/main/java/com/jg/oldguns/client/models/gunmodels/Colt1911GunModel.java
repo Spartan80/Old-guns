@@ -7,10 +7,12 @@ import com.jg.oldguns.client.animations.Transform;
 import com.jg.oldguns.client.animations.parts.GunModel;
 import com.jg.oldguns.client.animations.parts.GunModelPart;
 import com.jg.oldguns.client.handlers.ClientHandler;
+import com.jg.oldguns.client.handlers.SoundHandler;
 import com.jg.oldguns.client.models.modmodels.Colt1911ModModel;
 import com.jg.oldguns.client.models.wrapper.WrapperModel;
 import com.jg.oldguns.guns.BulletItem;
 import com.jg.oldguns.registries.ItemRegistries;
+import com.jg.oldguns.registries.SoundRegistries;
 import com.jg.oldguns.utils.NBTUtils;
 import com.jg.oldguns.utils.Paths;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -48,7 +50,7 @@ public class Colt1911GunModel extends GunModel {
 				new GunModelPart("leftarmhammerslider"),
 				new GunModelPart("aim", -1.239f, 0.973993f, 0.923997f, -0.075048f, 0.036651f, 0), 
 				new GunModelPart("sprint", 0f, -1.589998f, 0f, 0.733038f, -0.025481f, 0f),
-				new GunModelPart("recoil", 0, -0.2f, 0.24f, 0.104719f, 0, 0) }, 
+				new GunModelPart("recoil", 0, -0.2f, 0.29999995f, 0.104719f, 0, 0) }, 
 				ItemRegistries.COLT1911.get(), client);
 		
 		shootAnim = new Animation("shootAnim", "oldguns:colt1911")
@@ -199,78 +201,89 @@ public class Colt1911GunModel extends GunModel {
 		reloadNoMag = new Animation("reloadNoMagAnim", "oldguns:colt1911")
 				.startKeyframe(18, "easeInOutSine")
 				.translate(parts[3], 0.0f, 0.0f, 0.0f)
+				.translate(parts[8], 0.0f, 0.0f, 0.0f)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[4], 0.0f, 0.0f, 0.0f)
 				.translate(parts[1], -0.3799999f, 0.0f, 0.0f)
-				.translate(parts[7], 0.0f, 0.0f, 0.0f)
 				.translate(parts[6], 0.41999987f, 0.36999992f, 0.0f)
-				.translate(parts[8], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.06981318f, -0.034906585f, -0.24434613f)
 				.startKeyframe(12)
 				.translate(parts[3], 0.0f, 0.0f, 0.0f)
-				.translate(parts[1], -0.3799999f, -0.45999983f, 0.0f)
-				.translate(parts[7], 0.0f, 0.0f, 0.0f)
-				.translate(parts[6], 0.41999987f, 0.36999992f, 0.0f)
 				.translate(parts[8], 0.0f, 0.0f, 0.0f)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[4], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], -0.3799999f, -0.45999983f, 0.0f)
+				.translate(parts[6], 0.41999987f, 0.36999992f, 0.0f)
 				.rotate(parts[6], 0.06981318f, -0.034906585f, -0.24434613f)
 				.startKeyframe(12)
 				.translate(parts[3], 0.0f, 0.0f, 0.0f)
-				.translate(parts[1], -0.3799999f, -0.45999983f, 0.0f)
-				.translate(parts[7], 0.0f, 0.0f, 0.0f)
-				.translate(parts[6], 0.41999987f, 0.36999992f, 0.0f)
 				.translate(parts[8], 0.0f, 0.0f, 0.0f)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[4], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], -0.3799999f, -0.45999983f, 0.0f)
+				.translate(parts[6], 0.41999987f, 0.36999992f, 0.0f)
 				.rotate(parts[6], 0.06981318f, -0.034906585f, -0.24434613f)
 				.startKeyframe(12)
 				.translate(parts[3], 0.0f, 0.0f, 0.0f)
-				.translate(parts[1], -0.3799999f, -0.45999983f, 0.0f)
-				.translate(parts[7], 0.0f, 0.0f, 0.0f)
-				.translate(parts[6], 0.41999987f, 0.36999992f, 0.0f)
 				.translate(parts[8], 0.0f, 0.0f, 0.0f)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[4], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], -0.3799999f, -0.45999983f, 0.0f)
+				.translate(parts[6], 0.41999987f, 0.36999992f, 0.0f)
 				.rotate(parts[6], 0.06981318f, -0.034906585f, -0.24434613f)
 				.startKeyframe(12, "easeInOutExpo")
 				.translate(parts[3], 0.0f, 0.0f, 0.0f)
-				.translate(parts[1], 0.22000004f, -0.09999997f, 0.0f)
-				.translate(parts[7], 0.0f, 0.0f, 0.0f)
-				.translate(parts[6], 0.41999987f, 0.3899999f, 0.0f)
 				.translate(parts[8], 0.0f, 0.0f, 0.0f)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[4], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], 0.22000004f, -0.09999997f, 0.0f)
+				.translate(parts[6], 0.41999987f, 0.3899999f, 0.0f)
 				.rotate(parts[6], 0.06981318f, -0.034906585f, -0.24434613f)
 				.startKeyframe(12)
 				.translate(parts[3], 0.0f, 0.0f, 0.0f)
-				.translate(parts[1], -0.5099998f, 0.27000004f, 0.0f)
-				.translate(parts[7], 0.0f, 0.0f, 0.0f)
-				.translate(parts[6], -0.6299997f, -0.66999966f, 0.02f)
 				.translate(parts[8], 0.0f, 0.0f, 0.0f)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[4], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], -0.5099998f, 0.27000004f, 0.0f)
+				.translate(parts[6], -0.6299997f, -0.66999966f, 0.02f)
 				.rotate(parts[6], 0.06981318f, -0.034906585f, 0.43633223f)
 				.startKeyframe(12)
 				.translate(parts[3], 0.0f, 0.0f, 0.0f)
-				.translate(parts[1], -0.39999992f, 0.79999954f, -0.019999985f)
-				.translate(parts[7], 0.0f, 0.0f, 0.0f)
-				.translate(parts[6], -0.6299997f, -0.66999966f, 0.02f)
 				.translate(parts[8], 0.0f, 0.0f, 0.0f)
+				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[4], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], -0.39999992f, 0.79999954f, -0.019999985f)
+				.translate(parts[6], -0.6299997f, -0.66999966f, 0.02f)
 				.rotate(parts[6], 0.06981318f, -0.034906585f, 0.43633223f)
 				.startKeyframe(6, "easeOutExpo")
 				.translate(parts[3], 0.0f, 0.0f, 0.0f)
-				.translate(parts[1], -0.39999992f, 0.79999954f, -0.019999985f)
-				.translate(parts[7], 0.0f, 0.0f, 0.11999998f)
-				.translate(parts[6], -0.6299997f, -0.66999966f, 0.02f)
 				.translate(parts[8], 0.0f, 0.0f, 0.1999999f)
+				.translate(parts[7], 0.0f, 0.0f, 0.11999998f)
+				.translate(parts[4], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], -0.39999992f, 0.79999954f, -0.019999985f)
+				.translate(parts[6], -0.6299997f, -0.66999966f, 0.02f)
 				.rotate(parts[6], 0.06981318f, -0.034906585f, 0.43633223f)
 				.startKeyframe(6, "easeOutCirc")
 				.translate(parts[3], 0.0f, 0.0f, 0.0f)
-				.translate(parts[1], -0.39999992f, 0.79999954f, -0.019999985f)
-				.translate(parts[7], 0.0f, 0.0f, 0.11999998f)
-				.translate(parts[6], -0.6299997f, -0.66999966f, 0.02f)
 				.translate(parts[8], 0.0f, 0.0f, 0.1999999f)
-				.rotate(parts[6], 0.06981318f, -0.034906585f, 0.43633223f)
-				.startKeyframe(6, "easeOutQuint")
-				.translate(parts[3], 0.0f, 0.0f, 0.0f)
+				.translate(parts[7], 0.0f, 0.0f, 0.11999998f)
+				.translate(parts[4], 0.0f, 0.0f, 0.0f)
 				.translate(parts[1], -0.39999992f, 0.79999954f, -0.019999985f)
-				.translate(parts[7], 0.0f, 0.0f, 0.0f)
 				.translate(parts[6], -0.6299997f, -0.66999966f, 0.02f)
-				.translate(parts[8], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[6], 0.06981318f, -0.034906585f, 0.43633223f)
+				.startKeyframe(6, "easeOutCirc")
+				.translate(parts[3], 0.0f, 0.0f, -0.109999985f)
+				.translate(parts[8], 0.0f, 0.0f, 0.1999999f)
+				.translate(parts[7], 0.0f, 0.0f, 0.11999998f)
+				.translate(parts[4], 0.0f, 0.0f, -0.109999985f)
+				.translate(parts[1], -0.39999992f, 0.79999954f, -0.019999985f)
+				.translate(parts[6], -0.6299997f, -0.66999966f, 0.02f)
 				.rotate(parts[6], 0.06981318f, -0.034906585f, 0.43633223f)
 				.startKeyframe(12)
 				.translate(parts[3], 0.0f, 0.0f, 0.0f)
-				.translate(parts[1], 0.0f, 0.0f, 0.0f)
 				.translate(parts[7], 0.0f, 0.0f, 0.0f)
+				.translate(parts[4], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], 0.0f, 0.0f, 0.0f)
 				.translate(parts[6], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.0f, 0.0f, 0.0f)
 				.end();
@@ -457,18 +470,20 @@ public class Colt1911GunModel extends GunModel {
 				.translate(parts[6], -0.6299997f, -0.66999966f, 0.02f)
 				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.06981318f, -0.034906585f, 0.43633223f)
-				.startKeyframe(6, "easeOutQuart")
+				.startKeyframe(6, "easeOutCirc")
+				.translate(parts[4], 0.0f, 0.0f, -0.109999985f)
 				.translate(parts[1], -0.39999992f, 0.79999954f, -0.019999985f)
-				.translate(parts[7], 0.0f, 0.0f, 0.0f)
-				.translate(parts[8], 0.0f, 0.0f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, -0.109999985f)
+				.translate(parts[8], 0.0f, 0.0f, 0.1999999f)
+				.translate(parts[7], 0.0f, 0.0f, 0.11999998f)
 				.translate(parts[6], -0.6299997f, -0.66999966f, 0.02f)
-				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.06981318f, -0.034906585f, 0.43633223f)
 				.startKeyframe(12)
+				.translate(parts[4], 0.0f, 0.0f, 0.0f)
 				.translate(parts[1], 0.0f, 0.0f, 0.0f)
+				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.translate(parts[7], 0.0f, 0.0f, 0.0f)
 				.translate(parts[6], 0.0f, 0.0f, 0.0f)
-				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.0f, 0.0f, 0.0f)
 				.end();
 	}
@@ -521,6 +536,30 @@ public class Colt1911GunModel extends GunModel {
 	@Override
 	public void tick(Player player, ItemStack stack) {
 		super.tick(player, stack);
+		Animation anim = getAnimation();
+		float tick = animator.getTick();
+		if(anim == reloadMagByMag) {
+			if(tick == 20) {
+				SoundHandler.playSoundOnServer(SoundRegistries.COLTMAGOUT.get());
+			} else if(tick == 96) {
+				SoundHandler.playSoundOnServer(SoundRegistries.COLTMAGIN.get());
+			} else if(tick == 126) {
+				SoundHandler.playSoundOnServer(SoundRegistries.COLTSLIDER.get());
+				reloadMagByMagStuff();
+			}
+		} else if(anim == reloadNoMag) {
+			if(tick == 60) {
+				SoundHandler.playSoundOnServer(SoundRegistries.COLTMAGIN.get());
+			} else if(tick == 93) {
+				SoundHandler.playSoundOnServer(SoundRegistries.COLTSLIDER.get());
+				reloadNoMagStuff();
+			}
+		} else if(anim == getOutMag) {
+			if(tick == 20) {
+				SoundHandler.playSoundOnServer(SoundRegistries.COLTMAGOUT.get());
+				getOutMagStuff();
+			}
+		}
 	}
 	
 	@Override

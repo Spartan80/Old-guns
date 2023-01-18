@@ -7,11 +7,17 @@ import com.jg.oldguns.client.animations.RepetitiveAnimation;
 import com.jg.oldguns.client.animations.parts.GunModel;
 import com.jg.oldguns.client.animations.parts.GunModelPart;
 import com.jg.oldguns.client.handlers.ClientHandler;
+import com.jg.oldguns.client.handlers.SoundHandler;
 import com.jg.oldguns.client.models.modmodels.Kar98kModModel;
 import com.jg.oldguns.client.models.wrapper.WrapperModel;
 import com.jg.oldguns.registries.ItemRegistries;
+import com.jg.oldguns.registries.SoundRegistries;
+import com.jg.oldguns.utils.InventoryUtils;
+import com.jg.oldguns.utils.NBTUtils;
 import com.jg.oldguns.utils.Paths;
+import com.jg.oldguns.utils.InventoryUtils.InvData;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -41,7 +47,8 @@ public class Kar98kGunModel extends GunModel {
 				new GunModelPart("leftarmhammer"),
 				new GunModelPart("aim", -0.806f, 0.465f, 0.561f, -0.062831f, -0.001745f, 0), 
 				new GunModelPart("sprint", 1.32f, -0.89f, -0.221f, 0.548036f, 1.326451f, -0.191986f),
-				new GunModelPart("recoil", 0.0f, -0.02f, 0.04f, 0f, 0f, 0f) }, 
+				new GunModelPart("recoil", 0.060999952f, -0.091000006f, 0.22900029f, 
+						0.017453333f, 0f, 0f) }, 
 				ItemRegistries.KAR98K.get(), client);
 		
 		look = new Animation("lookAnim", "oldguns:kar98k")
@@ -344,12 +351,42 @@ public class Kar98kGunModel extends GunModel {
 	@Override
 	public void tick(Player player, ItemStack stack) {
 		super.tick(player, stack);
+		float tick = animator.getTick();
+		//SoundHandler.playSoundOnServer(SoundRegistries.KARKFORWARD.get());
+		//SoundHandler.playSoundOnServer(SoundRegistries.KARKBACK.get());
+		if(getAnimation() == shootAnim) {
+			if(tick == 31) {
+				SoundHandler.playSoundOnServer(SoundRegistries.KARKBACK.get());
+			} else if(tick == 44) {
+				SoundHandler.playSoundOnServer(SoundRegistries.KARKFORWARD.get());
+			}
+		} else if(getAnimation() == reload) {
+			if(tick == 41) {
+				SoundHandler.playSoundOnServer(SoundRegistries.KARKBACK.get());
+			} else if(isRepTick(106, 129, tick, 30, times)) {
+				SoundHandler.playSoundOnServer(SoundRegistries.KARKPUSH.get());
+				//ReloadHandler.growOneBullet(stack);
+				LogUtils.getLogger().info("Bullet inserted");
+			} else if(tick == (106+(30*times))+15) {
+				SoundHandler.playSoundOnServer(SoundRegistries.KARKFORWARD.get());
+			}
+		} else if(getAnimation() == kickback) {
+			if(tick == 7) {
+				SoundHandler.playSoundOnServer(SoundRegistries.SWING.get());
+			}
+		}
 	}
 	
 	@Override
 	public void reload(Player player, ItemStack stack) {
-		reload.setTimes(6);
-		setAnimation(reload);
+		InvData data = InventoryUtils.getTotalCountAndIndexForItem(player, 
+				ItemRegistries.BigBullet.get(), 5-NBTUtils.getAmmo(stack));
+		if(data.getTotal() > 0) {
+			InventoryUtils.consumeItems(player, data.getData());
+			times = data.getTotal();
+			reload.setTimes(times);
+			setAnimation(reload);
+		}
 	}
 
 	@Override

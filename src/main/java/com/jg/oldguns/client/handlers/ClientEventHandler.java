@@ -252,7 +252,8 @@ public class ClientEventHandler {
 						Minecraft.getInstance().getWindow().getGuiScaledHeight() / 1.5f, 0xFFFFFF);
 			} else if (stack.getItem() instanceof MagItem) {
 				MagItem mag = ((MagItem) stack.getItem());
-				mc.font.draw(e.getPoseStack(), NBTUtils.getAmmo(stack) + "/" + mag.getMaxAmmo(),
+				mc.font.draw(e.getPoseStack(), stack.getOrCreateTag().getInt(NBTUtils.BULLETS) 
+						+ "/" + mag.getMaxAmmo(),
 						Minecraft.getInstance().getWindow().getGuiScaledWidth() / 7,
 						Minecraft.getInstance().getWindow().getGuiScaledHeight() / 1.5f, 0xFFFFFF);
 			}

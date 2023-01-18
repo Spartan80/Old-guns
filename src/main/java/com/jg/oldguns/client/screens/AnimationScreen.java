@@ -558,8 +558,11 @@ public class AnimationScreen extends Screen {
 			if(model.getAnimation() != null) {
 				if(current < model.getAnimation().getKeyframes().size()-1) {
 					current++;
-					LogUtils.getLogger().info("Current: " + current);
 					Keyframe kf = model.getAnimation().getKeyframes().get(current);
+					model.getAnimator().setTick(kf.startVisualTick);
+					model.getAnimator().nextTick();
+					LogUtils.getLogger().info("Current: " + current + " tick: " + 
+							model.getAnimator().getTick());
 					for(Entry<GunModelPart, float[]> e : kf.translations.entrySet()) {
 						e.getKey().getTransform().pos[0] = Mth.lerp(1, 0, 
 								e.getValue()[0]);
@@ -586,8 +589,11 @@ public class AnimationScreen extends Screen {
 			if(model.getAnimation() != null) {
 				if(current > 0) {
 					current--;
-					LogUtils.getLogger().info("Current: " + current);
 					Keyframe kf = model.getAnimation().getKeyframes().get(current);
+					model.getAnimator().setTick(kf.startVisualTick);
+					model.getAnimator().prevTick();
+					LogUtils.getLogger().info("Current: " + current + " tick: " + 
+							model.getAnimator().getTick());
 					for(Entry<GunModelPart, float[]> e : kf.translations.entrySet()) {
 						e.getKey().getTransform().pos[0] = Mth.lerp(1, 0, 
 								e.getValue()[0]);

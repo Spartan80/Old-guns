@@ -52,7 +52,7 @@ public class ThompsonGunModel extends GunModel {
 				new GunModelPart("aim", -0.631601f, 0.446f, 0.45100307f, 
 						-0.10820972f, -0.0017462336f, 0), 
 				new GunModelPart("sprint", 1.32f, -0.89f, -0.221f, 0.548036f, 1.326451f, -0.191986f),
-				new GunModelPart("recoil", 0, 0, 0.02f, 0, 0, 0) }, 
+				new GunModelPart("recoil", 0.0029999986f, -0.004999999f, 0.06299995f, 0, 0, 0) }, 
 				ItemRegistries.THOMPSON.get(), client);
 		
 		look = new Animation("lookAnim", "oldguns:thompson")

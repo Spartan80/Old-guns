@@ -7,10 +7,12 @@ import com.jg.oldguns.client.animations.Transform;
 import com.jg.oldguns.client.animations.parts.GunModel;
 import com.jg.oldguns.client.animations.parts.GunModelPart;
 import com.jg.oldguns.client.handlers.ClientHandler;
+import com.jg.oldguns.client.handlers.SoundHandler;
 import com.jg.oldguns.client.models.modmodels.GalilModModel;
 import com.jg.oldguns.client.models.wrapper.WrapperModel;
 import com.jg.oldguns.guns.BulletItem;
 import com.jg.oldguns.registries.ItemRegistries;
+import com.jg.oldguns.registries.SoundRegistries;
 import com.jg.oldguns.utils.NBTUtils;
 import com.jg.oldguns.utils.Paths;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -47,7 +49,7 @@ public class GalilGunModel extends GunModel {
 				new GunModelPart("leftarmmag"),
 				new GunModelPart("aim", -0.57f, 0.319f, 0.76f, -0.0209433f, 0.036651f, 0), 
 				new GunModelPart("sprint", 1.32f, -0.89f, -0.221f, 0.548036f, 1.326451f, -0.191986f),
-				new GunModelPart("recoil", 0, 0, 0.02f, 0, 0, 0) }, 
+				new GunModelPart("recoil", -0.0019999994f, 0, 0.19f, 0, 0, 0) }, 
 				ItemRegistries.GALIL.get(), client);
 		
 		look = new Animation("lookAnim", "oldguns:galil")
@@ -254,44 +256,6 @@ public class GalilGunModel extends GunModel {
 
 	@Override
 	public void render(LocalPlayer player, ItemStack stack, MultiBufferSource buffer, PoseStack matrix, int light) {
-		/*matrix.pushPose(); // 1+
-		lerpGunStuff(matrix, stack, 9, 10, 11);
-		translateAndRotateAndScale(parts[5].getCombined(), matrix);
-		matrix.pushPose(); // 2+
-		parts[1].getDTransform().setScale(1.3f, 2.5f, 1.3f);
-		translateAndRotateAndScale(parts[7].getCombined(), matrix);
-		translateAndRotateAndScale(parts[8].getCombined(), matrix);
-		renderArm(player, buffer, matrix, light, HumanoidArm.LEFT, parts[1].getCombined());
-		matrix.popPose(); // 2-
-		matrix.pushPose(); // 3+
-		translateAndRotateAndScale(parts[6].getCombined(), matrix);
-		renderArm(player, buffer, matrix, light, HumanoidArm.RIGHT, parts[0].getCombined());
-		matrix.pushPose(); // 4+
-		renderGunPart(player, stack, buffer, matrix, light);
-		if(NBTUtils.hasMag(stack) && renderMag()) {
-			//LogUtils.getLogger().info("HasMag: " + NBTUtils.getMag(stack));
-			matrix.pushPose();
-			translateAndRotateAndScale(parts[6].getCombined(), matrix);
-			renderItem(player, new ItemStack(ForgeRegistries.ITEMS
-					.getValue(new ResourceLocation(NBTUtils.getMag(stack)))), buffer, matrix, light, 
-					parts[4].getCombined());
-			matrix.popPose();
-		}
-		//translateAndRotateAndScale(parts[3].getCombined(), matrix);
-		//LogUtils.getLogger().info(parts[3].getCombined().toString());
-		//matrix.scale(2, 2, 2);
-		matrix.pushPose();
-		translateAndRotateAndScale(parts[8].getCombined(), matrix);
-		renderModel(player, stack, buffer, matrix, light, Minecraft.getInstance()
-				.getItemRenderer()
-				.getItemModelShaper().getModelManager()
-				.getModel(new ModelResourceLocation(Paths.GALILHAMMER, "inventory")), 
-				parts[3].getTransform());
-		matrix.popPose();
-		matrix.popPose(); // 4-
-		matrix.popPose(); // 3-
-		matrix.popPose(); // 1-*/
-		
 		matrix.pushPose(); // 1+
 		lerpGunStuff(matrix, stack, 8, 9, 10);
 		translateAndRotateAndScale(parts[5].getCombined(), matrix);
@@ -312,6 +276,36 @@ public class GalilGunModel extends GunModel {
 	@Override
 	public void tick(Player player, ItemStack stack) {
 		super.tick(player, stack);
+		Animation anim = getAnimation();
+		float tick = animator.getTick();
+		if(anim == reloadMagByMag) {
+			if(tick == 13) {
+				SoundHandler.playSoundOnServer(SoundRegistries.GALILMAGOUT.get());
+			} else if(tick == 56) {
+				SoundHandler.playSoundOnServer(SoundRegistries.GALILMAGIN.get());
+			} else if(tick == 82) {
+				SoundHandler.playSoundOnServer(SoundRegistries.GALILBACK.get());
+			} else if(tick == 92) {
+				SoundHandler.playSoundOnServer(SoundRegistries.GALILFORWARD.get());
+				reloadMagByMagStuff();
+			} 
+		} else if(anim == reloadNoMag) {
+			if(tick == 43) {
+				reloadNoMagStuff();
+			} else if(tick == 54) {
+				SoundHandler.playSoundOnServer(SoundRegistries.GALILMAGIN.get());
+			} else if(tick == 76) {
+				SoundHandler.playSoundOnServer(SoundRegistries.GALILBACK.get());
+			} else if(tick == 86) {
+				SoundHandler.playSoundOnServer(SoundRegistries.GALILFORWARD.get());
+			}
+		} else if(anim == getOutMag) {
+			if(tick == 13) {
+				SoundHandler.playSoundOnServer(SoundRegistries.GALILMAGOUT.get());
+			} else if(tick == 25) {
+				getOutMagStuff();
+			}
+		}
 	}
 	
 	@Override

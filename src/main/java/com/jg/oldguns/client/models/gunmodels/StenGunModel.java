@@ -53,7 +53,7 @@ public class StenGunModel extends GunModel {
 				new GunModelPart("aim", -0.4268f, 0.371598f, 0.476f, -0.093025f, 0.029844f, 0), 
 				new GunModelPart("sprint", 0.54f, 0.05f, -0.40099987f, 
 						-0.16754894f, 1.326451f, -0.191986f),
-				new GunModelPart("recoil", 0, 0, 0.02f, 0, 0, 0) }, 
+				new GunModelPart("recoil", 0.004f, -0.008f, 0.07699998f, 0, 0, 0) }, 
 				ItemRegistries.STEN.get(), client);
 		
 		look = new Animation("lookAnim", "oldguns:sten")

@@ -45,7 +45,7 @@ public class ScorpionGunModel extends GunModel {
 				new GunModelPart("aim", -0.6807992f, 0.5911991f, 0.56400204f, 
 						-0.13508798f, -0.03874721f, 0), 
 				new GunModelPart("sprint", 0f, 0f, 0f, -0.2792527f, 0f, 0f),
-				new GunModelPart("recoil", 0, 0, 0.02f, 0, 0, 0) }, 
+				new GunModelPart("recoil", 0.014f, -0.0019999999f, 0.080999985f, 0, 0, 0) }, 
 				ItemRegistries.SCORPION.get(), client);
 		
 		look = new Animation("lookAnim", "oldguns:scorpion")

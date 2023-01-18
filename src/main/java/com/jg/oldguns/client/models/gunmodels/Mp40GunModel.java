@@ -48,9 +48,10 @@ public class Mp40GunModel extends GunModel {
 				new GunModelPart("all"),
 				new GunModelPart("alllessleft"),
 				new GunModelPart("leftarmmag"),
-				new GunModelPart("aim", -0.67f, 0.392f, 0.691f, -0.013962f, 0.036651f, 0), 
+				new GunModelPart("aim", -0.672f, 0.392f, 0.691f, -0.013962f, 0.036651f, 0), 
 				new GunModelPart("sprint", 1.32f, -0.89f, -0.221f, 0.548036f, 1.326451f, -0.191986f),
-				new GunModelPart("recoil", 0, 0, 0.03f, 0, 0, 0) }, 
+				new GunModelPart("recoil", -0.0020000008f, -0.014f, 0.10800004f, 
+						0, 0, 0.017453304f) }, 
 				ItemRegistries.MP40.get(), client);
 		
 		shootAnim = new Animation("shootAnim", "oldguns:mp40")
