@@ -7,27 +7,23 @@ import com.jg.oldguns.client.animations.Transform;
 import com.jg.oldguns.client.animations.parts.GunModel;
 import com.jg.oldguns.client.animations.parts.GunModelPart;
 import com.jg.oldguns.client.handlers.ClientHandler;
-import com.jg.oldguns.client.handlers.ReloadHandler;
 import com.jg.oldguns.client.handlers.SoundHandler;
 import com.jg.oldguns.client.models.modmodels.ThompsonModModel;
 import com.jg.oldguns.client.models.wrapper.WrapperModel;
+import com.jg.oldguns.config.Config;
 import com.jg.oldguns.guns.BulletItem;
-import com.jg.oldguns.guns.MagItem;
 import com.jg.oldguns.registries.ItemRegistries;
 import com.jg.oldguns.registries.SoundRegistries;
+import com.jg.oldguns.utils.MeleeHelper;
 import com.jg.oldguns.utils.NBTUtils;
 import com.jg.oldguns.utils.Paths;
-import com.jg.oldguns.utils.ServerUtils;
-import com.jg.oldguns.utils.Utils;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 public class ThompsonGunModel extends GunModel {
@@ -57,54 +53,48 @@ public class ThompsonGunModel extends GunModel {
 		
 		look = new Animation("lookAnim", "oldguns:thompson")
 				.startKeyframe(12, "easeInSine")
-				.translate(parts[1], -0.90999943f, 0.0f, 0.0f)
 				.translate(parts[6], 0.5199998f, 0.09999999f, 0.26000002f)
+				.translate(parts[1], -0.90999943f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.20943953f, 0.3839724f, -0.36651912f)
 				.startKeyframe(24)
-				.translate(parts[1], -0.90999943f, 0.0f, 0.0f)
 				.translate(parts[6], 0.5199998f, 0.09999999f, 0.26000002f)
+				.translate(parts[1], -0.90999943f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.20943953f, 0.3839724f, -0.36651912f)
 				.startKeyframe(12, "easeOutSine")
-				.translate(parts[1], -0.90999943f, 0.0f, 0.0f)
 				.translate(parts[6], -0.27f, -0.7599996f, 0.43999985f)
+				.translate(parts[1], -0.90999943f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.20943953f, 0.3839724f, 0.80285174f)
 				.startKeyframe(24)
-				.translate(parts[1], -0.90999943f, 0.0f, 0.0f)
 				.translate(parts[6], -0.27f, -0.7599996f, 0.43999985f)
+				.translate(parts[1], -0.90999943f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.20943953f, 0.3839724f, 0.80285174f)
 				.startKeyframe(12)
-				.translate(parts[1], -0.9199995f, 0.5399998f, 0.3999999f)
-				.translate(parts[6], -0.059999995f, -0.17f, 0.43999985f)
-				.rotate(parts[6], -0.40142566f, 0.5061454f, 0.9075716f)
-				.startKeyframe(12, "easeInExpo")
-				.translate(parts[1], -0.9199995f, 0.43999988f, 0.3999999f)
-				.translate(parts[6], -0.059999995f, -0.17f, 0.43999985f)
-				.rotate(parts[6], -0.40142566f, 0.5061454f, 0.9075716f)
-				.startKeyframe(12)
-				.translate(parts[1], -0.83999956f, 0.4799998f, 0.4999998f)
-				.translate(parts[6], -0.04f, -0.19000001f, 0.43999985f)
-				.rotate(parts[6], -0.40142566f, 0.5061454f, 0.9075716f)
-				.startKeyframe(12)
-				.translate(parts[1], 0.0f, 0.0f, 0.0f)
 				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.0f, 0.0f, 0.0f)
 				.end();
 		kickback = new Animation("kickbackAnim", "oldguns:thompson")
 				.startKeyframe(8, "easeInQuint")
 				.translate(parts[2], 0.55999976f, -0.29f, -0.58999974f)
+				.translate(parts[5], 0.0f, 0.0f, 0.08999999f)
 				.translate(parts[0], 0.0f, 0.0f, -0.25000003f)
 				.translate(parts[1], -0.45999983f, -0.02f, 0.22000003f)
 				.rotate(parts[2], 0.0f, 1.6929706f, 1.3962643f)
+				.rotate(parts[5], 0.0f, 0.4014257f, 0.0f)
 				.startKeyframe(12, "easeInOutBounce")
 				.translate(parts[2], 0.55999976f, -0.29f, -0.58999974f)
+				.translate(parts[5], 0.0f, 0.0f, 0.08999999f)
 				.translate(parts[0], 0.0f, 0.0f, -0.25000003f)
 				.translate(parts[1], -0.45999983f, -0.02f, 0.22000003f)
 				.rotate(parts[2], 0.0f, 1.6929706f, 1.3962643f)
+				.rotate(parts[5], 0.0f, 0.4014257f, 0.0f)
 				.startKeyframe(12, "easeInSine")
 				.translate(parts[2], 0.0f, 0.0f, 0.0f)
+				.translate(parts[5], 0.0f, 0.0f, 0.0f)
 				.translate(parts[0], 0.0f, 0.0f, 0.0f)
 				.translate(parts[1], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[2], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
 				.end();
 		getOutMag = new Animation("getOutMagAnim", "oldguns:thompson")
 				.startKeyframe(12)
@@ -321,6 +311,8 @@ public class ThompsonGunModel extends GunModel {
 		} else if(getAnimation() == kickback) {
 			if(tick == 4) {
 				SoundHandler.playSoundOnServer(SoundRegistries.SWING.get());
+			} else if(tick == 8) {
+				MeleeHelper.hit(Config.SERVER.thompsonMeleeDmg.get().floatValue());
 			}
 		}
 	}

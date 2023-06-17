@@ -140,8 +140,10 @@ public class KeyframeLineWidget extends GuiComponent implements Widget {
 						}
 						boolean animSelected = screen.getGunModel().getAnimator()
 								.getCurrent()-1 == i;
-						if((screen.getCurrent() == i || animSelected) && this.selected == i) {
+						if(this.selected == i) {
 							color = new float[] { 0.6F, 0.6F, 0.6F };
+						}else if((screen.getCurrent() == i)){// || animSelected)) {
+							color = new float[] { 0.3F, 0.3F, 0.3F };
 						} else if(animSelected) {
 							color = new float[] { 1.0F, 1.0F, 1.0F };
 						}

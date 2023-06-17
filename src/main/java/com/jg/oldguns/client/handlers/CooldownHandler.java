@@ -6,8 +6,6 @@ import java.util.Map.Entry;
 
 import com.mojang.logging.LogUtils;
 
-import oshi.util.tuples.Pair;
-
 public class CooldownHandler {
 
 	private Map<String, Stuff> cooldowns;

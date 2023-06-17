@@ -1,5 +1,6 @@
 package com.jg.oldguns.guns.items;
 
+import com.jg.oldguns.config.Config;
 import com.jg.oldguns.guns.FireMode;
 import com.jg.oldguns.guns.GunItem;
 import com.jg.oldguns.guns.GunStuff;
@@ -19,17 +20,17 @@ public class Aks74u extends GunItem {
 
 	@Override
 	public float getDamage() {
-		return 4;
+		return Config.SERVER.aksDmg.get().floatValue();
 	}
 
 	@Override
 	public float getShootTime() {
-		return 2;
+		return Config.SERVER.aksShootTime.get().floatValue();
 	}
 	
 	@Override
 	public float getPower() {
-		return 12;
+		return Config.SERVER.aksPower.get().floatValue();
 	}
 
 	@Override
@@ -39,17 +40,17 @@ public class Aks74u extends GunItem {
 
 	@Override
 	public int getRange() {
-		return 14;
+		return Config.SERVER.aksRange.get().intValue();
 	}
 
 	@Override
 	public float getRangeDamageReduction() {
-		return 0.98f;
+		return Config.SERVER.aksRangeDmgRed.get().floatValue();
 	}
 
 	@Override
 	public float getInnacuracy() {
-		return 0.1f;
+		return Config.SERVER.aksInnacuracy.get().floatValue();
 	}
 
 	@Override

@@ -7,23 +7,21 @@ import com.jg.oldguns.client.animations.RepetitiveAnimation;
 import com.jg.oldguns.client.animations.parts.GunModel;
 import com.jg.oldguns.client.animations.parts.GunModelPart;
 import com.jg.oldguns.client.handlers.ClientHandler;
+import com.jg.oldguns.client.handlers.ReloadHandler;
 import com.jg.oldguns.client.handlers.SoundHandler;
 import com.jg.oldguns.client.models.modmodels.Kar98kModModel;
 import com.jg.oldguns.client.models.wrapper.WrapperModel;
+import com.jg.oldguns.config.Config;
 import com.jg.oldguns.registries.ItemRegistries;
 import com.jg.oldguns.registries.SoundRegistries;
 import com.jg.oldguns.utils.InventoryUtils;
-import com.jg.oldguns.utils.NBTUtils;
-import com.jg.oldguns.utils.Paths;
-import com.jg.oldguns.utils.InventoryUtils.InvData;
+import com.jg.oldguns.utils.MeleeHelper;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -53,53 +51,33 @@ public class Kar98kGunModel extends GunModel {
 		
 		look = new Animation("lookAnim", "oldguns:kar98k")
 				.startKeyframe(12)
-				.translate(parts[1], -0.07999999f, 0.5499998f, 0.38999993f)
 				.translate(parts[5], 0.0f, -0.87999946f, 0.0f)
+				.translate(parts[1], -0.07999999f, 0.5499998f, 0.38999993f)
 				.rotate(parts[5], 0.80285174f, 0.0f, 0.0f)
 				.rotate(parts[1], 0.0f, 0.0f, 0.0f)
 				.startKeyframe(12)
-				.translate(parts[1], -0.07999999f, 0.5499998f, 0.38999993f)
 				.translate(parts[5], -0.24000005f, -1.479999f, -0.4299999f)
+				.translate(parts[1], -0.07999999f, 0.5499998f, 0.38999993f)
 				.rotate(parts[5], 0.80285174f, 0.0f, 0.82030505f)
 				.rotate(parts[1], 0.0f, 0.0f, 0.0f)
 				.startKeyframe(24)
-				.translate(parts[1], -0.07999999f, 0.5499998f, 0.38999993f)
 				.translate(parts[5], -0.24000005f, -1.479999f, -0.4299999f)
+				.translate(parts[1], -0.07999999f, 0.5499998f, 0.38999993f)
 				.rotate(parts[5], 0.80285174f, 0.0f, 0.82030505f)
 				.rotate(parts[1], 0.0f, 0.0f, 0.0f)
 				.startKeyframe(12)
-				.translate(parts[1], 0.089999974f, 0.6499997f, 0.5199998f)
 				.translate(parts[5], 0.4099999f, -0.5799998f, 0.17999999f)
+				.translate(parts[1], 0.089999974f, 0.6499997f, 0.5199998f)
 				.rotate(parts[5], 0.80285174f, 0.0f, -0.29670593f)
 				.rotate(parts[1], 0.0f, 0.0f, 0.0f)
 				.startKeyframe(24)
-				.translate(parts[1], 0.089999974f, 0.6499997f, 0.5199998f)
 				.translate(parts[5], 0.4099999f, -0.5799998f, 0.17999999f)
-				.rotate(parts[5], 0.80285174f, 0.0f, -0.29670593f)
-				.rotate(parts[1], 0.0f, 0.0f, 0.0f)
-				.startKeyframe(12, "easeInQuart")
 				.translate(parts[1], 0.089999974f, 0.6499997f, 0.5199998f)
-				.translate(parts[5], 0.4099999f, -0.5799998f, 0.17999999f)
-				.rotate(parts[5], 0.80285174f, 0.0f, -0.29670593f)
-				.rotate(parts[1], 0.0f, 0.2792527f, 0.0f)
-				.startKeyframe(4, "easeOutQuart")
-				.translate(parts[1], 0.089999974f, 0.6499997f, 0.5199998f)
-				.translate(parts[5], 0.4099999f, -0.5799998f, 0.17999999f)
-				.rotate(parts[5], 0.80285174f, 0.0f, -0.29670593f)
-				.rotate(parts[1], 0.0f, 0.0f, 0.0f)
-				.startKeyframe(4)
-				.translate(parts[1], 0.089999974f, 0.6499997f, 0.5199998f)
-				.translate(parts[5], 0.4099999f, -0.5799998f, 0.17999999f)
-				.rotate(parts[5], 0.80285174f, -0.034906585f, -0.29670593f)
-				.rotate(parts[1], 0.0f, 0.0f, 0.0f)
-				.startKeyframe(4)
-				.translate(parts[1], 0.089999974f, 0.6499997f, 0.5199998f)
-				.translate(parts[5], 0.4099999f, -0.5799998f, 0.17999999f)
 				.rotate(parts[5], 0.80285174f, 0.0f, -0.29670593f)
 				.rotate(parts[1], 0.0f, 0.0f, 0.0f)
 				.startKeyframe(12)
-				.translate(parts[1], 0.0f, 0.0f, 0.0f)
 				.translate(parts[5], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
 				.end();
 
@@ -365,27 +343,34 @@ public class Kar98kGunModel extends GunModel {
 				SoundHandler.playSoundOnServer(SoundRegistries.KARKBACK.get());
 			} else if(isRepTick(106, 129, tick, 30, times)) {
 				SoundHandler.playSoundOnServer(SoundRegistries.KARKPUSH.get());
-				//ReloadHandler.growOneBullet(stack);
+				ReloadHandler.growOneBullet(stack);
 				LogUtils.getLogger().info("Bullet inserted");
 			} else if(tick == (106+(30*times))+15) {
 				SoundHandler.playSoundOnServer(SoundRegistries.KARKFORWARD.get());
 			}
 		} else if(getAnimation() == kickback) {
-			if(tick == 7) {
+			if(tick == 4) {
 				SoundHandler.playSoundOnServer(SoundRegistries.SWING.get());
+			} else if(tick == 8) {
+				MeleeHelper.hit(Config.SERVER.kar98kMeleeDmg.get().floatValue());
 			}
 		}
 	}
 	
 	@Override
 	public void reload(Player player, ItemStack stack) {
-		InvData data = InventoryUtils.getTotalCountAndIndexForItem(player, 
+		/*InvData data = InventoryUtils.getTotalCountAndIndexForItem(player, 
 				ItemRegistries.BigBullet.get(), 5-NBTUtils.getAmmo(stack));
 		if(data.getTotal() > 0) {
 			InventoryUtils.consumeItems(player, data.getData());
 			times = data.getTotal();
 			reload.setTimes(times);
 			setAnimation(reload);
+		}*/
+		times = fillReloadDataNoMag(ItemRegistries.BigBullet.get(), player, reload, 
+				stack, 5);
+		if(getAnimation() == reload) {
+			InventoryUtils.consumeItems(player, (int[])data.get("data"));
 		}
 	}
 

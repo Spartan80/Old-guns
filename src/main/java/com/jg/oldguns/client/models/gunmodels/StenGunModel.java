@@ -7,27 +7,23 @@ import com.jg.oldguns.client.animations.Transform;
 import com.jg.oldguns.client.animations.parts.GunModel;
 import com.jg.oldguns.client.animations.parts.GunModelPart;
 import com.jg.oldguns.client.handlers.ClientHandler;
-import com.jg.oldguns.client.handlers.ReloadHandler;
 import com.jg.oldguns.client.handlers.SoundHandler;
 import com.jg.oldguns.client.models.modmodels.StenModModel;
 import com.jg.oldguns.client.models.wrapper.WrapperModel;
+import com.jg.oldguns.config.Config;
 import com.jg.oldguns.guns.BulletItem;
-import com.jg.oldguns.guns.MagItem;
 import com.jg.oldguns.registries.ItemRegistries;
 import com.jg.oldguns.registries.SoundRegistries;
+import com.jg.oldguns.utils.MeleeHelper;
 import com.jg.oldguns.utils.NBTUtils;
 import com.jg.oldguns.utils.Paths;
-import com.jg.oldguns.utils.ServerUtils;
-import com.jg.oldguns.utils.Utils;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 public class StenGunModel extends GunModel {
@@ -59,22 +55,27 @@ public class StenGunModel extends GunModel {
 		look = new Animation("lookAnim", "oldguns:sten")
 				.startKeyframe(12, "easeOutQuint")
 				.translate(parts[1], -1.1399993f, 0.0f, 0.0f)
+				.translate(parts[5], 0.0f, 0.4799998f, 0.0f)
 				.translate(parts[6], -0.8599995f, -0.68999964f, 0.0f)
 				.rotate(parts[6], 0.0f, -0.17453294f, 0.5934119f)
 				.startKeyframe(24)
 				.translate(parts[1], -1.1399993f, 0.0f, 0.0f)
+				.translate(parts[5], 0.0f, 0.4799998f, 0.0f)
 				.translate(parts[6], -0.8599995f, -0.68999964f, 0.0f)
 				.rotate(parts[6], 0.0f, -0.17453294f, 0.5934119f)
-				.startKeyframe(12, "easeInQuint")
+				.startKeyframe(12, "easeInSine")
 				.translate(parts[1], -0.5599998f, 0.0f, 0.0f)
+				.translate(parts[5], 0.0f, 0.009999985f, 0.0f)
 				.translate(parts[6], 0.23000002f, 0.14999998f, 0.0f)
 				.rotate(parts[6], 0.0f, -0.17453294f, -0.4886921f)
 				.startKeyframe(24)
 				.translate(parts[1], -0.5599998f, 0.0f, 0.0f)
+				.translate(parts[5], 0.0f, 0.009999985f, 0.0f)
 				.translate(parts[6], 0.23000002f, 0.14999998f, 0.0f)
 				.rotate(parts[6], 0.0f, -0.17453294f, -0.4886921f)
 				.startKeyframe(12, "easeInOutCirc")
 				.translate(parts[1], 0.0f, 0.0f, 0.0f)
+				.translate(parts[5], 0.0f, 0.0f, 0.0f)
 				.translate(parts[6], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.0f, 0.0f, 0.0f)
 				.end();
@@ -347,17 +348,11 @@ public class StenGunModel extends GunModel {
 				SoundHandler.playSoundOnServer(SoundRegistries.STENHAMMERBACK.get());
 			} else if(tick == 118) {
 				SoundHandler.playSoundOnServer(SoundRegistries.STENHAMMERFORWARD.get());
-				ReloadHandler.restoreMag(getMPath(), ServerUtils.getBullets(Utils.getStack()));
-				ReloadHandler.setBullets((int)data.get("magBullets"));
-				ReloadHandler.removeItem((int)data.get("index"), 1);
+				reloadMagByMagStuff();
 			}
 		} else if(anim == reloadNoMag) {
 			if(tick == 18) {
-				MagItem magItem = getMagItem((int)data.get("index"));
-				ReloadHandler.setMag(this, magItem.getMaxAmmo(), true, 
-						getMBPath((int)data.get("index")), magItem);
-				ReloadHandler.removeItem((int)data.get("index"), 1);
-				ReloadHandler.setBullets((int)data.get("magBullets"));
+				reloadNoMagStuff();
 			} else if(tick == 41) {
 				SoundHandler.playSoundOnServer(SoundRegistries.STENMAGIN.get());
 			} else if(tick == 93) {
@@ -369,13 +364,13 @@ public class StenGunModel extends GunModel {
 			if(tick == 1) {
 				SoundHandler.playSoundOnServer(SoundRegistries.STENMAGOUT.get());
 			} else if(tick == 26) {
-				ReloadHandler.restoreMag(getMPath(), ServerUtils.getBullets(Utils.getStack()));
-				ReloadHandler.setMag(this, 0, false, 
-						"", "");
+				getOutMagStuff();
 			}
 		} else if(anim == kickback) {
-			if(tick == 6) {
+			if(tick == 4) {
 				SoundHandler.playSoundOnServer(SoundRegistries.SWING.get());
+			} else if(tick == 8) {
+				MeleeHelper.hit(Config.SERVER.stenMeleeDmg.get().floatValue());
 			}
 		}
 	}

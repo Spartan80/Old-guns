@@ -7,24 +7,21 @@ import com.jg.oldguns.client.animations.RepetitiveAnimation;
 import com.jg.oldguns.client.animations.parts.GunModel;
 import com.jg.oldguns.client.animations.parts.GunModelPart;
 import com.jg.oldguns.client.handlers.ClientHandler;
+import com.jg.oldguns.client.handlers.ReloadHandler;
 import com.jg.oldguns.client.handlers.SoundHandler;
 import com.jg.oldguns.client.models.modmodels.IthacaModel37ModModel;
 import com.jg.oldguns.client.models.wrapper.WrapperModel;
+import com.jg.oldguns.config.Config;
 import com.jg.oldguns.registries.ItemRegistries;
 import com.jg.oldguns.registries.SoundRegistries;
 import com.jg.oldguns.utils.InventoryUtils;
-import com.jg.oldguns.utils.NBTUtils;
-import com.jg.oldguns.utils.Paths;
-import com.jg.oldguns.utils.InventoryUtils.InvData;
+import com.jg.oldguns.utils.MeleeHelper;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
@@ -50,7 +47,27 @@ public class IthacaModel37GunModel extends GunModel {
 				ItemRegistries.ITHACAMODEL37.get(), client);
 		
 		look = new Animation("lookAnim", "oldguns:ithacamodel37")
-				.startKeyframe(12).end();
+				.startKeyframe(12, "easeOutSine")
+				.translate(parts[5], -0.7499996f, -0.57999974f, 0.0f)
+				.translate(parts[1], -1.1499993f, 0.0f, 0.0f)
+				.rotate(parts[5], 0.0f, 0.0f, 0.61086524f)
+				.startKeyframe(36)
+				.translate(parts[5], -0.7499996f, -0.57999974f, 0.0f)
+				.translate(parts[1], -1.1499993f, 0.0f, 0.0f)
+				.rotate(parts[5], 0.0f, 0.0f, 0.61086524f)
+				.startKeyframe(12, "easInSine")
+				.translate(parts[5], 0.4799998f, 0.31999996f, 0.0f)
+				.translate(parts[1], -0.7099997f, 0.0f, 0.0f)
+				.rotate(parts[5], 0.0f, 0.0f, -0.6457719f)
+				.startKeyframe(36)
+				.translate(parts[5], 0.4799998f, 0.31999996f, 0.0f)
+				.translate(parts[1], -0.7099997f, 0.0f, 0.0f)
+				.rotate(parts[5], 0.0f, 0.0f, -0.6457719f)
+				.startKeyframe(12)
+				.translate(parts[5], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
+				.end();
 
 		reload = new RepetitiveAnimation("reloadAnim", "oldguns:ithacamodel37")
 				.startKeyframe(12)
@@ -161,26 +178,34 @@ public class IthacaModel37GunModel extends GunModel {
 		} else if(anim == reload) {
 			if(isRepTick(12, 30, tick, 38, times)) {
 				SoundHandler.playSoundOnServer(SoundRegistries.MODEL37_SHELL_INSERT.get());
-				//ReloadHandler.growOneBullet(stack);
+				ReloadHandler.growOneBullet(stack);
+				//ReloadHandler.removeOneItemFrom(times);
 				LogUtils.getLogger().info("Bullet inserted");
 			}
 		} else if(anim == kickback) {
-			if(tick == 7) {
+			if(tick == 4) {
 				SoundHandler.playSoundOnServer(SoundRegistries.SWING.get());
+			} else if(tick == 8) {
+				MeleeHelper.hit(Config.SERVER.ithacaModel37MeleeDmg.get().floatValue());
 			}
 		}
 	}
 	
 	@Override
 	public void reload(Player player, ItemStack stack) {
-		InvData data = InventoryUtils.getTotalCountAndIndexForItem(player, 
+		times = fillReloadDataNoMag(ItemRegistries.ShotgunBullet.get(), player, reload, 
+				stack, 5);
+		if(getAnimation() == reload) {
+			InventoryUtils.consumeItems(player, (int[])data.get("data"));
+		}
+		/*InvData data = InventoryUtils.getTotalCountAndIndexForItem(player, 
 				ItemRegistries.ShotgunBullet.get(), 5-NBTUtils.getAmmo(stack));
 		if(data.getTotal() > 0) {
 			InventoryUtils.consumeItems(player, data.getData());
 			times = data.getTotal();
 			reload.setTimes(times);
 			setAnimation(reload);
-		}
+		}*/
 	}
 
 	@Override

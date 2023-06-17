@@ -17,6 +17,7 @@ import com.jg.oldguns.config.Config;
 import com.jg.oldguns.containers.GunPartsContainer;
 import com.jg.oldguns.guns.GunItem;
 import com.jg.oldguns.guns.GunPart;
+import com.jg.oldguns.guns.items.Aks74u;
 import com.jg.oldguns.network.AddItemMessage;
 import com.jg.oldguns.registries.ItemRegistries;
 import com.jg.oldguns.registries.SoundRegistries;
@@ -25,6 +26,7 @@ import com.jg.oldguns.utils.Utils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
+import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -84,7 +86,6 @@ public class GunPartsGui extends AbstractContainerScreen<GunPartsContainer> {
 
 	public GunPartsGui(GunPartsContainer p_i51105_1_, Inventory p_i51105_2_, Component c) {
 		super(p_i51105_1_, p_i51105_2_, Component.translatable("gui.oldguns.gun_parts_gui"));
-
 		this.slots = new ArrayList<GunSlot>();
 		this.partSlots = new ArrayList<GunSlot>();
 		this.gunLevel = true;
@@ -127,106 +128,171 @@ public class GunPartsGui extends AbstractContainerScreen<GunPartsContainer> {
 
 		int i = leftPos;
 		int j = topPos;
-
+		
+		LogUtils.getLogger().info("i: " + i);
+		LogUtils.getLogger().info("j: " + j);
+		
 		int size = ItemsReg.INSTANCE.getGuns().size();
 
-		int cols = 6;
-		int rows = 3;
-		int cap = cols * rows;
-
-		gunTabs = (int) Math.floor((size / cap) + 1);
-
-		// Cols = 7 Rows = 3
-
-		int t = 0;
-
-		for (int g = 0; g < size; g++) {
-
-			int wg = g - (t * cap);
-
-			GunItem gunitem = (GunItem) ItemsReg.INSTANCE.getGun(g);
-
-			slots.add(new GunSlot(this, t, (i + 8) + (wg % cols) * 18, (j + 26) + (int) Math.floor(wg / cols) * 18, 178,
-					0, 18, 18, 18, GUNPARTS_GUI, gunitem) {
-				@Override
-				public void onPress() {
-					super.onPress();
-
-					if (!ItemsReg.INSTANCE.getGunParts().containsKey(gunitem.getGunId()))
-						return;
-
-					gunStack = new ItemStack(this.gun.getItem());
-					GunPartsGui.this.gunModel = Utils.getModel(this.gun.getItem());
-
-					updateTab(gunTab);
-
-					gunLevel = false;
-
+		if(slots.size() == 0) {
+			
+			int cols = 6;
+			int rows = 3;
+			int cap = cols * rows;
+			
+			gunTabs = (int) Math.floor((size / cap) + 1);
+	
+			// Cols = 7 Rows = 3
+	
+			int t = 0;
+			
+			for (int g = 0; g < size; g++) {
+	
+				int wg = g - (t * cap);
+	
+				GunItem gunitem = (GunItem) ItemsReg.INSTANCE.getGun(g);
+				
+				slots.add(new GunSlot(this, t, (i + 8) + (wg % cols) * 18, 
+						(j + 26) + (int) Math.floor(wg / cols) * 18, 178,
+						0, 18, 18, 18, GUNPARTS_GUI, gunitem) {
+					@Override
+					public void onPress() {
+						super.onPress();
+						
+						if (!ItemsReg.INSTANCE.getGunParts().containsKey(gunitem.getGunId()))
+							return;
+	
+						gunStack = new ItemStack(this.gun.getItem());
+						GunPartsGui.this.gunModel = Utils.getModel(this.gun.getItem());
+	
+						updateTab(gunTab);
+	
+						gunLevel = false;
+	
+						int t2 = 0;
+	
+						List<GunPart> matchingparts = new ArrayList<GunPart>();
+	
+						for (Supplier<? extends Item> s : ItemsReg.INSTANCE.getGunParts().get(gunitem.getGunId())) {
+							GunPart part = (GunPart) s.get();
+	
+							if (part.getGunId().equals(gunitem.getGunId())) {
+								matchingparts.add(part);
+							}
+						}
+	
+						for (int g2 = 0; g2 < matchingparts.size(); g2++) {
+	
+							partTabs = (int) Math.floor((matchingparts.size() / cap) + 1);
+	
+							int wg2 = g2 - (t2 * cap);
+	
+							partSlots.add(new GunSlot(GunPartsGui.this, t2, 
+									(i + 8) + (wg2 % cols) * 18,
+									(j + 26) + (int) Math.floor(wg2 / cols) * 18, 
+									178, 0, 18, 18, 18, GUNPARTS_GUI,
+									matchingparts.get(g2)) {
+								public void onPress() {
+	
+									GunPartsGui.this.hasMetal = false;
+									GunPartsGui.this.hasWood = false;
+	
+									partStack = new ItemStack(this.gun.getItem());
+									GunPartsGui.this.partModel = Utils.getModel(this.gun.getItem());
+	
+									GunPartsGui.this.part = (GunPart) this.gun.getItem();
+	
+									GunPartsGui.this.woodCount = part.getWood();
+									GunPartsGui.this.metalCount = part.getMetal();
+	
+									updateTab(partTab);
+	
+									if (part != null) {
+										searchMaterials();
+									}
+								};
+							});
+	
+							if (wg2 > cap - 2) {
+								t2++;
+							}
+						}
+	
+						for (GunSlot s : slots) {
+							s.visible = false;
+							s.active = false;
+						}
+	
+					}
+				});
+	
+				if (wg > cap - 2) {
+					t++;
+				}
+			}
+		
+		} else {
+			// (i + 8) + (wg % cols) * 18, (j + 26) + (int) Math.floor(wg / cols) * 18
+			int cols = 6;
+			int rows = 3;
+			int cap = cols * rows;
+			int t = 0;
+			
+			for(int g = 0; g < size; g++) {
+				int wg = g - (t * cap);
+				
+				GunItem gunitem = (GunItem) ItemsReg.INSTANCE.getGun(g);
+				
+				slots.get(g).x = (i + 8) + (wg % cols) * 18;
+				slots.get(g).y = (j + 26) + (int) Math.floor(wg / cols) * 18;
+				
+				// Part slots
+				
+				if(!partSlots.isEmpty() && gunitem != null) {
 					int t2 = 0;
-
+					
 					List<GunPart> matchingparts = new ArrayList<GunPart>();
-
-					for (Supplier<? extends Item> s : ItemsReg.INSTANCE.getGunParts().get(gunitem.getGunId())) {
+					if(!ItemsReg.INSTANCE.getGunParts()
+							.containsKey(gunitem.getGunId())) continue;
+					for (Supplier<? extends Item> s : ItemsReg.INSTANCE.getGunParts()
+							.get(gunitem.getGunId())) {
 						GunPart part = (GunPart) s.get();
 
 						if (part.getGunId().equals(gunitem.getGunId())) {
 							matchingparts.add(part);
 						}
 					}
-
-					for (int g2 = 0; g2 < matchingparts.size(); g2++) {
-
+					
+					for (int g2 = 0; g2 < matchingparts.size()-1; g2++) {
+						
 						partTabs = (int) Math.floor((matchingparts.size() / cap) + 1);
 
 						int wg2 = g2 - (t2 * cap);
-
-						partSlots.add(new GunSlot(GunPartsGui.this, t2, (i + 8) + (wg2 % cols) * 18,
-								(j + 26) + (int) Math.floor(wg2 / cols) * 18, 178, 0, 18, 18, 18, GUNPARTS_GUI,
-								matchingparts.get(g2)) {
-							public void onPress() {
-
-								GunPartsGui.this.hasMetal = false;
-								GunPartsGui.this.hasWood = false;
-
-								partStack = new ItemStack(this.gun.getItem());
-								GunPartsGui.this.partModel = Utils.getModel(this.gun.getItem());
-
-								GunPartsGui.this.part = (GunPart) this.gun.getItem();
-
-								GunPartsGui.this.woodCount = part.getWood();
-								GunPartsGui.this.metalCount = part.getMetal();
-
-								updateTab(partTab);
-
-								if (part != null) {
-									searchMaterials();
-								}
-							};
-						});
-
+						
+						partSlots.get(g2).x = (i + 8) + (wg2 % cols) * 18;
+						partSlots.get(g2).y = (j + 26) + (int) Math.floor(wg2 / cols) * 18;
+						
 						if (wg2 > cap - 2) {
 							t2++;
 						}
 					}
-
-					for (GunSlot s : slots) {
-						s.visible = false;
-						s.active = false;
-					}
-
 				}
-			});
-
-			if (wg > cap - 2) {
-				t++;
+				
+				// Tabs
+				
+				if (wg > cap - 2) {
+					t++;
+				}
 			}
+			
 		}
-
+		
 		addRenderableWidget(new Button(this, i + 61, j + 7, 178, 60, 26, 18, 26, GUNPARTS_GUI) {
 			@Override
 			public void onPress() {
 				super.onPress();
 
+				LogUtils.getLogger().info("gunLevel: " + gunLevel);
 				if (!gunLevel) {
 					if (partTab == 0) {
 
@@ -249,6 +315,9 @@ public class GunPartsGui extends AbstractContainerScreen<GunPartsContainer> {
 					}
 				} else {
 					gunTab = (gunTab - 1 + gunTabs) % gunTabs;
+					for (GunSlot g : slots) {
+						g.updateTab(gunTab);
+					}
 				}
 
 			}
@@ -258,8 +327,13 @@ public class GunPartsGui extends AbstractContainerScreen<GunPartsContainer> {
 			@Override
 			public void onPress() {
 				super.onPress();
+				LogUtils.getLogger().info("gunLevel: " + gunLevel);
 				if (gunLevel) {
 					gunTab = (gunTab + 1) % gunTabs;
+					LogUtils.getLogger().info("gunTabs: " + gunTabs + " gunTab: " + gunTab);
+					for (GunSlot g : slots) {
+						g.updateTab(gunTab);
+					}
 				} else {
 					partTab = (partTab + 1) % partTabs;
 				}
@@ -287,7 +361,9 @@ public class GunPartsGui extends AbstractContainerScreen<GunPartsContainer> {
 				 */
 				if (part != null) {
 
-					if(!canCraft.get(part.getGunId())) return;
+					if(canCraft.get(part.getGunId())) return;
+					
+					LogUtils.getLogger().info(Config.SERVER.craftAks74u.get() + "");
 					
 					searchMaterials();
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.jg.oldguns.guns.GunItem;
 import com.jg.oldguns.utils.Utils;
+import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -86,6 +87,8 @@ public abstract class BaseModel implements BakedModel {
 			for (BakedQuad quad : model.getQuads(p_200117_1_, null, p_200117_3_)) {
 				quads.add(copyQuad(quad));
 			}
+		} else {
+			LogUtils.getLogger().info("Model = null");
 		}
 	}
 

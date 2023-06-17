@@ -1,6 +1,8 @@
 package com.jg.oldguns.guns;
 
 import com.jg.oldguns.containers.MagContainer;
+import com.jg.oldguns.utils.NBTUtils;
+import com.jg.oldguns.utils.ServerUtils;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -70,6 +72,10 @@ public class MagItem extends Item {
 
 	// End
 
+	public int getAmmo(ItemStack stack) {
+		return NBTUtils.getAmmo(stack);
+	}
+	
 	public int getMaxAmmo() {
 		return maxAmmo;
 	}

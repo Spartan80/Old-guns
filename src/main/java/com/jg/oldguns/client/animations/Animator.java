@@ -74,7 +74,10 @@ public class Animator {
 	
 	public void update() {
 		if(this.animation != null && model.canPlayAnimation()){
-	            this.prevTick = this.tick;
+				if(Minecraft.getInstance().player.isSprinting()) {
+					return;
+            	}    
+				this.prevTick = this.tick;
 	            this.tick += 1;
 	            Keyframe kf = this.animation.keyframes.get(current);
 	            if(current != old) {

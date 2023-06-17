@@ -91,41 +91,62 @@ public class GunCraftingGui extends AbstractContainerScreen<GunCraftingTableCont
 
 		int size = ItemsReg.INSTANCE.getGuns().size();
 
-		tabs = (int) Math.floor((size / 24) + 1);
-
-		// Cols = 6 Rows = 4
-
-		int t = 0;
-
-		for (int g = 0; g < size; g++) {
-
-			int wg = g - (t * 24);
-
-			slots.add(new GunSlot(this, t, (i + 34) + (wg % 6) * 18, (j + 9) + (int) Math.floor(wg / 6) * 18, 177, 60,
-					18, 18, 18, GUN_GUI, ItemsReg.INSTANCE.getGun(g)) {
-				@Override
-				public void onPress() {
-					super.onPress();
-					current = new ItemStack(this.gun.getItem());
-					// model = ModelHandler.INSTANCE.getNonSpecialModel(this.gun.getItem());
-					GunCraftingGui.this.model = Utils.getModel(this.gun.getItem());
-
-					GunItem gun = (GunItem) current.getItem();
-					if (gun.getBarrel() != null) {
-						parts[0].setPart(gun.getBarrel(), pi);
+		if(slots.size() == 0) {
+		
+			tabs = (int) Math.floor((size / 24) + 1);
+	
+			// Cols = 6 Rows = 4
+	
+			int t = 0;
+	
+			for (int g = 0; g < size; g++) {
+	
+				int wg = g - (t * 24);
+	
+				slots.add(new GunSlot(this, t, (i + 34) + (wg % 6) * 18, (j + 9) + (int) Math.floor(wg / 6) * 18, 177, 60,
+						18, 18, 18, GUN_GUI, ItemsReg.INSTANCE.getGun(g)) {
+					@Override
+					public void onPress() {
+						super.onPress();
+						current = new ItemStack(this.gun.getItem());
+						// model = ModelHandler.INSTANCE.getNonSpecialModel(this.gun.getItem());
+						GunCraftingGui.this.model = Utils.getModel(this.gun.getItem());
+	
+						GunItem gun = (GunItem) current.getItem();
+						if (gun.getBarrel() != null) {
+							parts[0].setPart(gun.getBarrel(), pi);
+						}
+						if (gun.getBody() != null) {
+							parts[1].setPart(gun.getBody(), pi);
+						}
+						if (gun.getStock() != null) {
+							parts[2].setPart(gun.getStock(), pi);
+						}
 					}
-					if (gun.getBody() != null) {
-						parts[1].setPart(gun.getBody(), pi);
-					}
-					if (gun.getStock() != null) {
-						parts[2].setPart(gun.getStock(), pi);
-					}
+				});
+	
+				if (wg > 22) {
+					t++;
 				}
-			});
-
-			if (wg > 22) {
-				t++;
 			}
+		
+		} else {
+			// (i + 34) + (wg % 6) * 18, (j + 9) + (int) Math.floor(wg / 6) * 18
+			int cols = 6;
+			int t = 0;
+			
+			for(int g = 0; g < size; g++) {
+				int wg = g - (t * 24);
+				
+				slots.get(g).x = (i + 34) + (wg % cols) * 18;
+				slots.get(g).y = (j + 9) + (int) Math.floor(wg / cols) * 18;
+				
+				if (wg > 22) {
+					t++;
+				}
+			}
+			
+			
 		}
 
 		// Right
@@ -153,7 +174,7 @@ public class GunCraftingGui extends AbstractContainerScreen<GunCraftingTableCont
 			@Override
 			public void onPress() {
 				super.onPress();
-				if(!canCraft.get(((GunItem)current.getItem()).getGunId())) return;
+				if(canCraft.get(((GunItem)current.getItem()).getGunId())) return;
 				parts[0].check(pi);
 				parts[1].check(pi);
 				parts[2].check(pi);

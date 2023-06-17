@@ -7,10 +7,14 @@ import com.jg.oldguns.client.animations.Transform;
 import com.jg.oldguns.client.animations.parts.GunModel;
 import com.jg.oldguns.client.animations.parts.GunModelPart;
 import com.jg.oldguns.client.handlers.ClientHandler;
+import com.jg.oldguns.client.handlers.SoundHandler;
 import com.jg.oldguns.client.models.modmodels.ScorpionModModel;
 import com.jg.oldguns.client.models.wrapper.WrapperModel;
+import com.jg.oldguns.config.Config;
 import com.jg.oldguns.guns.BulletItem;
 import com.jg.oldguns.registries.ItemRegistries;
+import com.jg.oldguns.registries.SoundRegistries;
+import com.jg.oldguns.utils.MeleeHelper;
 import com.jg.oldguns.utils.NBTUtils;
 import com.jg.oldguns.utils.Paths;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -49,25 +53,30 @@ public class ScorpionGunModel extends GunModel {
 				ItemRegistries.SCORPION.get(), client);
 		
 		look = new Animation("lookAnim", "oldguns:scorpion")
-				.startKeyframe(12, "easeOutQuint")
-				.translate(parts[1], -1.1399993f, 0.0f, 0.0f)
+				.startKeyframe(12, "easeOutSine")
+				.translate(parts[5], 0.0f, 0.45999983f, 0.0f)
 				.translate(parts[6], -0.8599995f, -0.68999964f, 0.0f)
+				.translate(parts[1], -1.1399993f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.0f, -0.17453294f, 0.5934119f)
 				.startKeyframe(24)
-				.translate(parts[1], -1.1399993f, 0.0f, 0.0f)
+				.translate(parts[5], 0.0f, 0.45999983f, 0.0f)
 				.translate(parts[6], -0.8599995f, -0.68999964f, 0.0f)
+				.translate(parts[1], -1.1399993f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.0f, -0.17453294f, 0.5934119f)
-				.startKeyframe(12, "easeInQuint")
-				.translate(parts[1], -0.5599998f, 0.0f, 0.0f)
+				.startKeyframe(12, "easeInSine")
+				.translate(parts[5], 0.0f, 0.45999983f, 0.0f)
 				.translate(parts[6], 0.23000002f, 0.14999998f, 0.0f)
+				.translate(parts[1], -0.5599998f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.0f, -0.17453294f, -0.4886921f)
 				.startKeyframe(24)
-				.translate(parts[1], -0.5599998f, 0.0f, 0.0f)
+				.translate(parts[5], 0.0f, 0.45999983f, 0.0f)
 				.translate(parts[6], 0.23000002f, 0.14999998f, 0.0f)
+				.translate(parts[1], -0.5599998f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.0f, -0.17453294f, -0.4886921f)
 				.startKeyframe(12, "easeInOutCirc")
-				.translate(parts[1], 0.0f, 0.0f, 0.0f)
+				.translate(parts[5], 0.0f, 0.0f, 0.0f)
 				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.0f, 0.0f, 0.0f)
 				.end();
 		kickback = new Animation("kickbackAnim", "oldguns:scorpion")
@@ -296,6 +305,46 @@ public class ScorpionGunModel extends GunModel {
 	@Override
 	public void tick(Player player, ItemStack stack) {
 		super.tick(player, stack);
+		Animation anim = getAnimation();
+		float tick = animator.getTick();
+		if(anim == reloadMagByMag) {
+			if(tick == 12) {
+				SoundHandler.playSoundOnServer(SoundRegistries.SKORPIONMAGOUT.get());
+			} else if(tick == 48) {
+				SoundHandler.playSoundOnServer(SoundRegistries.SKORPIONMAGIN.get());
+			} else if(tick == 78) {
+				// Skorpion hammer back sound
+				SoundHandler.playSoundOnServer(SoundRegistries.SKORPIONBACKWARD.get());
+			} else if(tick == 93) {
+				// Skorpion hammer forward sound
+				SoundHandler.playSoundOnServer(SoundRegistries.SKORPIONFORWARD.get());
+				reloadMagByMagStuff();
+			}
+		} else if(anim == reloadNoMag) {
+			if(tick == 16) {
+				reloadNoMagStuff();
+			} else if(tick == 42) {
+				SoundHandler.playSoundOnServer(SoundRegistries.SKORPIONMAGIN.get());
+			} else if(tick == 71) {
+				// Hammer cocking back sound
+				SoundHandler.playSoundOnServer(SoundRegistries.SKORPIONBACKWARD.get());
+			} else if(tick == 85) {
+				// Hammer cocking forward sound
+				SoundHandler.playSoundOnServer(SoundRegistries.SKORPIONFORWARD.get());
+			}
+		} else if(anim == getOutMag) {
+			if(tick == 13) {
+				SoundHandler.playSoundOnServer(SoundRegistries.SKORPIONMAGOUT.get());
+			} else if(tick == 25) {
+				getOutMagStuff();
+			}
+		} else if(anim == kickback) {
+			if(tick == 4) {
+				SoundHandler.playSoundOnServer(SoundRegistries.SWING.get());
+			} else if(tick == 8) {
+				MeleeHelper.hit(Config.SERVER.scorpionMeleeDmg.get().floatValue());
+			}
+		}
 	}
 	
 	@Override

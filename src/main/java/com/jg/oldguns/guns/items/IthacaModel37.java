@@ -1,5 +1,6 @@
 package com.jg.oldguns.guns.items;
 
+import com.jg.oldguns.config.Config;
 import com.jg.oldguns.guns.FireMode;
 import com.jg.oldguns.guns.GunItem;
 import com.jg.oldguns.guns.GunStuff;
@@ -20,17 +21,17 @@ public class IthacaModel37 extends GunItem {
 
 	@Override
 	public float getDamage() {
-		return 2;
+		return Config.SERVER.ithacaModel37Dmg.get().floatValue();
 	}
 
 	@Override
 	public float getShootTime() {
-		return 4;
+		return Config.SERVER.ithacaModel37ShootTime.get().floatValue();
 	}
 	
 	@Override
 	public float getPower() {
-		return 8;
+		return Config.SERVER.ithacaModel37Power.get().floatValue();
 	}
 
 	@Override
@@ -40,17 +41,17 @@ public class IthacaModel37 extends GunItem {
 
 	@Override
 	public int getRange() {
-		return 4;
+		return Config.SERVER.ithacaModel37Range.get().intValue();
 	}
 
 	@Override
 	public float getRangeDamageReduction() {
-		return 0.4f;
+		return Config.SERVER.ithacaModel37RangeDmgRed.get().floatValue();
 	}
 
 	@Override
 	public float getInnacuracy() {
-		return 2f;
+		return Config.SERVER.ithacaModel37Innacuracy.get().floatValue();
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.jg.oldguns.guns.items;
 
+import com.jg.oldguns.config.Config;
 import com.jg.oldguns.guns.FireMode;
 import com.jg.oldguns.guns.GunItem;
 import com.jg.oldguns.guns.GunStuff;
@@ -19,17 +20,17 @@ public class Sten extends GunItem {
 
 	@Override
 	public float getDamage() {
-		return 4;
+		return Config.SERVER.stenDmg.get().floatValue();
 	}
 
 	@Override
 	public float getShootTime() {
-		return 2;
+		return Config.SERVER.stenShootTime.get().floatValue();
 	}
-
+	
 	@Override
 	public float getPower() {
-		return 12;
+		return Config.SERVER.stenPower.get().floatValue();
 	}
 
 	@Override
@@ -39,17 +40,17 @@ public class Sten extends GunItem {
 
 	@Override
 	public int getRange() {
-		return 8;
+		return Config.SERVER.stenRange.get().intValue();
 	}
 
 	@Override
 	public float getRangeDamageReduction() {
-		return 0.8f;
+		return Config.SERVER.stenRangeDmgRed.get().floatValue();
 	}
 
 	@Override
 	public float getInnacuracy() {
-		return 0.2f;
+		return Config.SERVER.stenInnacuracy.get().floatValue();
 	}
 
 	@Override

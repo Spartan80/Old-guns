@@ -11,25 +11,19 @@ import com.jg.oldguns.client.handlers.ReloadHandler;
 import com.jg.oldguns.client.handlers.SoundHandler;
 import com.jg.oldguns.client.models.modmodels.WinchesterModModel;
 import com.jg.oldguns.client.models.wrapper.WrapperModel;
+import com.jg.oldguns.config.Config;
 import com.jg.oldguns.registries.ItemRegistries;
 import com.jg.oldguns.registries.SoundRegistries;
 import com.jg.oldguns.utils.InventoryUtils;
-import com.jg.oldguns.utils.InventoryUtils.InvData;
-import com.jg.oldguns.utils.NBTUtils;
-import com.jg.oldguns.utils.Paths;
+import com.jg.oldguns.utils.MeleeHelper;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class WinchesterGunModel extends GunModel {
 	
@@ -50,30 +44,30 @@ public class WinchesterGunModel extends GunModel {
 				new GunModelPart("sprint", 1.32f, -0.89f, -0.221f, 0.548036f, 1.326451f, -0.191986f),
 				new GunModelPart("recoil", 0.02f, -0.18f, 0.02f, 0.139626f, -0.069813f, 0) }, 
 				ItemRegistries.WINCHESTER.get(), client);
-		
-		look = new Animation("lookAnim", "oldguns:winchester")
-				.startKeyframe(12, "easeOutQuint")
-				.translate(parts[1], -1.1399993f, 0.0f, 0.0f)
-				.translate(parts[6], -0.8599995f, -0.68999964f, 0.0f)
-				.rotate(parts[6], 0.0f, -0.17453294f, 0.5934119f)
-				.startKeyframe(24)
-				.translate(parts[1], -1.1399993f, 0.0f, 0.0f)
-				.translate(parts[6], -0.8599995f, -0.68999964f, 0.0f)
-				.rotate(parts[6], 0.0f, -0.17453294f, 0.5934119f)
-				.startKeyframe(12, "easeInQuint")
-				.translate(parts[1], -0.5599998f, 0.0f, 0.0f)
-				.translate(parts[6], 0.23000002f, 0.14999998f, 0.0f)
-				.rotate(parts[6], 0.0f, -0.17453294f, -0.4886921f)
-				.startKeyframe(24)
-				.translate(parts[1], -0.5599998f, 0.0f, 0.0f)
-				.translate(parts[6], 0.23000002f, 0.14999998f, 0.0f)
-				.rotate(parts[6], 0.0f, -0.17453294f, -0.4886921f)
-				.startKeyframe(12, "easeInOutCirc")
-				.translate(parts[1], 0.0f, 0.0f, 0.0f)
-				.translate(parts[6], 0.0f, 0.0f, 0.0f)
-				.rotate(parts[6], 0.0f, 0.0f, 0.0f)
-				.end();
 
+		look = new Animation("lookAnim", "oldguns:winchester")
+				.startKeyframe(12, "easeOutSine")
+				.translate(parts[5], -0.7499996f, -0.57999974f, 0.0f)
+				.translate(parts[1], -1.1499993f, 0.0f, 0.0f)
+				.rotate(parts[5], 0.0f, 0.0f, 0.61086524f)
+				.startKeyframe(36)
+				.translate(parts[5], -0.7499996f, -0.57999974f, 0.0f)
+				.translate(parts[1], -1.1499993f, 0.0f, 0.0f)
+				.rotate(parts[5], 0.0f, 0.0f, 0.61086524f)
+				.startKeyframe(12, "easInSine")
+				.translate(parts[5], 0.4799998f, 0.31999996f, 0.0f)
+				.translate(parts[1], -0.7099997f, 0.0f, 0.0f)
+				.rotate(parts[5], 0.0f, 0.0f, -0.6457719f)
+				.startKeyframe(36)
+				.translate(parts[5], 0.4799998f, 0.31999996f, 0.0f)
+				.translate(parts[1], -0.7099997f, 0.0f, 0.0f)
+				.rotate(parts[5], 0.0f, 0.0f, -0.6457719f)
+				.startKeyframe(12)
+				.translate(parts[5], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], 0.0f, 0.0f, 0.0f)
+				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
+				.end();
+		
 		reload = new RepetitiveAnimation("reloadAnim", "oldguns:winchester")
 				.startKeyframe(12)
 				.translate(parts[5], 0.30999997f, 0.12999998f, 0.0f)
@@ -102,54 +96,6 @@ public class WinchesterGunModel extends GunModel {
 				.translate(parts[1], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[1], 0.0f, 0.0f, 0.0f)
-				.end();
-		
-		kickback = new Animation("kickbackAnim", "oldguns:winchester")
-				.startKeyframe(12)
-				.translate(parts[1], -0.5999997f, 0.0f, 0.7399996f)
-				.translate(parts[2], 0.0f, 0.0f, 0.0f)
-				.translate(parts[6], 0.0f, 0.0f, 0.0f)
-				.translate(parts[0], 0.0f, 0.0f, 0.0f)
-				.rotate(parts[2], 0.0f, 0.0f, 0.0f)
-				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
-				.rotate(parts[6], -0.31415927f, 0.0f, 0.0f)
-				.rotate(parts[0], 0.0f, 0.0f, 0.0f)
-				.startKeyframe(12, "easeInQuint")
-				.translate(parts[1], -0.5999997f, 0.0f, 1.0699993f)
-				.translate(parts[2], 0.0f, 0.0f, 0.0f)
-				.translate(parts[6], 0.0f, 0.0f, 0.0f)
-				.translate(parts[0], 0.0f, 0.0f, 0.0f)
-				.rotate(parts[2], 0.0f, 0.0f, 0.0f)
-				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
-				.rotate(parts[6], -0.31415927f, 0.0f, 0.0f)
-				.rotate(parts[0], 0.0f, 0.0f, 0.0f)
-				.startKeyframe(4, "easeOutQuint")
-				.translate(parts[1], -0.44999987f, 0.0f, -0.16999999f)
-				.translate(parts[2], 0.0f, 0.0f, 0.0f)
-				.translate(parts[6], 0.0f, 0.0f, 0.0f)
-				.translate(parts[0], 0.0f, 0.0f, 0.0f)
-				.rotate(parts[2], 0.0f, 0.0f, 0.0f)
-				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
-				.rotate(parts[6], -0.34906584f, 0.0f, 0.0f)
-				.rotate(parts[0], 0.0f, 0.0f, 0.0f)
-				.startKeyframe(12)
-				.translate(parts[1], -0.44999987f, 0.0f, -0.16999999f)
-				.translate(parts[2], 0.0f, 0.0f, 0.0f)
-				.translate(parts[6], 0.0f, 0.0f, 0.0f)
-				.translate(parts[0], 0.0f, 0.0f, 0.0f)
-				.rotate(parts[2], 0.0f, 0.0f, 0.0f)
-				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
-				.rotate(parts[6], -0.34906584f, 0.0f, 0.0f)
-				.rotate(parts[0], 0.0f, 0.0f, 0.0f)
-				.startKeyframe(12, "easeInCubic")
-				.translate(parts[1], 0.0f, 0.0f, 0.0f)
-				.translate(parts[2], 0.0f, 0.0f, 0.0f)
-				.translate(parts[6], 0.0f, 0.0f, 0.0f)
-				.translate(parts[0], 0.0f, 0.0f, 0.0f)
-				.rotate(parts[2], 0.0f, 0.0f, 0.0f)
-				.rotate(parts[5], 0.0f, 0.0f, 0.0f)
-				.rotate(parts[6], 0.0f, 0.0f, 0.0f)
-				.rotate(parts[0], 0.0f, 0.0f, 0.0f)
 				.end();
 		kickback = new Animation("kickbackAnim", "oldguns:winchester")
 				.startKeyframe(8, "easeInQuint")
@@ -246,12 +192,14 @@ public class WinchesterGunModel extends GunModel {
 		} else if(getAnimation() == reload) {
 			if(isRepTick(12, 41, tick, 36, times)) {
 				SoundHandler.playSoundOnServer(SoundRegistries.WINCHESTERINSERTSHELL.get());
-				//ReloadHandler.growOneBullet(stack);
+				ReloadHandler.growOneBullet(stack);
 				LogUtils.getLogger().info("Bullet inserted");
 			}
 		} else if(getAnimation() == kickback) {
-			if(tick == 7) {
+			if(tick == 4) {
 				SoundHandler.playSoundOnServer(SoundRegistries.SWING.get());
+			} else if(tick == 8) {
+				MeleeHelper.hit(Config.SERVER.winchesterMeleeDmg.get().floatValue());
 			}
 		}
 	}
@@ -274,14 +222,19 @@ public class WinchesterGunModel extends GunModel {
 
 	@Override
 	public void reload(Player player, ItemStack stack) {
-		InvData data = InventoryUtils.getTotalCountAndIndexForItem(player, 
+		times = fillReloadDataNoMag(ItemRegistries.BigBullet.get(), player, reload, 
+				stack, 6);
+		if(getAnimation() == reload) {
+			InventoryUtils.consumeItems(player, (int[])data.get("data"));
+		}
+		/*InvData data = InventoryUtils.getTotalCountAndIndexForItem(player, 
 				ItemRegistries.BigBullet.get(), 6-NBTUtils.getAmmo(stack));
 		if(data.getTotal() > 0) {
 			InventoryUtils.consumeItems(player, data.getData());
 			times = data.getTotal();
 			reload.setTimes(times);
 			setAnimation(reload);
-		}
+		}*/
 	}
 
 	@Override

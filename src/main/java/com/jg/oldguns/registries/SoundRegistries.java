@@ -104,16 +104,6 @@ public class SoundRegistries {
 	public static final RegistryObject<SoundEvent> STENHAMMERFORWARD = register("stenhamfor");
 
 	public static final RegistryObject<SoundEvent> STENHAMMERBACK = register("stenhamback");
-
-	public static final RegistryObject<SoundEvent> ASVALMAGIN = register("asvalmagin");
-
-	public static final RegistryObject<SoundEvent> ASVALMAGOUT = register("asvalmagout");
-
-	public static final RegistryObject<SoundEvent> ASVALSHOOT = register("asvalshoot");
-
-	public static final RegistryObject<SoundEvent> ASVALSLIDEBACK = register("asvalslideback");
-
-	public static final RegistryObject<SoundEvent> ASVALSLIDEFORWARD = register("asvalslideforward");
 	
 	public static final RegistryObject<SoundEvent> GALILBACK = register("galilback");
 	
@@ -145,6 +135,10 @@ public class SoundRegistries {
 	
 	public static final RegistryObject<SoundEvent> SKORPIONMAGOUT = register("skorpionmagout");
 
+	public static final RegistryObject<SoundEvent> SKORPIONFORWARD = register("skorpionforward");
+	
+	public static final RegistryObject<SoundEvent> SKORPIONBACKWARD = register("skorpionbackward");
+	
 	public static final RegistryObject<SoundEvent> SKORPIONSHOOT = register("skorpionshoot");
 	
 	public static final RegistryObject<SoundEvent> MELEE = register("melee");

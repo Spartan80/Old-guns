@@ -10,10 +10,11 @@ import com.jg.oldguns.client.handlers.ClientHandler;
 import com.jg.oldguns.client.handlers.SoundHandler;
 import com.jg.oldguns.client.models.modmodels.Colt1911ModModel;
 import com.jg.oldguns.client.models.wrapper.WrapperModel;
+import com.jg.oldguns.config.Config;
 import com.jg.oldguns.guns.BulletItem;
 import com.jg.oldguns.registries.ItemRegistries;
 import com.jg.oldguns.registries.SoundRegistries;
-import com.jg.oldguns.utils.NBTUtils;
+import com.jg.oldguns.utils.MeleeHelper;
 import com.jg.oldguns.utils.Paths;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -64,22 +65,27 @@ public class Colt1911GunModel extends GunModel {
 		look = new Animation("lookAnim", "oldguns:colt1911")
 				.startKeyframe(12, "easeOutQuint")
 				.translate(parts[1], -1.1399993f, 0.0f, 0.0f)
+				.translate(parts[5], 0.0f, 0.42999986f, 0.0f)
 				.translate(parts[6], -0.8599995f, -0.68999964f, 0.0f)
 				.rotate(parts[6], 0.0f, -0.17453294f, 0.5934119f)
 				.startKeyframe(24)
 				.translate(parts[1], -1.1399993f, 0.0f, 0.0f)
+				.translate(parts[5], 0.0f, 0.42999986f, 0.0f)
 				.translate(parts[6], -0.8599995f, -0.68999964f, 0.0f)
 				.rotate(parts[6], 0.0f, -0.17453294f, 0.5934119f)
 				.startKeyframe(12, "easeInQuint")
 				.translate(parts[1], -0.5599998f, 0.0f, 0.0f)
+				.translate(parts[5], 0.0f, 0.42999986f, 0.0f)
 				.translate(parts[6], 0.23000002f, 0.14999998f, 0.0f)
 				.rotate(parts[6], 0.0f, -0.17453294f, -0.4886921f)
 				.startKeyframe(24)
 				.translate(parts[1], -0.5599998f, 0.0f, 0.0f)
+				.translate(parts[5], 0.0f, 0.42999986f, 0.0f)
 				.translate(parts[6], 0.23000002f, 0.14999998f, 0.0f)
 				.rotate(parts[6], 0.0f, -0.17453294f, -0.4886921f)
 				.startKeyframe(12, "easeInOutCirc")
 				.translate(parts[1], 0.0f, 0.0f, 0.0f)
+				.translate(parts[5], 0.0f, 0.0f, 0.0f)
 				.translate(parts[6], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.0f, 0.0f, 0.0f)
 				.end();
@@ -558,6 +564,12 @@ public class Colt1911GunModel extends GunModel {
 			if(tick == 20) {
 				SoundHandler.playSoundOnServer(SoundRegistries.COLTMAGOUT.get());
 				getOutMagStuff();
+			}
+		} else if(anim == kickback) {
+			if(tick == 13) {
+				SoundHandler.playSoundOnServer(SoundRegistries.SWING.get());
+			} else if(tick == 16) {
+				MeleeHelper.hit(Config.SERVER.colt1911MeleeDmg.get().floatValue());
 			}
 		}
 	}

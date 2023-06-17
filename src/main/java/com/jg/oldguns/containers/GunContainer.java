@@ -1,5 +1,6 @@
 package com.jg.oldguns.containers;
 
+import com.jg.oldguns.client.animations.parts.GunModel;
 import com.jg.oldguns.client.handlers.GunModelsHandler;
 import com.jg.oldguns.client.handlers.ModelHandler;
 import com.jg.oldguns.guns.GunItem;
@@ -64,7 +65,7 @@ public class GunContainer extends JGGunContainer {
 
 			@Override
 			public boolean mayPickup(Player p_82869_1_) {
-				return true;
+				return false;
 			}
 		});
 
@@ -79,7 +80,7 @@ public class GunContainer extends JGGunContainer {
 
 			@Override
 			public boolean mayPickup(Player p_82869_1_) {
-				return true;
+				return false;
 			}
 		});
 
@@ -88,6 +89,10 @@ public class GunContainer extends JGGunContainer {
 
 			@Override
 			public boolean mayPlace(ItemStack p_75214_1_) {
+				LogUtils.getLogger().info("ItemStack: " + p_75214_1_.toString() + 
+						" canModifyBarrel: " + gun.getStuff().canModifyBarrel() + 
+						" canEquip: " + Utils.canEquip(p_75214_1_, getSlotIndex()) + 
+						" superMayPlace: " + super.mayPlace(p_75214_1_));
 				return super.mayPlace(p_75214_1_) && gun.getStuff().canModifyBarrel() 
 						&& Utils.canEquip(p_75214_1_, getSlotIndex());
 			}
@@ -161,7 +166,7 @@ public class GunContainer extends JGGunContainer {
 				
 				//ServerUtils.setStockW(stack, 0);
 			} else if ((GunPart) inv.getItem(1).getItem() == (GunPart) gun.getStock()) {
-				ServerUtils.setStock(stack, "");
+				ServerUtils.setStock(stack, Utils.getR(gun.getStock()).toString());
 				//ServerUtils.setStockW(stack, ((GunPart) gun.getStock()).getWeight());
 			} else {
 				ServerUtils.setStock(stack, Utils.getR(inv.getItem(1).getItem()).toString());
@@ -173,7 +178,7 @@ public class GunContainer extends JGGunContainer {
 				ServerUtils.setBody(stack, NBTUtils.EMPTY);
 				//ServerUtils.setBodyW(stack, 0);
 			} else if ((GunPart) inv.getItem(2).getItem() == (GunPart) gun.getBody()) {
-				ServerUtils.setBody(stack, "");
+				ServerUtils.setBody(stack, Utils.getR(gun.getBody()).toString());
 				//ServerUtils.setBodyW(stack, ((GunPart) gun.getBody()).getWeight());
 			} else {
 				ServerUtils.setBody(stack, Utils.getR(inv.getItem(2).getItem()).toString());
@@ -281,6 +286,23 @@ public class GunContainer extends JGGunContainer {
 		} else {
 			if (ModelHandler.INSTANCE.getModels()
 					.containsKey(NBTUtils.getId(stack))) {
+				GunModel model = GunModelsHandler.get(player.getMainHandItem().getItem()
+						.getDescriptionId());
+				if(!getSlot(1).getItem().isEmpty()) {
+					model.getStuff().setStock(getSlot(1).getItem());
+				} else {
+					model.getStuff().setStock(model.gun.getStock());
+				}
+				if(!getSlot(2).getItem().isEmpty()) {
+					model.getStuff().setBody(getSlot(2).getItem());
+				} else {
+					model.getStuff().setBody(model.gun.getBody());
+				}
+				if(!getSlot(3).getItem().isEmpty()) {
+					model.getStuff().setBarrel(getSlot(3).getItem());
+				} else {
+					model.getStuff().setBarrel(model.gun.getBarrel());
+				}
 				ModelHandler.INSTANCE.getModels()
 				.get(stack.getOrCreateTag().getString(NBTUtils.ID)).reconstruct();
 				LogUtils.getLogger().info("reconstructing");

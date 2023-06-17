@@ -1,5 +1,6 @@
 package com.jg.oldguns.guns.items;
 
+import com.jg.oldguns.config.Config;
 import com.jg.oldguns.guns.FireMode;
 import com.jg.oldguns.guns.GunItem;
 import com.jg.oldguns.guns.GunStuff;
@@ -17,20 +18,20 @@ public class Colt1911 extends GunItem {
 						Paths.COLT1911SLIDER },
 				true, true, true));
 	}
-
+	
 	@Override
 	public float getDamage() {
-		return 3;
+		return Config.SERVER.colt1911Dmg.get().floatValue();
+	}
+
+	@Override
+	public float getShootTime() {
+		return Config.SERVER.colt1911ShootTime.get().floatValue();
 	}
 	
 	@Override
-	public float getShootTime() {
-		return 4;
-	}
-
-	@Override
 	public float getPower() {
-		return 8;
+		return Config.SERVER.colt1911Power.get().floatValue();
 	}
 
 	@Override
@@ -40,17 +41,17 @@ public class Colt1911 extends GunItem {
 
 	@Override
 	public int getRange() {
-		return 6;
+		return Config.SERVER.colt1911Range.get().intValue();
 	}
 
 	@Override
 	public float getRangeDamageReduction() {
-		return 0.7f;
+		return Config.SERVER.colt1911RangeDmgRed.get().floatValue();
 	}
 
 	@Override
 	public float getInnacuracy() {
-		return 0;
+		return Config.SERVER.colt1911Innacuracy.get().floatValue();
 	}
 
 	@Override

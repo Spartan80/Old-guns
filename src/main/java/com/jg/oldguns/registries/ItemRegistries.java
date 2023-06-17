@@ -101,7 +101,7 @@ public class ItemRegistries {
 	
 	public static final RegistryObject<Item> AKS74U = regAddGun("aks-74u", 
 			() -> new Aks74u("aks-74u", new Item.Properties().tab(OldGuns.getTab()).stacksTo(1)));
-	
+
 	public static final RegistryObject<Item> COLT1911ST = regAddGunPart("colt1911_st", 
 			"colt1911", () -> new GunPart("colt1911", new Item.Properties().tab(OldGuns.getTab()).stacksTo(64), 
 					new GunPartProperties(), 1, 3, 0, false));

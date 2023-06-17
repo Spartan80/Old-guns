@@ -10,23 +10,21 @@ import com.jg.oldguns.client.handlers.ClientHandler;
 import com.jg.oldguns.client.handlers.SoundHandler;
 import com.jg.oldguns.client.models.modmodels.GalilModModel;
 import com.jg.oldguns.client.models.wrapper.WrapperModel;
+import com.jg.oldguns.config.Config;
 import com.jg.oldguns.guns.BulletItem;
 import com.jg.oldguns.registries.ItemRegistries;
 import com.jg.oldguns.registries.SoundRegistries;
+import com.jg.oldguns.utils.MeleeHelper;
 import com.jg.oldguns.utils.NBTUtils;
 import com.jg.oldguns.utils.Paths;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class GalilGunModel extends GunModel {
 
@@ -54,24 +52,29 @@ public class GalilGunModel extends GunModel {
 		
 		look = new Animation("lookAnim", "oldguns:galil")
 				.startKeyframe(12, "easeOutQuad")
-				.translate(parts[6], -0.8599995f, -0.68999964f, 0.0f)
 				.translate(parts[1], -1.1399993f, 0.0f, 0.0f)
+				.translate(parts[5], 0.0f, 0.16999999f, 0.0f)
+				.translate(parts[6], -0.8599995f, -0.68999964f, 0.0f)
 				.rotate(parts[6], 0.0f, -0.17453294f, 0.5934119f)
 				.startKeyframe(24)
-				.translate(parts[6], -0.8599995f, -0.68999964f, 0.0f)
 				.translate(parts[1], -1.1399993f, 0.0f, 0.0f)
+				.translate(parts[5], 0.0f, 0.16999999f, 0.0f)
+				.translate(parts[6], -0.8599995f, -0.68999964f, 0.0f)
 				.rotate(parts[6], 0.0f, -0.17453294f, 0.5934119f)
 				.startKeyframe(12, "easeOutQuad")
-				.translate(parts[6], 0.23000002f, 0.14999998f, 0.0f)
 				.translate(parts[1], -0.5599998f, 0.0f, 0.0f)
+				.translate(parts[5], 0.0f, 0.16999999f, 0.0f)
+				.translate(parts[6], 0.23000002f, 0.14999998f, 0.0f)
 				.rotate(parts[6], 0.0f, -0.17453294f, -0.4886921f)
 				.startKeyframe(24)
-				.translate(parts[6], 0.23000002f, 0.14999998f, 0.0f)
 				.translate(parts[1], -0.5599998f, 0.0f, 0.0f)
+				.translate(parts[5], 0.0f, 0.16999999f, 0.0f)
+				.translate(parts[6], 0.23000002f, 0.14999998f, 0.0f)
 				.rotate(parts[6], 0.0f, -0.17453294f, -0.4886921f)
 				.startKeyframe(12, "easeInOutCirc")
-				.translate(parts[6], 0.0f, 0.0f, 0.0f)
 				.translate(parts[1], 0.0f, 0.0f, 0.0f)
+				.translate(parts[5], 0.0f, 0.0f, 0.0f)
+				.translate(parts[6], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.0f, 0.0f, 0.0f)
 				.end();
 		kickback = new Animation("kickbackAnim", "oldguns:galil")
@@ -304,6 +307,12 @@ public class GalilGunModel extends GunModel {
 				SoundHandler.playSoundOnServer(SoundRegistries.GALILMAGOUT.get());
 			} else if(tick == 25) {
 				getOutMagStuff();
+			}
+		} else if(anim == kickback) {
+			if(tick == 5) {
+				SoundHandler.playSoundOnServer(SoundRegistries.SWING.get());
+			} else if(tick == 8) {
+				MeleeHelper.hit(Config.SERVER.galilMeleeDmg.get().floatValue());
 			}
 		}
 	}

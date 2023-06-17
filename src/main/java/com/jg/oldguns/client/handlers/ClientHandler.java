@@ -2,7 +2,6 @@ package com.jg.oldguns.client.handlers;
 
 import com.jg.oldguns.client.animations.parts.GunModel;
 import com.jg.oldguns.client.animations.parts.GunModelPart;
-import com.jg.oldguns.utils.NBTUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
 

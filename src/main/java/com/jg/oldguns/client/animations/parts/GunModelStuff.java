@@ -78,6 +78,22 @@ public class GunModelStuff {
 	public void setMag(ItemStack mag) {
 		this.mag = mag;
 	}
+	
+	public void setStock(Item stock) {
+		this.stock = new ItemStack(stock);
+	}
+
+	public void setBody(Item body) {
+		this.body = new ItemStack(body);
+	}
+
+	public void setBarrel(Item barrel) {
+		this.barrel = new ItemStack(barrel);
+	}
+
+	public void setMag(Item mag) {
+		this.mag = new ItemStack(mag);
+	}
 
 	public void setHammers(String[] hammers) {
 		this.hammers = hammers;

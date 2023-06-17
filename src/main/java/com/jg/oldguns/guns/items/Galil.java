@@ -1,5 +1,6 @@
 package com.jg.oldguns.guns.items;
 
+import com.jg.oldguns.config.Config;
 import com.jg.oldguns.guns.FireMode;
 import com.jg.oldguns.guns.GunItem;
 import com.jg.oldguns.guns.GunStuff;
@@ -19,17 +20,17 @@ public class Galil extends GunItem {
 
 	@Override
 	public float getDamage() {
-		return 6;
-	}
-	
-	@Override
-	public float getShootTime() {
-		return 3;
+		return Config.SERVER.galilDmg.get().floatValue();
 	}
 
 	@Override
+	public float getShootTime() {
+		return Config.SERVER.galilShootTime.get().floatValue();
+	}
+	
+	@Override
 	public float getPower() {
-		return 16;
+		return Config.SERVER.galilPower.get().floatValue();
 	}
 
 	@Override
@@ -39,17 +40,17 @@ public class Galil extends GunItem {
 
 	@Override
 	public int getRange() {
-		return 20;
+		return Config.SERVER.galilRange.get().intValue();
 	}
 
 	@Override
 	public float getRangeDamageReduction() {
-		return 0.93f;
+		return Config.SERVER.galilRangeDmgRed.get().floatValue();
 	}
 
 	@Override
 	public float getInnacuracy() {
-		return 0.1f;
+		return Config.SERVER.galilInnacuracy.get().floatValue();
 	}
 
 	@Override

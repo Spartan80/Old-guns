@@ -1,5 +1,6 @@
 package com.jg.oldguns.guns.items;
 
+import com.jg.oldguns.config.Config;
 import com.jg.oldguns.guns.FireMode;
 import com.jg.oldguns.guns.GunItem;
 import com.jg.oldguns.guns.GunStuff;
@@ -19,17 +20,17 @@ public class Thompson extends GunItem {
 
 	@Override
 	public float getDamage() {
-		return 6;
+		return Config.SERVER.thompsonDmg.get().floatValue();
 	}
 
 	@Override
 	public float getShootTime() {
-		return 2;
+		return Config.SERVER.thompsonShootTime.get().floatValue();
 	}
-
+	
 	@Override
 	public float getPower() {
-		return 8;
+		return Config.SERVER.thompsonPower.get().floatValue();
 	}
 
 	@Override
@@ -39,17 +40,17 @@ public class Thompson extends GunItem {
 
 	@Override
 	public int getRange() {
-		return 9;
+		return Config.SERVER.thompsonRange.get().intValue();
 	}
 
 	@Override
 	public float getRangeDamageReduction() {
-		return 0.9f;
+		return Config.SERVER.thompsonRangeDmgRed.get().floatValue();
 	}
 
 	@Override
 	public float getInnacuracy() {
-		return 0.3f;
+		return Config.SERVER.thompsonInnacuracy.get().floatValue();
 	}
 
 	@Override

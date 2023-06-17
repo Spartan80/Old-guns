@@ -1,5 +1,6 @@
 package com.jg.oldguns.guns.items;
 
+import com.jg.oldguns.config.Config;
 import com.jg.oldguns.guns.FireMode;
 import com.jg.oldguns.guns.GunItem;
 import com.jg.oldguns.guns.GunStuff;
@@ -19,17 +20,17 @@ public class Mp40 extends GunItem {
 
 	@Override
 	public float getDamage() {
-		return 2;
+		return Config.SERVER.mp40Dmg.get().floatValue();
 	}
 
 	@Override
 	public float getShootTime() {
-		return 3;
+		return Config.SERVER.mp40ShootTime.get().floatValue();
 	}
 	
 	@Override
 	public float getPower() {
-		return 8;
+		return Config.SERVER.mp40Power.get().floatValue();
 	}
 
 	@Override
@@ -39,17 +40,17 @@ public class Mp40 extends GunItem {
 
 	@Override
 	public int getRange() {
-		return 8;
+		return Config.SERVER.mp40Range.get().intValue();
 	}
 
 	@Override
 	public float getRangeDamageReduction() {
-		return 0.7f;
+		return Config.SERVER.mp40RangeDmgRed.get().floatValue();
 	}
 
 	@Override
 	public float getInnacuracy() {
-		return 0.1f;
+		return Config.SERVER.mp40Innacuracy.get().floatValue();
 	}
 
 	@Override

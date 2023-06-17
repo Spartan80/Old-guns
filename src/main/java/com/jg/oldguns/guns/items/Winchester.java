@@ -1,5 +1,6 @@
 package com.jg.oldguns.guns.items;
 
+import com.jg.oldguns.config.Config;
 import com.jg.oldguns.guns.FireMode;
 import com.jg.oldguns.guns.GunItem;
 import com.jg.oldguns.guns.GunStuff;
@@ -19,17 +20,17 @@ public class Winchester extends GunItem {
 	
 	@Override
 	public float getDamage() {
-		return 4;
-	}
-	
-	@Override
-	public float getShootTime() {
-		return 2;
+		return Config.SERVER.winchesterDmg.get().floatValue();
 	}
 
 	@Override
+	public float getShootTime() {
+		return Config.SERVER.winchesterShootTime.get().floatValue();
+	}
+	
+	@Override
 	public float getPower() {
-		return 14;
+		return Config.SERVER.winchesterPower.get().floatValue();
 	}
 
 	@Override
@@ -39,17 +40,17 @@ public class Winchester extends GunItem {
 
 	@Override
 	public int getRange() {
-		return 20;
+		return Config.SERVER.winchesterRange.get().intValue();
 	}
 
 	@Override
 	public float getRangeDamageReduction() {
-		return 0.8f;
+		return Config.SERVER.winchesterRangeDmgRed.get().floatValue();
 	}
 
 	@Override
 	public float getInnacuracy() {
-		return 0;
+		return Config.SERVER.winchesterInnacuracy.get().floatValue();
 	}
 
 	@Override

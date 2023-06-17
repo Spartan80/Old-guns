@@ -1,10 +1,13 @@
 package com.jg.oldguns.utils;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-
+import java.util.stream.IntStream;
 import com.jg.oldguns.client.handlers.ReloadHandler;
+import com.jg.oldguns.client.screens.AnimationScreen.Pair;
 import com.jg.oldguns.guns.MagItem;
+import com.mojang.logging.LogUtils;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -276,16 +279,36 @@ public class ServerUtils {
 	}
 
 	public static int getIndexForCorrectMag(Inventory pi, String gunid, String gunAcceptedType) {
+		List<MagInfo> mags = new ArrayList<>();
 		for (int index = 0; index < pi.getContainerSize(); ++index) {
 			ItemStack stack = pi.getItem(index);
 			if (stack.getItem() instanceof MagItem) {
 				MagItem mag = (MagItem) stack.getItem();
 				if (mag.getGunId().equals(gunid) && mag.getAcceptedSize().equals(gunAcceptedType)) {
-					return index;
+					mags.add(new MagInfo(stack, index));
 				}
 			}
 		}
-		return -1;
+		MagInfo info = mags.stream().max(Comparator.comparingInt(MagInfo::getAmmo))
+				.orElse(new MagInfo(null, -1));
+		LogUtils.getLogger().info("info: " + info.getAmmo());
+		return info.index;
+	}
+	
+	private static class MagInfo {
+		
+		private int ammo;
+		public int index;
+		
+		public MagInfo(ItemStack stack, int index) {
+			this.ammo = stack != null ? stack.getOrCreateTag().getInt(NBTUtils.BULLETS) : -1;
+			this.index = index;
+		}
+		
+		public int getAmmo() {
+			return ammo;
+		}
+		
 	}
 
 	public static int getItemCount(Inventory pi, Item item) {

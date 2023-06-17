@@ -9,6 +9,7 @@ import com.jg.oldguns.client.handlers.SoundHandler;
 import com.jg.oldguns.client.render.RenderHelper;
 import com.jg.oldguns.client.screens.widgets.Button;
 import com.jg.oldguns.client.screens.widgets.GunSlot;
+import com.jg.oldguns.config.Config;
 import com.jg.oldguns.containers.AmmoCraftingTableContainer;
 import com.jg.oldguns.guns.BulletItem;
 import com.jg.oldguns.guns.MagItem;
@@ -19,6 +20,7 @@ import com.jg.oldguns.utils.ServerUtils;
 import com.jg.oldguns.utils.Utils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -37,7 +39,8 @@ public class GunAmmoGui extends AbstractContainerScreen<AmmoCraftingTableContain
 	int gunTab;
 	int metal;
 	int gunPowder;
-
+	int amount;
+	
 	boolean isIron;
 	boolean isAltPressed;
 
@@ -62,15 +65,11 @@ public class GunAmmoGui extends AbstractContainerScreen<AmmoCraftingTableContain
 	public GunAmmoGui(AmmoCraftingTableContainer p_i51105_1_, Inventory p_i51105_2_, Component c) {
 		super(p_i51105_1_, p_i51105_2_, Component.translatable("gui.oldguns.gun_ammo_gui"));
 		pi = p_i51105_2_;
-		for (Supplier<? extends Item> item : ItemsReg.INSTANCE.getExtraItems()) {
-			if (item.get() instanceof MagItem) {
-				items.add(item.get());
-			}
+		for (Supplier<? extends Item> item : ItemsReg.INSTANCE.getMags()) {
+			items.add(item.get());
 		}
 		for (Supplier<? extends Item> item : ItemsReg.INSTANCE.getExtraItems()) {
-			if (item.get() instanceof BulletItem) {
-				items.add(item.get());
-			}
+			items.add(item.get());
 		}
 	}
 
@@ -83,56 +82,103 @@ public class GunAmmoGui extends AbstractContainerScreen<AmmoCraftingTableContain
 
 		int size = items.size();
 
-		int cols = 6;
-		int rows = 3;
-		int cap = cols * rows;
-
-		tabs = (int) Math.floor((size / cap) + 1);
-
-		int t = 0;
-
-		for (int g = 0; g < size; g++) {
-
-			int wg = g - (t * cap);
-
-			slots.add(new GunSlot(this, t, (i + 8) + (wg % cols) * 18, (j + 26) + (int) Math.floor(wg / cols) * 18, 178,
-					0, 18, 18, 18, GUNAMMO_GUI, items.get(g)) {
-				@Override
-				public void onPress() {
-					super.onPress();
-
-					System.out.println(this.gun.getItem() instanceof BulletItem);
-					if (this.gun.getItem() instanceof MagItem) {
-						for (Item item : items) {
-							if (item instanceof BulletItem) {
-								BulletItem b = (BulletItem) item;
-								if (b.getSize().equals(((MagItem) this.gun.getItem()).getAcceptedSize())) {
-									bulletModel = Utils.getModel(item);
-									bulletStack = new ItemStack(item);
+		if(slots.size() == 0) {
+		
+			int cols = 6;
+			int rows = 3;
+			int cap = cols * rows;
+	
+			tabs = (int) Math.floor((size / cap) + 1);
+	
+			int t = 0;
+	
+			LogUtils.getLogger().info("Size: " + size + " gunSlots size: " + slots.size());
+			
+			for (int g = 0; g < size; g++) {
+	
+				int wg = g - (t * cap);
+	
+				slots.add(new GunSlot(this, t, (i + 8) + (wg % cols) * 18, (j + 26) + (int) Math.floor(wg / cols) * 18, 178,
+						0, 18, 18, 18, GUNAMMO_GUI, items.get(g)) {
+					@Override
+					public void onPress() {
+						super.onPress();
+	
+						System.out.println(this.gun.getItem() instanceof BulletItem);
+						if (this.gun.getItem() instanceof MagItem) {
+							for (Item item : items) {
+								if (item instanceof BulletItem) {
+									BulletItem b = (BulletItem) item;
+									if (b.getSize().equals(((MagItem) this.gun.getItem()).getAcceptedSize())) {
+										bulletModel = Utils.getModel(item);
+										bulletStack = new ItemStack(item);
+										int amount = 1;
+										if(Utils.getR(bullet).toString().contains("small")) {
+											amount = Config.SERVER.smallBulletCraftingResult.get();
+										} else if(Utils.getR(bullet).toString().contains("medium")) {
+											amount = Config.SERVER.mediumBulletCraftingResult.get();
+										} else if(Utils.getR(bullet).toString().contains("big")) {
+											amount = Config.SERVER.bigBulletCraftingResult.get();
+										} else if(Utils.getR(bullet).toString().contains("shotgun")) {
+											amount = Config.SERVER.shotgunBulletCraftingResult.get();
+										}
+										GunAmmoGui.this.amount = amount;
+									}
 								}
 							}
+							GunAmmoGui.this.stack = new ItemStack(this.gun.getItem());
+							GunAmmoGui.this.mag = (MagItem) this.gun.getItem();
+							GunAmmoGui.this.model = Utils.getModel(this.gun.getItem());
+							searchMetal();
+						} else {
+							GunAmmoGui.this.bulletModel = Utils.getModel(this.gun.getItem());
+							GunAmmoGui.this.bulletStack = new ItemStack(this.gun.getItem());
+							GunAmmoGui.this.bullet = (BulletItem) bulletStack.getItem();
+							GunAmmoGui.this.stack = null;
+							GunAmmoGui.this.mag = null;
+							GunAmmoGui.this.model = null;
+							int amount = 1;
+							if(Utils.getR(bullet).toString().contains("small")) {
+								amount = Config.SERVER.smallBulletCraftingResult.get();
+							} else if(Utils.getR(bullet).toString().contains("medium")) {
+								amount = Config.SERVER.mediumBulletCraftingResult.get();
+							} else if(Utils.getR(bullet).toString().contains("big")) {
+								amount = Config.SERVER.bigBulletCraftingResult.get();
+							} else if(Utils.getR(bullet).toString().contains("shotgun")) {
+								amount = Config.SERVER.shotgunBulletCraftingResult.get();
+							}
+							GunAmmoGui.this.amount = amount;
+							searchMetal();
 						}
-						GunAmmoGui.this.stack = new ItemStack(this.gun.getItem());
-						GunAmmoGui.this.mag = (MagItem) this.gun.getItem();
-						GunAmmoGui.this.model = Utils.getModel(this.gun.getItem());
-						searchMetal();
-					} else {
-						GunAmmoGui.this.bulletModel = Utils.getModel(this.gun.getItem());
-						GunAmmoGui.this.bulletStack = new ItemStack(this.gun.getItem());
-						GunAmmoGui.this.bullet = (BulletItem) bulletStack.getItem();
-						GunAmmoGui.this.stack = null;
-						GunAmmoGui.this.mag = null;
-						GunAmmoGui.this.model = null;
-						searchMetal();
+	
 					}
-
+				});
+	
+				if (wg > cap - 2) {
+					t++;
 				}
-			});
-
-			if (wg > cap - 2) {
-				t++;
+			
 			}
 
+		} else {
+			// (i + 8) + (wg % cols) * 18, (j + 26) + (int) Math.floor(wg / cols) * 18
+			int cols = 6;
+			int rows = 3;
+			int cap = cols * rows;
+			int t = 0;
+			
+			for(int g = 0; g < size; g++) {
+				int wg = g - (t * cap);
+				
+				slots.get(g).x = (i + 8) + (wg % cols) * 18;
+				slots.get(g).y = (j + 26) + (int) Math.floor(wg / cols) * 18;
+				
+				if (wg > cap - 2) {
+					t++;
+				}
+			}
+			
+			
 		}
 
 		addRenderableWidget(new Button(this, i + 63, j + 7, 178, 60, 26, 18, 26, GUNAMMO_GUI) {
@@ -160,18 +206,19 @@ public class GunAmmoGui extends AbstractContainerScreen<AmmoCraftingTableContain
 				searchMetal();
 				if (mag != null) {
 					if (metal >= mag.getMetal()) {
-
 						if (!isAltPressed) {
 							ServerUtils.removeItemInDifIndexes(pi,
 									mag.isIron() ? Items.IRON_INGOT : ItemRegistries.SteelIngot.get(), mag.getMetal());
-							OldGuns.channel.sendToServer(new AddItemMessage(Utils.getR(mag).toString(), 1));
+							OldGuns.channel.sendToServer(new AddItemMessage(
+									Utils.getR(mag).toString(), 1));
 							SoundHandler.playSoundOnServer(SoundRegistries.CRAFT_SOUND.get());
 						} else {
 							int metals = metal / mag.getMetal();
 							ServerUtils.removeItemInDifIndexes(pi,
 									mag.isIron() ? Items.IRON_INGOT : ItemRegistries.SteelIngot.get(),
 									mag.getMetal() * metals);
-							OldGuns.channel.sendToServer(new AddItemMessage(Utils.getR(mag).toString(), metals));
+							OldGuns.channel.sendToServer(new AddItemMessage(
+									Utils.getR(mag).toString(), metals));
 							SoundHandler.playSoundOnServer(SoundRegistries.CRAFT_SOUND.get());
 						}
 
@@ -182,16 +229,38 @@ public class GunAmmoGui extends AbstractContainerScreen<AmmoCraftingTableContain
 							ServerUtils.removeItemInDifIndexes(pi,
 									bullet.requiresIngots() ? Items.IRON_INGOT : Items.IRON_NUGGET, bullet.getMetal());
 							ServerUtils.removeItemInDifIndexes(pi, Items.GUNPOWDER, bullet.getGunPowder());
-							OldGuns.channel.sendToServer(new AddItemMessage(Utils.getR(bullet).toString(), 1));
+							int amount = 1;
+							if(Utils.getR(bullet).toString().contains("small")) {
+								amount = Config.SERVER.smallBulletCraftingResult.get();
+							} else if(Utils.getR(bullet).toString().contains("medium")) {
+								amount = Config.SERVER.mediumBulletCraftingResult.get();
+							} else if(Utils.getR(bullet).toString().contains("big")) {
+								amount = Config.SERVER.bigBulletCraftingResult.get();
+							} else if(Utils.getR(bullet).toString().contains("shotgun")) {
+								amount = Config.SERVER.shotgunBulletCraftingResult.get();
+							}
+							OldGuns.channel.sendToServer(new AddItemMessage(
+									Utils.getR(bullet).toString(), amount));
 							SoundHandler.playSoundOnServer(SoundRegistries.CRAFT_SOUND.get());
 						} else {
 							int metals = metal / bullet.getMetal();
+							int amount = 1;
+							if(Utils.getR(bullet).toString().contains("small")) {
+								amount = Config.SERVER.smallBulletCraftingResult.get();
+							} else if(Utils.getR(bullet).toString().contains("medium")) {
+								amount = Config.SERVER.mediumBulletCraftingResult.get();
+							} else if(Utils.getR(bullet).toString().contains("big")) {
+								amount = Config.SERVER.bigBulletCraftingResult.get();
+							} else if(Utils.getR(bullet).toString().contains("shotgun")) {
+								amount = Config.SERVER.shotgunBulletCraftingResult.get();
+							}
 							ServerUtils.removeItemInDifIndexes(pi,
 									bullet.requiresIngots() ? Items.IRON_INGOT : Items.IRON_NUGGET,
-									bullet.getMetal() * metals);
+									bullet.getMetal() * metals * amount);
 							ServerUtils.removeItemInDifIndexes(pi, Items.GUNPOWDER, bullet.getGunPowder() * metals);
 							OldGuns.channel
-									.sendToServer(new AddItemMessage(Utils.getR(bullet).toString(), metals));
+									.sendToServer(new AddItemMessage(
+											Utils.getR(bullet).toString(), metals));
 							SoundHandler.playSoundOnServer(SoundRegistries.CRAFT_SOUND.get());
 						}
 					}
@@ -240,7 +309,7 @@ public class GunAmmoGui extends AbstractContainerScreen<AmmoCraftingTableContain
 	private void renderBulletAndHasMaterials(int i, int j, PoseStack matrixStack) {
 		if (bulletStack != null && bulletModel != null) {
 			RenderHelper.renderGuiItem(bulletStack, i + 138, j + 39, bulletModel);
-
+			
 			// RenderSystem.enableBlend();
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
 			RenderSystem.setShaderTexture(0, GUNAMMO_GUI);
@@ -255,12 +324,7 @@ public class GunAmmoGui extends AbstractContainerScreen<AmmoCraftingTableContain
 
 	private void doBulletStuff(int i, int j, PoseStack matrixStack) {
 		if (bulletStack != null && bulletModel != null) {
-
-			/*
-			 * RenderSystem.enableBlend();
-			 * RenderSystem.setShader(GameRenderer::getPositionTexShader);
-			 * RenderSystem.setShaderTexture(0, GUNAMMO_GUI);
-			 */
+			// Render materials
 			if (bullet.requiresIngots()) {
 				ItemStack ironStack = new ItemStack(Items.IRON_INGOT, bullet.getMetal());
 				RenderHelper.renderGuiItem(ironStack, i + 10, j + 8, Utils.getModel(Items.IRON_INGOT));
@@ -274,13 +338,21 @@ public class GunAmmoGui extends AbstractContainerScreen<AmmoCraftingTableContain
 						(j + 8), String.valueOf(bullet.getMetal()));
 			}
 
+			// Render gunpowder
 			ItemStack gunPowderStack = new ItemStack(Items.GUNPOWDER, bullet.getGunPowder());
 			RenderHelper.renderGuiItem(new ItemStack(Items.GUNPOWDER, bullet.getGunPowder()), i + 40, j + 8,
 					Utils.getModel(Items.GUNPOWDER));
 			Minecraft.getInstance().getItemRenderer().renderGuiItemDecorations(font, gunPowderStack, (i + 44), (j + 8),
 					String.valueOf(bullet.getGunPowder()));
-
-			RenderHelper.renderGuiItem(bulletStack, i + 138, j + 39, bulletModel);
+			
+			// Render bullet
+			ItemStack copy = bulletStack.copy();
+			copy.setCount(amount);
+			RenderHelper.renderGuiItem(copy, i + 138, j + 39, bulletModel);
+			Minecraft.getInstance().getItemRenderer().renderGuiItemDecorations(font, 
+					copy, i + 138, j + 39,
+					String.valueOf(amount));
+			
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
 			RenderSystem.setShaderTexture(0, GUNAMMO_GUI);
 			if (metal >= bullet.getMetal()) {
@@ -304,7 +376,6 @@ public class GunAmmoGui extends AbstractContainerScreen<AmmoCraftingTableContain
 		RenderSystem.enableBlend();
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderTexture(0, GUNAMMO_GUI);
-		// Minecraft.getInstance().textureManager.bindForSetup(GUNAMMO_GUI);
 		int i = this.leftPos;
 		int j = this.topPos;
 

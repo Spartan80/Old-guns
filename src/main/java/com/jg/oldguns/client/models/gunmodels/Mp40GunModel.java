@@ -7,17 +7,16 @@ import com.jg.oldguns.client.animations.Transform;
 import com.jg.oldguns.client.animations.parts.GunModel;
 import com.jg.oldguns.client.animations.parts.GunModelPart;
 import com.jg.oldguns.client.handlers.ClientHandler;
-import com.jg.oldguns.client.handlers.ReloadHandler;
+import com.jg.oldguns.client.handlers.SoundHandler;
 import com.jg.oldguns.client.models.modmodels.Mp40ModModel;
 import com.jg.oldguns.client.models.wrapper.WrapperModel;
+import com.jg.oldguns.config.Config;
 import com.jg.oldguns.guns.BulletItem;
-import com.jg.oldguns.guns.MagItem;
 import com.jg.oldguns.registries.ItemRegistries;
+import com.jg.oldguns.registries.SoundRegistries;
+import com.jg.oldguns.utils.MeleeHelper;
 import com.jg.oldguns.utils.NBTUtils;
-import com.jg.oldguns.utils.ServerUtils;
-import com.jg.oldguns.utils.Utils;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -61,25 +60,30 @@ public class Mp40GunModel extends GunModel {
 				.translate(parts[3], 0.0f, 0.0f, 0.0f)
 				.end();
 		look = new Animation("lookAnim", "oldguns:mp40")
-				.startKeyframe(12, "easeOutQuint")
-				.translate(parts[1], -1.1399993f, 0.0f, 0.0f)
+				.startKeyframe(12, "easeOutSine")
 				.translate(parts[6], -0.8599995f, -0.68999964f, 0.0f)
+				.translate(parts[5], 0.0f, 0.30999997f, 0.0f)
+				.translate(parts[1], -1.1399993f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.0f, -0.17453294f, 0.5934119f)
 				.startKeyframe(24)
-				.translate(parts[1], -1.1399993f, 0.0f, 0.0f)
 				.translate(parts[6], -0.8599995f, -0.68999964f, 0.0f)
+				.translate(parts[5], 0.0f, 0.30999997f, 0.0f)
+				.translate(parts[1], -1.1399993f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.0f, -0.17453294f, 0.5934119f)
-				.startKeyframe(12, "easeInQuint")
-				.translate(parts[1], -0.5599998f, 0.0f, 0.0f)
+				.startKeyframe(12, "easeInSine")
 				.translate(parts[6], 0.23000002f, 0.14999998f, 0.0f)
+				.translate(parts[5], 0.0f, 0.30999997f, 0.0f)
+				.translate(parts[1], -0.5599998f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.0f, -0.17453294f, -0.4886921f)
 				.startKeyframe(24)
-				.translate(parts[1], -0.5599998f, 0.0f, 0.0f)
 				.translate(parts[6], 0.23000002f, 0.14999998f, 0.0f)
+				.translate(parts[5], 0.0f, 0.30999997f, 0.0f)
+				.translate(parts[1], -0.5599998f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.0f, -0.17453294f, -0.4886921f)
 				.startKeyframe(12, "easeInOutCirc")
-				.translate(parts[1], 0.0f, 0.0f, 0.0f)
 				.translate(parts[6], 0.0f, 0.0f, 0.0f)
+				.translate(parts[5], 0.0f, 0.0f, 0.0f)
+				.translate(parts[1], 0.0f, 0.0f, 0.0f)
 				.rotate(parts[6], 0.0f, 0.0f, 0.0f)
 				.end();
 		kickback = new Animation("kickbackAnim", "oldguns:mp40")
@@ -417,6 +421,42 @@ public class Mp40GunModel extends GunModel {
 	@Override
 	public void tick(Player player, ItemStack stack) {
 		super.tick(player, stack);
+		Animation anim = getAnimation();
+		float tick = animator.getTick();
+		if(anim == reloadMagByMag) {
+			if(tick == 32) {
+				SoundHandler.playSoundOnServer(SoundRegistries.MP40COKING_FIRST.get());
+			} else if(tick == 61) {
+				SoundHandler.playSoundOnServer(SoundRegistries.MP40_CLIPOUT.get());
+			} else if(tick == 104) {
+				SoundHandler.playSoundOnServer(SoundRegistries.MP40_CLIPIN.get());
+			} else if(tick == 138) {
+				SoundHandler.playSoundOnServer(SoundRegistries.MP40COKING_LAST.get());
+				reloadMagByMagStuff();
+			}
+		} else if(anim == reloadNoMag) {
+			if(tick == 32) {
+				SoundHandler.playSoundOnServer(SoundRegistries.MP40COKING_FIRST.get());
+			} else if(tick == 79) {
+				reloadNoMagStuff();
+			} else if(tick == 76) {
+				SoundHandler.playSoundOnServer(SoundRegistries.MP40_CLIPIN.get());
+			} else if(tick == 133) {
+				SoundHandler.playSoundOnServer(SoundRegistries.MP40COKING_LAST.get());
+			}
+		} else if(anim == getOutMag) {
+			if(tick == 12) {
+				SoundHandler.playSoundOnServer(SoundRegistries.MP40_CLIPOUT.get());
+			} else if(tick == 25) {
+				getOutMagStuff();
+			}
+		} else if(anim == kickback) {
+			if(tick == 4) {
+				SoundHandler.playSoundOnServer(SoundRegistries.SWING.get());
+			} else if(tick == 8) {
+				MeleeHelper.hit(Config.SERVER.mp40MeleeDmg.get().floatValue());
+			}
+		}
 	}
 	
 	@Override

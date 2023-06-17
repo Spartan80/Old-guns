@@ -33,7 +33,7 @@ public class GunGui extends AbstractContainerScreen<GunContainer> {
 
 	@Override
 	protected void renderLabels(PoseStack matrixStack, int x, int y) {
-		this.font.draw(matrixStack, this.title, (float) this.titleLabelX + 56, (float) this.titleLabelY + 33, 4210752);
+		this.font.draw(matrixStack, this.title, (float) this.titleLabelX, (float) this.titleLabelY, 4210752);
 		this.font.draw(matrixStack, this.playerInventoryTitle, (float) this.inventoryLabelX,
 				(float) this.inventoryLabelY, 4210752);
 		this.renderTooltip(matrixStack, x - leftPos, y - topPos);

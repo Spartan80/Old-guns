@@ -1,5 +1,6 @@
 package com.jg.oldguns.guns.items;
 
+import com.jg.oldguns.config.Config;
 import com.jg.oldguns.guns.FireMode;
 import com.jg.oldguns.guns.GunItem;
 import com.jg.oldguns.guns.GunStuff;
@@ -20,17 +21,17 @@ public class Kar98k extends GunItem {
 
 	@Override
 	public float getDamage() {
-		return 12;
+		return Config.SERVER.kar98kDmg.get().floatValue();
 	}
 
 	@Override
 	public float getShootTime() {
-		return 2;
+		return Config.SERVER.kar98kShootTime.get().floatValue();
 	}
 	
 	@Override
 	public float getPower() {
-		return 16;
+		return Config.SERVER.kar98kPower.get().floatValue();
 	}
 
 	@Override
@@ -40,17 +41,17 @@ public class Kar98k extends GunItem {
 
 	@Override
 	public int getRange() {
-		return 20;
+		return Config.SERVER.kar98kRange.get().intValue();
 	}
 
 	@Override
 	public float getRangeDamageReduction() {
-		return 0.9f;
+		return Config.SERVER.kar98kRangeDmgRed.get().floatValue();
 	}
 
 	@Override
 	public float getInnacuracy() {
-		return 0.04f;
+		return Config.SERVER.kar98kInnacuracy.get().floatValue();
 	}
 
 	@Override
