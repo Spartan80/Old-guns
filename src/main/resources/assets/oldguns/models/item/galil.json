@@ -1,0 +1,50 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [64, 64],
+	"textures": {
+		"particle": "oldguns:items/galil"
+	},
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [-84.25, 0, 0],
+			"translation": [0, 0, 2.25]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [-84.25, 0, 0],
+			"translation": [0, 0, 2.25]
+		},
+		"firstperson_righthand": {
+			"rotation": [-90, 0, 0],
+			"translation": [-4.75, 4.5, 6.25]
+		},
+		"firstperson_lefthand": {
+			"rotation": [-90, 0, 0],
+			"translation": [-4.75, 4.5, 6.25]
+		},
+		"ground": {
+			"rotation": [-90, 0, 0],
+			"translation": [0, 1.75, 4]
+		},
+		"gui": {
+			"rotation": [-61.5, -3, -140],
+			"translation": [-2.25, 0.5, 0]
+		},
+		"head": {
+			"rotation": [-90, 0, 0],
+			"translation": [-4.75, 4.5, 6.25],
+			"scale": [2, 2, 2]
+		},
+		"fixed": {
+			"rotation": [-90, 31, 88],
+			"translation": [2.25, -1.5, -0.5]
+		}
+	},
+	"groups": [
+		{
+			"name": "gun",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": []
+		}
+	]
+}

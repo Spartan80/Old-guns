@@ -1,0 +1,87 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "oldguns:items/mp40",
+		"particle": "oldguns:items/mp40"
+	},
+	"elements": [
+		{
+			"from": [7.85, 9.15, 9.45],
+			"to": [8, 9.3, 9.6],
+			"rotation": {"angle": 0, "axis": "y", "origin": [16, 13, 18]},
+			"faces": {
+				"north": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"east": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"south": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"west": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"up": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"down": {"uv": [1, 5, 2, 7], "texture": "#0"}
+			}
+		},
+		{
+			"from": [7.75, 9.125, 9.425],
+			"to": [7.85, 9.325, 9.625],
+			"rotation": {"angle": 0, "axis": "y", "origin": [15.85, 13, 18]},
+			"faces": {
+				"north": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"east": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"south": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"west": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"up": {"uv": [1, 5, 2, 7], "texture": "#0"},
+				"down": {"uv": [1, 5, 2, 7], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [-89, 0, 0],
+			"translation": [-0.5, 0.75, -1]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [-89, 0, 0],
+			"translation": [-0.5, 0.75, -1]
+		},
+		"firstperson_righthand": {
+			"rotation": [-90, 0, 0],
+			"translation": [0, 2, -3],
+			"scale": [1.5, 1.5, 1.5]
+		},
+		"firstperson_lefthand": {
+			"rotation": [-90, 0, 0],
+			"translation": [0, 2, -3],
+			"scale": [1.5, 1.5, 1.5]
+		},
+		"ground": {
+			"rotation": [-87.5, 0, 0],
+			"translation": [0, 2.75, 2]
+		},
+		"gui": {
+			"rotation": [-61.5, -3, -140],
+			"translation": [0.25, 0.5, 0]
+		},
+		"head": {
+			"rotation": [-92.75, 0, 0],
+			"translation": [0, -29, 0],
+			"scale": [1.6, 1.6, 1.6]
+		},
+		"fixed": {
+			"rotation": [-90, 31, 88],
+			"translation": [0.75, -1.25, -0.5]
+		}
+	},
+	"groups": [
+		{
+			"name": "gun",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [
+				{
+					"name": "hammer",
+					"origin": [8, 8, 8],
+					"color": 0,
+					"children": [0, 1]
+				}
+			]
+		}
+	]
+}

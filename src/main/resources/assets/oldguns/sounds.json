@@ -1,0 +1,712 @@
+{
+	"hitmarker": {
+    "category": "neutral",
+    "subtitle": "hitmarker",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/other/hitmarker",
+        "stream": false
+      }
+    ]
+  },
+  "craft_sound": {
+    "category": "neutral",
+    "subtitle": "craft_sound",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/other/craft_sound",
+        "stream": false
+      }
+    ]
+  },
+  "hammer_working": {
+    "category": "neutral",
+    "subtitle": "hammer_working",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/other/hammer_working",
+        "stream": false
+      }
+    ]
+  },
+	"karkshoot": {
+    "category": "neutral",
+    "subtitle": "karkshoot",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/karkshoot",
+        "stream": false
+      }
+    ]
+  },
+	"karkback": {
+    "category": "neutral",
+    "subtitle": "karkback",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/karkback",
+        "stream": false
+      }
+    ]
+  },
+	"karkforward": {
+    "category": "neutral",
+    "subtitle": "karkforward",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/karkforward",
+        "stream": false
+      }
+    ]
+  },
+	"karkpushbullet": {
+    "category": "neutral",
+    "subtitle": "karkpushbullet",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/karkpushbullet",
+        "stream": false
+      }
+    ]
+  },
+	"coltmagin": {
+    "category": "neutral",
+    "subtitle": "coltmagin",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/coltmagin",
+        "stream": false
+      }
+    ]
+  },
+	"coltmagout": {
+    "category": "neutral",
+    "subtitle": "coltmagout",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/coltmagout",
+        "stream": false
+      }
+    ]
+  },
+	"coltshot": {
+    "category": "neutral",
+    "subtitle": "coltshot",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/coltshot",
+        "stream": false
+      }
+    ]
+  },
+	"coltslider": {
+    "category": "neutral",
+    "subtitle": "coltslider",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/coltslider",
+        "stream": false
+      }
+    ]
+  },
+  "thompsoncocking": {
+    "category": "neutral",
+    "subtitle": "thompsoncocking",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/thompsoncocking",
+        "stream": false
+      }
+    ]
+  },
+  "thompsonmagin": {
+    "category": "neutral",
+    "subtitle": "thompsonmagin",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/thompsonmagin",
+        "stream": false
+      }
+    ]
+  },
+  "thompsonmagout": {
+    "category": "neutral",
+    "subtitle": "thompsonmagout",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/thompsonmagout",
+        "stream": false
+      }
+    ]
+  },
+  "thompsonshoot": {
+    "category": "neutral",
+    "subtitle": "thompsonshoot",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/thompsonshoot",
+        "stream": false
+      }
+    ]
+  },
+  "winchesterboltback": {
+    "category": "neutral",
+    "subtitle": "winchester_hammer_coc_back",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/winchester_hammer_coc_back",
+        "stream": false
+      }
+    ]
+  },
+  "winchesterboltforward": {
+    "category": "neutral",
+    "subtitle": "winchester_hammer_coc_front",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/winchester_hammer_coc_front",
+        "stream": false
+      }
+    ]
+  },
+  "winchesterinsertshell": {
+    "category": "neutral",
+    "subtitle": "winchesterinsertshell",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/winchesterinsertshell",
+        "stream": false
+      }
+    ]
+  },
+  "winchestershoot": {
+    "category": "neutral",
+    "subtitle": "winchestershoot",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/winchestershoot",
+        "stream": false
+      }
+    ]
+  },
+  "ppshoot": {
+    "category": "neutral",
+    "subtitle": "ppshoot",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/pirate_pistol_shoot",
+        "stream": false
+      }
+    ]
+  },
+  "prshoot": {
+    "category": "neutral",
+    "subtitle": "prshoot",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/pirate_rifle_shoot",
+        "stream": false
+      }
+    ]
+  },
+  "flintlock_hammer": {
+    "category": "neutral",
+    "subtitle": "flintlock_hammer",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/flintlock_hammer_back",
+        "stream": false
+      }
+    ]
+  },
+  "mp40clipin": {
+    "category": "neutral",
+    "subtitle": "mp40clipin",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/mp40clipin",
+        "stream": false
+      }
+    ]
+  },
+  "mp40clipout": {
+    "category": "neutral",
+    "subtitle": "mp40clipout",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/mp40clipout",
+        "stream": false
+      }
+    ]
+  },
+  "mp40cocking_first": {
+    "category": "neutral",
+    "subtitle": "mp40cocking_first",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/mp40cocking_first",
+        "stream": false
+      }
+    ]
+  },
+  "mp40cocking_last": {
+    "category": "neutral",
+    "subtitle": "mp40cocking_last",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/mp40cocking_last",
+        "stream": false
+      }
+    ]
+  },
+  "mp40shoot": {
+    "category": "neutral",
+    "subtitle": "mp40shoot",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/mp40shoot",
+        "stream": false
+      }
+    ]
+  },
+  "pmmagazinein": {
+    "category": "neutral",
+    "subtitle": "pmmagazinein",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/pmmagazinein",
+        "stream": false
+      }
+    ]
+  },
+  "pmmagazineout": {
+    "category": "neutral",
+    "subtitle": "pmmagazineout",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/pmmagazineout",
+        "stream": false
+      }
+    ]
+  },
+  "pmshoot": {
+    "category": "neutral",
+    "subtitle": "pmshoot",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/pmshoot",
+        "stream": false
+      }
+    ]
+  },
+  "revolver_shot": {
+    "category": "neutral",
+    "subtitle": "revolver_shot",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/revolver_shot",
+        "stream": false
+      }
+    ]
+  },
+  "revolver_spin": {
+    "category": "neutral",
+    "subtitle": "revolver_spin",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/revolver-spin",
+        "stream": false
+      }
+    ]
+  },
+  "revolver_bullets_inside": {
+    "category": "neutral",
+    "subtitle": "revolver_bullets_inside",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/revolver_bullets_inside",
+        "stream": false
+      }
+    ]
+  },
+  "revolver_bullets_out": {
+    "category": "neutral",
+    "subtitle": "revolver_bullets_out",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/revolver_bullets_out",
+        "stream": false
+      }
+    ]
+  },
+  "hauer77shellinsert": {
+    "category": "neutral",
+    "subtitle": "hauer77shellinsert",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/hauer77shellinsert",
+        "stream": false
+      }
+    ]
+  },
+  "hauer77shoot": {
+    "category": "neutral",
+    "subtitle": "hauer77shoot",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/hauer77shoot",
+        "stream": false
+      }
+    ]
+  },
+  "hauer77slideback": {
+    "category": "neutral",
+    "subtitle": "hauer77slideback",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/hauer77slideback",
+        "stream": false
+      }
+    ]
+  },
+  "hauer77slideforward": {
+    "category": "neutral",
+    "subtitle": "hauer77slideforward",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/hauer77slideforward",
+        "stream": false
+      }
+    ]
+  },
+  "stenshoot": {
+    "category": "neutral",
+    "subtitle": "stenshoot",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/stenshoot",
+        "stream": false
+      }
+    ]
+  },
+  "stenmagin": {
+    "category": "neutral",
+    "subtitle": "stenmagin",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/stenmagin",
+        "stream": false
+      }
+    ]
+  },
+  "stenmagout": {
+    "category": "neutral",
+    "subtitle": "stenmagout",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/stenmagout",
+        "stream": false
+      }
+    ]
+  },
+  "stenhamfor": {
+    "category": "neutral",
+    "subtitle": "stenhamfor",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/stenslide_forward",
+        "stream": false
+      }
+    ]
+  },
+  "stenhamback": {
+    "category": "neutral",
+    "subtitle": "stenhamback",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/stenslide_back",
+        "stream": false
+      }
+    ]
+  },
+  "ak74ushoot": {
+    "category": "neutral",
+    "subtitle": "aks74ushoot",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/aks74ushoot",
+        "stream": false
+      }
+    ]
+  },
+  "ak74umagin": {
+    "category": "neutral",
+    "subtitle": "aks74umagin",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/aks74umagin",
+        "stream": false
+      }
+    ]
+  },
+  "ak74umagout": {
+    "category": "neutral",
+    "subtitle": "aks74umagout",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/aks74umagout",
+        "stream": false
+      }
+    ]
+  },
+  "ak74uhamfor": {
+    "category": "neutral",
+    "subtitle": "aks74uhamfor",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/aks74uslide_forward",
+        "stream": false
+      }
+    ]
+  },
+  "ak74uhamback": {
+    "category": "neutral",
+    "subtitle": "aks74uhamback",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/aks74uslide_back",
+        "stream": false
+      }
+    ]
+  },
+  "asvalmagin": {
+    "category": "neutral",
+    "subtitle": "asvalmagin",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/asvalmagin",
+        "stream": false
+      }
+    ]
+  },
+  "asvalmagout": {
+    "category": "neutral",
+    "subtitle": "asvalmagout",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/asvalmagout",
+        "stream": false
+      }
+    ]
+  },
+  "asvalshoot": {
+    "category": "neutral",
+    "subtitle": "asvalshoot",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/asvalshoot",
+        "stream": false
+      }
+    ]
+  },
+  "asvalslideback": {
+    "category": "neutral",
+    "subtitle": "asvalslideback",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/asvalslideback",
+        "stream": false
+      }
+    ]
+  },
+  "asvalslideforward": {
+    "category": "neutral",
+    "subtitle": "asvalslideforward",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/asvalslideforward",
+        "stream": false
+      }
+    ]
+  },
+  "galilback": {
+    "category": "neutral",
+    "subtitle": "galilback",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/galilcockbackward",
+        "stream": false
+      }
+    ]
+  },
+  "galilforward": {
+    "category": "neutral",
+    "subtitle": "galilforward",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/galilcockforward",
+        "stream": false
+      }
+    ]
+  },
+  "galilmagin": {
+    "category": "neutral",
+    "subtitle": "galilmagin",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/galilmagin",
+        "stream": false
+      }
+    ]
+  },
+  "galilmagout": {
+    "category": "neutral",
+    "subtitle": "galilmagout",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/galilmagout",
+        "stream": false
+      }
+    ]
+  },
+  "galilshoot": {
+    "category": "neutral",
+    "subtitle": "galilshoot",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/galilshoot",
+        "stream": false
+      }
+    ]
+  },
+  "mp5back": {
+    "category": "neutral",
+    "subtitle": "mp5back",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/mp5boltbackward",
+        "stream": false
+      }
+    ]
+  },
+  "mp5forward": {
+    "category": "neutral",
+    "subtitle": "mp5forward",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/mp5boltforward",
+        "stream": false
+      }
+    ]
+  },
+  "mp5magin": {
+    "category": "neutral",
+    "subtitle": "mp5magin",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/mp5magin",
+        "stream": false
+      }
+    ]
+  },
+  "mp5magout": {
+    "category": "neutral",
+    "subtitle": "mp5magout",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/mp5magout",
+        "stream": false
+      }
+    ]
+  },
+  "mp5shoot": {
+    "category": "neutral",
+    "subtitle": "mp5shoot",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/mp5shoot",
+        "stream": false
+      }
+    ]
+  },
+  "bizonshoot": {
+    "category": "neutral",
+    "subtitle": "bizonshoot",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/bizonshoot",
+        "stream": false
+      }
+    ]
+  },
+  "bizonmagin": {
+    "category": "neutral",
+    "subtitle": "bizonmagin",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/bizonmagin",
+        "stream": false
+      }
+    ]
+  },
+  "bizonmagout": {
+    "category": "neutral",
+    "subtitle": "bizonmagout",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/bizonmagout",
+        "stream": false
+      }
+    ]
+  },
+  "skorpionshoot": {
+    "category": "neutral",
+    "subtitle": "skorpionshoot",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/skorpionshoot",
+        "stream": false
+      }
+    ]
+  },
+  "skorpionmagin": {
+    "category": "neutral",
+    "subtitle": "skorpionmagin",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/skorpionmagin",
+        "stream": false
+      }
+    ]
+  },
+  "skorpionmagout": {
+    "category": "neutral",
+    "subtitle": "skorpionmagout",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/skorpionmagout",
+        "stream": false
+      }
+    ]
+  },
+  "melee": {
+    "category": "neutral",
+    "subtitle": "melee",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/meleehit1",
+        "stream": false
+      }
+    ]
+  },
+  "swing": {
+    "category": "neutral",
+    "subtitle": "swing",
+    "sounds": [
+      {
+        "name": "oldguns:neutral/swing2",
+        "stream": false
+      }
+    ]
+  }
+}

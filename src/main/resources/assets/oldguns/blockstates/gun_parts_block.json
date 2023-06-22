@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "oldguns:block/gun_parts_block", "y": 0   },
+        "facing=east":  { "model": "oldguns:block/gun_parts_block", "y": 90  },
+        "facing=south": { "model": "oldguns:block/gun_parts_block", "y": 180 },
+        "facing=west":  { "model": "oldguns:block/gun_parts_block", "y": 270 }
+    }
+}
