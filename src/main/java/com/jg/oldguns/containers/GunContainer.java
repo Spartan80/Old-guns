@@ -96,10 +96,10 @@ public class GunContainer extends JGGunContainer {
 				return super.mayPlace(p_75214_1_) && gun.getStuff().canModifyBarrel() 
 						&& Utils.canEquip(p_75214_1_, getSlotIndex());
 			}
-
+			
 			@Override
-			public boolean mayPickup(Player p_82869_1_) {
-				return true;
+			public boolean mayPickup(Player player) {
+				return false;
 			}
 		});
 

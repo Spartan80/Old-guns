@@ -37,11 +37,14 @@ import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.tags.ITag;
 
 public class GunPartsGui extends AbstractContainerScreen<GunPartsContainer> {
 
@@ -379,7 +382,7 @@ public class GunPartsGui extends AbstractContainerScreen<GunPartsContainer> {
 									part.getMetal());
 							System.out.println("Metal removed");
 						}
-						OldGuns.channel.sendToServer(new AddItemMessage(Utils.getR(part).toString(), 1));
+						/*OldGuns.channel.sendToServer(new AddItemMessage(Utils.getR(part).toString(), 1));*/
 						SoundHandler.playSoundOnServer(SoundRegistries.CRAFT_SOUND.get());
 						System.out.println("Crafted");
 					}
@@ -491,8 +494,10 @@ public class GunPartsGui extends AbstractContainerScreen<GunPartsContainer> {
 	}
 
 	@Override
-	protected void renderLabels(PoseStack matrixStack, int x, int y) {
-		this.renderTooltip(matrixStack, x - leftPos, y - topPos);
+	public void render(PoseStack p_97795_, int p_97796_, int p_97797_, float p_97798_) {
+		super.render(p_97795_, p_97796_, p_97797_, p_97798_);
+		
+		this.renderTooltip(p_97795_, p_97796_, p_97797_);
 	}
 
 	public List<Item> getWoodPlanksTags(){
@@ -508,7 +513,7 @@ public class GunPartsGui extends AbstractContainerScreen<GunPartsContainer> {
 			System.out.println(st2);
 			list.add(Registry.ITEM.get(new ResourceLocation(st2)));
 		}
-		return list;
+		return ForgeRegistries.ITEMS.tags().getTag(ItemTags.PLANKS).stream().toList();
 	}
 	
 }

@@ -4,17 +4,24 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.IntStream;
+
+import com.jg.oldguns.OldGuns;
 import com.jg.oldguns.client.handlers.ReloadHandler;
 import com.jg.oldguns.client.screens.AnimationScreen.Pair;
 import com.jg.oldguns.guns.MagItem;
+import com.jg.oldguns.network.AddItemMessage;
 import com.mojang.logging.LogUtils;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class ServerUtils {
 
@@ -28,6 +35,74 @@ public class ServerUtils {
 	public static void addToNBT(ItemStack stack, String path, int val) {
 		CompoundTag nbt = stack.getOrCreateTag();
 		nbt.putInt(path, nbt.getInt(path) + val);
+	}
+	
+	public static void addItem(Item item, int count) {
+		int[] data = distributeItem(item, count);
+		OldGuns.channel.sendToServer(new AddItemMessage(item.getRegistryName().toString(), data));
+	}
+	
+	public static int[] distributeItem(String item, int count) {
+		return distributeItem(ForgeRegistries.ITEMS.getValue(
+				new ResourceLocation(item)), count);
+	}
+	
+	public static int[] distributeItem(ItemStack item) {
+		return distributeItem(item.getItem(), item.getCount());
+	}
+	
+	public static int[] distributeItem(Item item, int count) {
+		return distributeItem(Minecraft.getInstance().player.getInventory(), item, count);
+	}
+	
+	public static int[] distributeItem(Inventory inv, Item item, int count) {
+		List<Integer> data = new ArrayList<>();
+		int remaining = count;
+		for(int i = 0; i  < inv.items.size(); i++) {
+			ItemStack stack = inv.items.get(i);
+			if(stack == ItemStack.EMPTY) {
+				int result = remaining - 64;
+				if(result > 0) {
+					remaining -= 64;
+					// Slot index
+					data.add(i);
+					// Remove Amount
+					data.add(64);
+				} else{
+					remaining = 0;
+					// Slot index
+					data.add(i);
+					// Remove Amount
+					data.add(64);
+					return data.stream().mapToInt(Integer::intValue).toArray();
+				}
+			} else if(stack.getItem() == item && stack.getItem().getMaxStackSize() > 1 
+					&& stack.getCount() != 64) {
+				int dif = (64 - stack.getCount());
+				int result = remaining - dif;
+				if(result >= 0) {
+					remaining -= dif;
+					// Slot index
+					data.add(i);
+					// Remove Amount
+					data.add(dif);
+				} else{
+					// Slot index
+					data.add(i);
+					// Remove Amount
+					data.add(remaining);
+					remaining = 0;
+					return data.stream().mapToInt(Integer::intValue).toArray();
+				}
+			}
+		}
+		if(remaining > 0) {
+			data.add(remaining);
+			//LogUtils.getLogger().info("Hello");
+		} else {
+			data.add(0);
+		}
+		return data.stream().mapToInt(Integer::intValue).toArray();
 	}
 
 	public static void growBullets(ServerPlayer player) {
@@ -323,7 +398,7 @@ public class ServerUtils {
 
 	public static int getTotalItemAmout(Inventory pi, Item item) {
 		int amount = 0;
-		for (int index = 0; index < pi.getContainerSize(); ++index) {
+		for (int index = 0; index < pi.items.size(); ++index) {
 			ItemStack stack = pi.getItem(index);
 			if (stack.getItem() == item) {
 				amount += stack.getCount();

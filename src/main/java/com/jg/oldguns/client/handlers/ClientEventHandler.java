@@ -23,10 +23,12 @@ import com.jg.oldguns.client.models.gunmodels.ThompsonGunModel;
 import com.jg.oldguns.client.models.gunmodels.WinchesterGunModel;
 import com.jg.oldguns.client.models.wrapper.ExtraItemWrapperModel;
 import com.jg.oldguns.client.render.RenderHelper;
+import com.jg.oldguns.client.screens.AmmoCraftingGui;
 import com.jg.oldguns.client.screens.AnimationScreen;
 import com.jg.oldguns.client.screens.GunAmmoGui;
-import com.jg.oldguns.client.screens.GunCraftingGui;
+import com.jg.oldguns.client.screens.GunCraftingGui2;
 import com.jg.oldguns.client.screens.GunGui;
+import com.jg.oldguns.client.screens.GunPartsCraftingGui;
 import com.jg.oldguns.client.screens.GunPartsGui;
 import com.jg.oldguns.client.screens.GunPartsScreen;
 import com.jg.oldguns.client.screens.MagGui;
@@ -111,10 +113,10 @@ public class ClientEventHandler {
 	public static void setup() {
 		ClientsHandler.register(mc.getUser(), client);
 
-		MenuScreens.register(ContainerRegistries.GUN_AMMO_CONTAINER.get(), GunAmmoGui::new);
+		MenuScreens.register(ContainerRegistries.GUN_AMMO_CONTAINER.get(), AmmoCraftingGui::new);
 		MenuScreens.register(ContainerRegistries.GUN_CONTAINER.get(), GunGui::new);
-		MenuScreens.register(ContainerRegistries.GUN_CRAFTING_CONTAINER.get(), GunCraftingGui::new);
-		MenuScreens.register(ContainerRegistries.GUN_PARTS_CONTAINER.get(), GunPartsGui::new);
+		MenuScreens.register(ContainerRegistries.GUN_CRAFTING_CONTAINER.get(), GunCraftingGui2::new);
+		MenuScreens.register(ContainerRegistries.GUN_PARTS_CONTAINER.get(), GunPartsCraftingGui::new);
 		MenuScreens.register(ContainerRegistries.MAG_CONTAINER.get(), MagGui::new);
 
 		EntityRenderers.register(EntityRegistries.BULLET.get(), ThrownItemRenderer::new);
@@ -505,6 +507,11 @@ public class ClientEventHandler {
 							client.dec(2);
 						}
 					}
+				} else if(stack.getItem() instanceof MagItem) {
+					if (RELOAD.getKey().getValue() == e.getKey() 
+							&& !player.isSprinting()) {
+						ReloadHandler.findCorrectBullet(player.getInventory(), stack);
+					}	
 				}
 			}
 		}

@@ -73,5 +73,6 @@
 	"gui.oldguns.mag_gui": "Mag GUI",
 	"gui.oldguns.gun_ammo_gui": "Gun Ammo GUI",
 	"gui.oldguns.gun_crafting_gui": "Gun Crafting GUI",
-	"gui.oldguns.gun_parts_gui": "Gun Parts GUI"
+	"gui.oldguns.gun_parts_gui": "Gun Parts GUI",
+	"gui.oldguns.gun_ammo_table": "Gun Amo Gui"
 }

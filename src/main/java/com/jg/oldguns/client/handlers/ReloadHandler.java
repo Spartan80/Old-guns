@@ -16,6 +16,7 @@ import com.jg.oldguns.network.SetHammerMessage;
 import com.jg.oldguns.utils.NBTUtils;
 import com.jg.oldguns.utils.ServerUtils;
 import com.jg.oldguns.utils.Utils;
+import com.mojang.logging.LogUtils;
 
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
@@ -73,7 +74,8 @@ public class ReloadHandler {
 	}
 
 	public static void addBullet(String path, int count) {
-		OldGuns.channel.sendToServer(new AddItemMessage(path, count));
+		OldGuns.channel.sendToServer(new AddItemMessage(path, ServerUtils
+				.distributeItem(path, count)));
 	}
 
 	public static void restoreMag(String mag, int bullets) {
@@ -118,7 +120,11 @@ public class ReloadHandler {
 
 	public static int findCorrectBullet(Inventory pi, ItemStack stack) {
 		MagItem mag = (MagItem) stack.getItem();
-
+		
+		if(stack.getOrCreateTag().getInt(NBTUtils.BULLETS) >= mag.getMaxAmmo()) {
+			return -1;
+		}		
+		
 		int index = -1;
 		ArrayList<Integer> indexs = new ArrayList<Integer>();
 		ArrayList<Integer> amounts = new ArrayList<Integer>();
@@ -149,10 +155,10 @@ public class ReloadHandler {
 				}
 			}
 		}
+		LogUtils.getLogger().info("bulletsable: " + bulletsable);
 		if (index == -1 && bulletsable == 0) {
 			return -1;
 		}
-
 		int amount = count >= bulletsable ? bulletsable : count;
 		for (int i = 0; i < indexs.size(); i++) {
 			ReloadHandler.removeItem(indexs.get(i), amounts.get(i));

@@ -159,17 +159,7 @@ public class Utils {
 	}
 
 	public static List<Item> getItemsFromTag(TagKey<Item> tag) {
-		List<Item> list = Lists.newArrayList();
-
-		for (Holder<Item> holder : Registry.ITEM.getTagOrEmpty(tag)) {
-			list.add(new ItemStack(holder).getItem());
-		}
-
-		if (list.size() == 0) {
-			list.add(new ItemStack(net.minecraft.world.level.block.Blocks.BARRIER)
-					.setHoverName(new TranslatableComponent("Empty Tag: " + tag.location())).getItem());
-		}
-		return list;
+		return ForgeRegistries.ITEMS.tags().getTag(tag).stream().toList();
 	}
 	
 	public static List<Keyframe> removeExtraCycle(List<Keyframe> list){

@@ -1,6 +1,6 @@
 package com.jg.oldguns.client.screens.widgets;
 
-import com.jg.oldguns.client.screens.GunCraftingGui;
+import com.jg.oldguns.client.screens.GunCraftingGui2;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -50,7 +50,7 @@ public class GunPartCheckSlot extends AbstractSlot {
 		}
 		RenderSystem.enableBlend();
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
-		RenderSystem.setShaderTexture(0, GunCraftingGui.GUN_GUI);
+		RenderSystem.setShaderTexture(0, GunCraftingGui2.GUN_GUI);
 		if (hasPart) {
 			this.blit(matrix, this.x, this.y, this.ox, this.oy, this.width, this.height);
 		} else {

@@ -13,6 +13,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class InventoryUtils {
 
@@ -116,14 +117,25 @@ public class InventoryUtils {
 		return new InvData(total, finalData);
 	}
 	
-	public static void addItem(String modid, Item item, int amount) {
+	public static int getTotalCountForTag(Player player, TagKey<Item> tag) {
+		int count = 0;
+		for(int i = 0; i < player.getInventory().items.size(); i++) {
+			ItemStack stack = player.getInventory().items.get(i);
+			if(ForgeRegistries.ITEMS.tags().getTag(tag).contains(stack.getItem())) {
+				count += stack.getCount();
+			}
+		}
+		return count;
+	}
+	
+	public static void addItem(String modid, Item item, int[] data) {
 		OldGuns.channel.sendToServer(new AddItemMessage(
-				modid+":"+item.toString(), amount));
+				modid + ":" + item.toString(), data));
 	}
 	
 	public static void addItem(String modid, ItemStack stack) {
 		OldGuns.channel.sendToServer(new AddItemMessage(
-				modid+":"+stack.getItem().toString(), stack.getCount()));
+				modid + ":" + stack.getItem().toString(), new int[] { -1, stack.getCount() }));
 	}
 	
 	public static int[] getCountAndIndexForItems(Player player, List<ItemStack> items) {

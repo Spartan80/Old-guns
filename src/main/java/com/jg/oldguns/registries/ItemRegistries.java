@@ -77,8 +77,8 @@ public class ItemRegistries {
 					new GunPartProperties(), 3, 1, 3, true));
 	
 	public static final RegistryObject<Item> MP40MAG = regAddMag("mp40_mag", 
-			() -> new MagItem(new Item.Properties().tab(OldGuns.getTab()), "mp40", 20, 
-					BulletItem.SMALL, 2, false, 0, "oldguns:bullet"));
+			() -> new MagItem(new Item.Properties().tab(OldGuns.getTab()).stacksTo(1), 
+					"mp40", 20, BulletItem.SMALL, 2, false, 0, "oldguns:bullet"));
 	
 	public static final RegistryObject<Item> MP40 = regAddGun("mp40", 
 			() -> new Mp40("mp40", new Item.Properties().tab(OldGuns.getTab()).stacksTo(1)));
@@ -96,7 +96,7 @@ public class ItemRegistries {
 					new GunPartProperties(), 3, 1, 3, true));
 	
 	public static final RegistryObject<Item> AKS74UMAG = regAddMag("aks-74u_mag", 
-			() -> new MagItem(new Item.Properties().tab(OldGuns.getTab()), "aks-74u", 20, 
+			() -> new MagItem(new Item.Properties().tab(OldGuns.getTab()).stacksTo(1), "aks-74u", 20, 
 					BulletItem.MEDIUM, 2, false, 0, "oldguns:bullet"));
 	
 	public static final RegistryObject<Item> AKS74U = regAddGun("aks-74u", 
@@ -121,7 +121,7 @@ public class ItemRegistries {
 			() -> new Item(new Item.Properties().stacksTo(64)));*/
 	
 	public static final RegistryObject<Item> COLT1911MAG = regAddMag("colt1911_mag", 
-			() -> new MagItem(new Item.Properties().tab(OldGuns.getTab()), "colt1911", 20, 
+			() -> new MagItem(new Item.Properties().tab(OldGuns.getTab()).stacksTo(1), "colt1911", 20, 
 					BulletItem.SMALL, 2, false, 0, "oldguns:bullet"));
 	
 	public static final RegistryObject<Item> COLT1911 = regAddGun("colt1911", 
@@ -140,7 +140,7 @@ public class ItemRegistries {
 					new GunPartProperties(), 3, 1, 3, true));
 	
 	public static final RegistryObject<Item> GALILMAG = regAddMag("galil_mag", 
-			() -> new MagItem(new Item.Properties().tab(OldGuns.getTab()), "galil", 20, 
+			() -> new MagItem(new Item.Properties().tab(OldGuns.getTab()).stacksTo(1), "galil", 20, 
 					BulletItem.BIG, 2, false, 0, "oldguns:bullet"));
 	
 	public static final RegistryObject<Item> GALIL = regAddGun("galil", 
@@ -189,7 +189,7 @@ public class ItemRegistries {
 					new GunPartProperties(), 3, 1, 3, true));
 	
 	public static final RegistryObject<Item> STENMAG = regAddMag("sten_mag", 
-			() -> new MagItem(new Item.Properties().tab(OldGuns.getTab()), "sten", 20, 
+			() -> new MagItem(new Item.Properties().tab(OldGuns.getTab()).stacksTo(1), "sten", 20, 
 					BulletItem.SMALL, 2, false, 0, "oldguns:bullet"));
 	
 	public static final RegistryObject<Item> STEN = regAddGun("sten", 
@@ -208,7 +208,7 @@ public class ItemRegistries {
 					new GunPartProperties(), 3, 1, 3, true));
 	
 	public static final RegistryObject<Item> SCORPIONMAG = regAddMag("scorpion_mag", 
-			() -> new MagItem(new Item.Properties().tab(OldGuns.getTab()), "scorpion", 20, 
+			() -> new MagItem(new Item.Properties().tab(OldGuns.getTab()).stacksTo(1), "scorpion", 20, 
 					BulletItem.SMALL, 2, false, 0, "oldguns:bullet"));
 	
 	public static final RegistryObject<Item> SCORPION = regAddGun("scorpion", 
@@ -227,7 +227,7 @@ public class ItemRegistries {
 					new GunPartProperties(), 3, 1, 3, true));
 	
 	public static final RegistryObject<Item> THOMPSONMAG = regAddMag("thompson_mag", 
-			() -> new MagItem(new Item.Properties().tab(OldGuns.getTab()), "thompson", 20, 
+			() -> new MagItem(new Item.Properties().tab(OldGuns.getTab()).stacksTo(1), "thompson", 20, 
 					BulletItem.SMALL, 2, false, 0, "oldguns:bullet"));
 	
 	public static final RegistryObject<Item> THOMPSON = regAddGun("thompson", 

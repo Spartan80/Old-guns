@@ -28,7 +28,6 @@ public class MagGui extends AbstractContainerScreen<MagContainer> {
 		int j = this.topPos;
 
 		this.blit(p_230450_1_, i, j, 0, 0, this.imageWidth, this.imageHeight);
-
 	}
 
 	@Override
@@ -36,7 +35,13 @@ public class MagGui extends AbstractContainerScreen<MagContainer> {
 		this.font.draw(matrixStack, this.title, (float) this.titleLabelX + 56, (float) this.titleLabelY + 33, 4210752);
 		// this.font.draw(matrixStack, this.t, (float) this.inventoryLabelX,
 		// (float) this.inventoryLabelY, 4210752);
-		this.renderTooltip(matrixStack, x - leftPos, y - topPos);
+	}
+	
+	@Override
+	public void render(PoseStack p_97795_, int p_97796_, int p_97797_, float p_97798_) {
+		super.render(p_97795_, p_97796_, p_97797_, p_97798_);
+		
+		this.renderTooltip(p_97795_, p_97796_, p_97797_);
 	}
 
 }

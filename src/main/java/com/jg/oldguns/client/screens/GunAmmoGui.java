@@ -104,8 +104,6 @@ public class GunAmmoGui extends AbstractContainerScreen<AmmoCraftingTableContain
 					@Override
 					public void onPress() {
 						super.onPress();
-	
-						System.out.println(this.gun.getItem() instanceof BulletItem);
 						if (this.gun.getItem() instanceof MagItem) {
 							for (Item item : items) {
 								if (item instanceof BulletItem) {
@@ -210,22 +208,21 @@ public class GunAmmoGui extends AbstractContainerScreen<AmmoCraftingTableContain
 						if (!isAltPressed) {
 							ServerUtils.removeItemInDifIndexes(pi,
 									mag.isIron() ? Items.IRON_INGOT : ItemRegistries.SteelIngot.get(), mag.getMetal());
-							OldGuns.channel.sendToServer(new AddItemMessage(
-									Utils.getR(mag).toString(), 1));
+							ServerUtils.addItem(mag, 1);
 							SoundHandler.playSoundOnServer(SoundRegistries.CRAFT_SOUND.get());
 						} else {
 							int metals = metal / mag.getMetal();
 							ServerUtils.removeItemInDifIndexes(pi,
 									mag.isIron() ? Items.IRON_INGOT : ItemRegistries.SteelIngot.get(),
 									mag.getMetal() * metals);
-							OldGuns.channel.sendToServer(new AddItemMessage(
-									Utils.getR(mag).toString(), metals));
+							ServerUtils.addItem(mag, metals);
 							SoundHandler.playSoundOnServer(SoundRegistries.CRAFT_SOUND.get());
 						}
 
 					}
 				} else if (bullet != null) {
-					if (metal >= bullet.getMetal()) {
+					LogUtils.getLogger().info("GunPowder needed: " + bullet.getGunPowder());
+					if (metal >= bullet.getMetal() && gunPowder >= bullet.getGunPowder()) {
 						if (!isAltPressed) {
 							ServerUtils.removeItemInDifIndexes(pi,
 									bullet.requiresIngots() ? Items.IRON_INGOT : Items.IRON_NUGGET, bullet.getMetal());
@@ -240,8 +237,7 @@ public class GunAmmoGui extends AbstractContainerScreen<AmmoCraftingTableContain
 							} else if(Utils.getR(bullet).toString().contains("shotgun")) {
 								amount = Config.SERVER.shotgunBulletCraftingResult.get();
 							}
-							OldGuns.channel.sendToServer(new AddItemMessage(
-									Utils.getR(bullet).toString(), amount));
+							ServerUtils.addItem(bullet, amount);
 							SoundHandler.playSoundOnServer(SoundRegistries.CRAFT_SOUND.get());
 						} else {
 							int metals = metal / bullet.getMetal();
@@ -259,9 +255,7 @@ public class GunAmmoGui extends AbstractContainerScreen<AmmoCraftingTableContain
 									bullet.requiresIngots() ? Items.IRON_INGOT : Items.IRON_NUGGET,
 									bullet.getMetal() * metals * amount);
 							ServerUtils.removeItemInDifIndexes(pi, Items.GUNPOWDER, bullet.getGunPowder() * metals);
-							OldGuns.channel
-									.sendToServer(new AddItemMessage(
-											Utils.getR(bullet).toString(), metals));
+							ServerUtils.addItem(bullet, metals);
 							SoundHandler.playSoundOnServer(SoundRegistries.CRAFT_SOUND.get());
 						}
 					}
@@ -411,8 +405,12 @@ public class GunAmmoGui extends AbstractContainerScreen<AmmoCraftingTableContain
 	}
 
 	@Override
-	protected void renderLabels(PoseStack matrixStack, int x, int y) {
-		this.renderTooltip(matrixStack, x - leftPos, y - topPos);
+	public void render(PoseStack p_97795_, int x, int y, float p_97798_) {
+		super.render(p_97795_, x, y, p_97798_);
+		
+		// LogUtils.getLogger().info("x: " + x + " y: " + y);
+		
+		this.renderTooltip(p_97795_, x, y);
 	}
 
 	@Override
